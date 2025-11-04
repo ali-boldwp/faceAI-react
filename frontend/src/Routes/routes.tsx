@@ -10,7 +10,8 @@ export interface RouteProps {
 }
 
 const routes: RouteProps[] = [
-    { path: "/", component: <Dashboard /> },
+    { path: "/", component: <Dashboard sidebarItems={[]} answers={{}} setAnswers={() => {}} /> },
+
 ];
 
 const nonAuthRoutes: RouteProps[] = [

@@ -1,39 +1,28 @@
 import React, { useEffect, useState, DragEvent } from "react";
 import { FiUploadCloud } from "react-icons/fi";
+import { motion, AnimatePresence } from "framer-motion";
 import useSidebarToggle from "Common/UseSideberToggleHooks";
 import "./home.css";
 
-const Home = () => {
+interface HomeProps {
+  sidebarItems: { name: string }[];
+  answers: { [key: string]: string };
+  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+}
+
+const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const themeSidebarToggle = useSidebarToggle();
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [step, setStep] = useState(0);
+  const [selectedOption, setSelectedOption] = useState("");
 
-  // Add/remove chatbot body class
   useEffect(() => {
     document.body.classList.add("chatbot");
     return () => document.body.classList.remove("chatbot");
   }, []);
 
-  // Scroll logic for sticky search form
-  useEffect(() => {
-    const handleScroll = () => {
-      const distanceFromBottom =
-        document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
-      const threshold = 200;
-      const searchForm: HTMLElement | null = document.querySelector(".chatbot .search-form");
-
-      if (searchForm) {
-        if (distanceFromBottom < threshold) searchForm.classList.add("active");
-        else searchForm.classList.remove("active");
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Handle file drop
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
@@ -47,7 +36,6 @@ const Home = () => {
     }
   };
 
-  // Handle file select
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
     const imageFiles = selectedFiles.filter((file) => file.type.startsWith("image/"));
@@ -58,88 +46,119 @@ const Home = () => {
     }
   };
 
+  const handleNext = () => {
+    if (selectedOption) {
+      setAnswers((prev) => ({
+        ...prev,
+        [sidebarItems[step].name]: selectedOption,
+      }));
+      setSelectedOption("");
+    }
+    if (step < sidebarItems.length - 1) setStep(step + 1);
+  };
+
+  const handlePrev = () => {
+    if (step > 0) setStep(step - 1);
+  };
+
   return (
     <div
       className={`main-center-content-m-left center-content search-sticky ${
         themeSidebarToggle ? "collapsed" : ""
       }`}
     >
-      {/* ✅ Uploaded Image Previews */}
-     
+      {/* ✅ Image Previews */}
+      
 
-      {/* ✅ Upload Section */}
-      <div className="upload-section">
-         {imagePreviews.length > 0 && (
+      {/* ✅ Upload Zone */}
+      <div
+        className={`drop-zone ${isDragging ? "dragging" : ""}`}
+        onDragOver={(e) => {
+          e.preventDefault();
+          setIsDragging(true);
+        }}
+        onDragLeave={() => setIsDragging(false)}
+        onDrop={handleDrop}
+      >
+        {imagePreviews.length > 0 && (
         <div className="uploaded-image-container multiple">
-          {imagePreviews.map((src, index) => (
-            <div key={index} className="uploaded-image-box">
-              <img src={src} alt={`Preview ${index}`} className="uploaded-image" />
+          {imagePreviews.map((src, i) => (
+            <div key={i} className="uploaded-image-box">
+              <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
             </div>
           ))}
         </div>
       )}
-        <div
-          className={`drop-zone ${isDragging ? "dragging" : ""}`}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setIsDragging(true);
-          }}
-          onDragLeave={() => setIsDragging(false)}
-          onDrop={handleDrop}
-        >
-          {/* Hide text when at least one image is uploaded */}
-          {imagePreviews.length === 0 && (
-            <div className="drop-zone-inner">
-              <FiUploadCloud className="upload-icon" />
-              <div>
-                <h4>Drag & Drop or Select file</h4>
-                <p>
-                  Drop files here or click{" "}
-                  <label htmlFor="fileInput" className="browse-link">
-                    browse
-                  </label>{" "}
-                  through your machine
-                </p>
-              </div>
-            </div>
-          )}
-
-          <input
-            id="fileInput"
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleFileSelect}
-            className="file-input"
-          />
-        </div>
+        {imagePreviews.length === 0 && (
+          <div className="drop-zone-inner">
+            <FiUploadCloud className="upload-icon" />
+            <h4>Drag & Drop or Select file</h4>
+            <p>
+              Drop files here or click{" "}
+              <label htmlFor="fileInput" className="browse-link">
+                browse
+              </label>{" "}
+              your computer
+            </p>
+          </div>
+        )}
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={handleFileSelect}
+          className="file-input"
+        />
       </div>
 
-      {/* ✅ Popup appears after first image upload */}
+      {/* ✅ Popup Questions */}
       {files.length > 0 && (
         <div className="popup">
-          <h4>Select Shapes</h4>
+          <h4>Select Option for:</h4>
 
-          <div className="form-group">
-            <label htmlFor="faceShape">Face Shape :</label>
-            <select id="faceShape" className="shape-select">
-              <option value="">-- Select Face Shape --</option>
-              <option value="oval">Oval</option>
-              <option value="round">Round</option>
-              <option value="square">Square</option>
-              <option value="heart">Heart</option>
-              <option value="diamond">Diamond</option>
-              <option value="oblong">Oblong</option>
-              <option value="triangle">Triangle</option>
-            </select>
-          </div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={step}
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -50, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+            >
+              <label>{sidebarItems[step].name}</label>
+              <select
+                className="shape-select"
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+              >
+                <option value="">-- Select Option --</option>
+                <option value="Type A">Type A</option>
+                <option value="Type B">Type B</option>
+                <option value="Type C">Type C</option>
+              </select>
+            </motion.div>
+          </AnimatePresence>
 
           <div className="popup-footer">
             <div className="arrow-buttons">
-              <button className="arrow-btn left">←</button>
-              <button className="arrow-btn right">→</button>
+              <button
+                className="arrow-btn left"
+                onClick={handlePrev}
+                disabled={step === 0}
+              >
+                ←
+              </button>
+              <button
+                className="arrow-btn right"
+                onClick={handleNext}
+                disabled={step === sidebarItems.length - 1}
+              >
+                →
+              </button>
             </div>
-            <button className="next-btn">Next</button>
+            <button className="next-btn" onClick={handleNext}>
+              Next
+            </button>
           </div>
         </div>
       )}
