@@ -1,201 +1,150 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-
-//import images
-import icon06 from "assets/images/icons/06.svg";
+import React, { useEffect, useState, DragEvent } from "react";
+import { FiUploadCloud } from "react-icons/fi";
 import useSidebarToggle from "Common/UseSideberToggleHooks";
+import "./home.css";
 
 const Home = () => {
-    const themeSidebarToggle = useSidebarToggle();
-    useEffect(() => {
-        document.body.classList.add("chatbot");
+  const themeSidebarToggle = useSidebarToggle();
+  const [files, setFiles] = useState<File[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-        return () => {
-            document.body.classList.remove("chatbot");
-        };
-    }, []);
+  // Add/remove chatbot body class
+  useEffect(() => {
+    document.body.classList.add("chatbot");
+    return () => document.body.classList.remove("chatbot");
+  }, []);
 
-     useEffect(() => {
-        const handleScroll = () => {
-            const distanceFromBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+  // Scroll logic for sticky search form
+  useEffect(() => {
+    const handleScroll = () => {
+      const distanceFromBottom =
+        document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      const threshold = 200;
+      const searchForm: HTMLElement | null = document.querySelector(".chatbot .search-form");
 
-            const threshold = 200;
-            const searchForm: any = document.querySelector('.chatbot .search-form');
+      if (searchForm) {
+        if (distanceFromBottom < threshold) searchForm.classList.add("active");
+        else searchForm.classList.remove("active");
+      }
+    };
 
-            if (distanceFromBottom < threshold) {
-                searchForm.classList.add('active');
-            } else {
-                searchForm.classList.remove('active');
-            }
-        };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
-
-    return (
-        <>
-            <div className={`main-center-content-m-left center-content search-sticky ${themeSidebarToggle ? "collapsed" : ""}`}>
-
-                <div className="audio-main-generator-start">
-                    <form action="#">
-                        <div className="ask-for-audio">
-                            <textarea placeholder="Here write text" required></textarea>
-                            <i className="fa-light fa-pen-to-square"></i>
-                            <div className="button-wrapper-generator">
-                                <button className="rts-btn btn-primary">Generate
-                                    <img src={icon06} alt="icons" />
-                                </button>
-                                <button className="mp3 rts-btn btn-border">
-                                    MP3
-                                    <i className="fa-sharp fa-light fa-chevron-down"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div className="audio-main-wrapper-top-bottom mb--60">
-                    <div className="audio-main-wrapper">
-                        <div className="audio-player">
-                            <div className="timeline">
-                                <div className="progress"></div>
-                            </div>
-                            <div className="controls">
-                                <div className="play-container">
-                                    <div className="toggle-play play">
-                                    </div>
-                                </div>
-                                <div className="time">
-                                    <div className="current">0:00</div>
-                                    <div className="length"></div>
-                                </div>
-                                <div className="volume-container">
-                                    <div className="volume-button">
-                                        <div className="volume icono-volumeMedium"></div>
-                                    </div>
-
-                                    <div className="volume-slider">
-                                        <div className="volume-percentage"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="rts-btn btn-primary mt--30">Downloaded
-                        <i className="fa-light fa-download ms-2"></i>
-                    </button>
-                </div>
-                <div className="audio-main-generator-start">
-                    <form action="#">
-                        <div className="ask-for-audio">
-                            <textarea placeholder="Here write text" required></textarea>
-                            <i className="fa-light fa-pen-to-square"></i>
-                            <div className="button-wrapper-generator">
-                                <button className="rts-btn btn-primary">Generate
-                                    <img src={icon06} alt="icons" />
-                                </button>
-                                <button className="mp3 rts-btn btn-border">
-                                    MP3
-                                    <i className="fa-sharp fa-light fa-chevron-down"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div className="audio-main-wrapper-top-bottom mb--60">
-                    <div className="audio-main-wrapper">
-                        <div className="audio-players">
-                            <div className="timeline">
-                                <div className="progress"></div>
-                            </div>
-                            <div className="controls">
-                                <div className="play-container">
-                                    <div className="toggle-play play">
-                                    </div>
-                                </div>
-                                <div className="time">
-                                    <div className="current">0:00</div>
-                                    <div className="length"></div>
-                                </div>
-                                <div className="volume-container">
-                                    <div className="volume-button">
-                                        <div className="volume icono-volumeMedium"></div>
-                                    </div>
-
-                                    <div className="volume-slider">
-                                        <div className="volume-percentage"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="rts-btn btn-primary mt--30">Downloaded
-                        <i className="fa-light fa-download ms-2"></i>
-                    </button>
-                </div>
-                <div className="audio-main-generator-start">
-                    <form action="#">
-                        <div className="ask-for-audio">
-                            <textarea placeholder="Here write text" required></textarea>
-                            <i className="fa-light fa-pen-to-square"></i>
-                            <div className="button-wrapper-generator">
-                                <button className="rts-btn btn-primary">Generate
-                                    <img src={icon06} alt="icons" />
-                                </button>
-                                <button className="mp3 rts-btn btn-border">
-                                    MP3
-                                    <i className="fa-sharp fa-light fa-chevron-down"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div className="audio-main-wrapper-top-bottom mb--120">
-                    <div className="audio-main-wrapper">
-                        <div className="audio-playerer">
-                            <div className="timeline">
-                                <div className="progress"></div>
-                            </div>
-                            <div className="controls">
-                                <div className="play-container">
-                                    <div className="toggle-play play">
-                                    </div>
-                                </div>
-                                <div className="time">
-                                    <div className="current">0:00</div>
-                                    <div className="length"></div>
-                                </div>
-                                <div className="volume-container">
-                                    <div className="volume-button">
-                                        <div className="volume icono-volumeMedium"></div>
-                                    </div>
-
-                                    <div className="volume-slider">
-                                        <div className="volume-percentage"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button className="rts-btn btn-primary mt--30">Downloaded
-                        <i className="fa-light fa-download ms-2"></i>
-                    </button>
-                </div>
-                <form action="#" className="search-form">
-                    <input type="text" placeholder="Message openup..." />
-                    <button><i className="fa-regular fa-arrow-up"></i></button>
-                </form>
-                <div className="copyright-area-bottom">
-                    <p> <Link to="#">Reactheme©</Link> 2024. All Rights Reserved.</p>
-                </div>
-
-            </div>
-
-        </>
+  // Handle file drop
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFiles = Array.from(e.dataTransfer.files).filter((file) =>
+      file.type.startsWith("image/")
     );
+    if (droppedFiles.length > 0) {
+      setFiles((prev) => [...prev, ...droppedFiles]);
+      const newPreviews = droppedFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  // Handle file select
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
+    const imageFiles = selectedFiles.filter((file) => file.type.startsWith("image/"));
+    if (imageFiles.length > 0) {
+      setFiles((prev) => [...prev, ...imageFiles]);
+      const newPreviews = imageFiles.map((file) => URL.createObjectURL(file));
+      setImagePreviews((prev) => [...prev, ...newPreviews]);
+    }
+  };
+
+  return (
+    <div
+      className={`main-center-content-m-left center-content search-sticky ${
+        themeSidebarToggle ? "collapsed" : ""
+      }`}
+    >
+      {/* ✅ Uploaded Image Previews */}
+     
+
+      {/* ✅ Upload Section */}
+      <div className="upload-section">
+         {imagePreviews.length > 0 && (
+        <div className="uploaded-image-container multiple">
+          {imagePreviews.map((src, index) => (
+            <div key={index} className="uploaded-image-box">
+              <img src={src} alt={`Preview ${index}`} className="uploaded-image" />
+            </div>
+          ))}
+        </div>
+      )}
+        <div
+          className={`drop-zone ${isDragging ? "dragging" : ""}`}
+          onDragOver={(e) => {
+            e.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={handleDrop}
+        >
+          {/* Hide text when at least one image is uploaded */}
+          {imagePreviews.length === 0 && (
+            <div className="drop-zone-inner">
+              <FiUploadCloud className="upload-icon" />
+              <div>
+                <h4>Drag & Drop or Select file</h4>
+                <p>
+                  Drop files here or click{" "}
+                  <label htmlFor="fileInput" className="browse-link">
+                    browse
+                  </label>{" "}
+                  through your machine
+                </p>
+              </div>
+            </div>
+          )}
+
+          <input
+            id="fileInput"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFileSelect}
+            className="file-input"
+          />
+        </div>
+      </div>
+
+      {/* ✅ Popup appears after first image upload */}
+      {files.length > 0 && (
+        <div className="popup">
+          <h4>Select Shapes</h4>
+
+          <div className="form-group">
+            <label htmlFor="faceShape">Face Shape :</label>
+            <select id="faceShape" className="shape-select">
+              <option value="">-- Select Face Shape --</option>
+              <option value="oval">Oval</option>
+              <option value="round">Round</option>
+              <option value="square">Square</option>
+              <option value="heart">Heart</option>
+              <option value="diamond">Diamond</option>
+              <option value="oblong">Oblong</option>
+              <option value="triangle">Triangle</option>
+            </select>
+          </div>
+
+          <div className="popup-footer">
+            <div className="arrow-buttons">
+              <button className="arrow-btn left">←</button>
+              <button className="arrow-btn right">→</button>
+            </div>
+            <button className="next-btn">Next</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default Home;
