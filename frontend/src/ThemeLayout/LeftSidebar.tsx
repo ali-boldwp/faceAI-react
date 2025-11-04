@@ -1,163 +1,79 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-
-//import images
-import icons01 from "assets/images/icons/01.png";
-import icons02 from "assets/images/icons/02.png";
-import icons03 from "assets/images/icons/03.png";
-import icons04 from "assets/images/icons/04.png";
-import icons05 from "assets/images/icons/05.png";
-import icons06 from "assets/images/icons/06.png";
-import icons07 from "assets/images/icons/07.png";
-import icons08 from "assets/images/icons/08.png";
-import icons09 from "assets/images/icons/09.png";
-import icons14 from "assets/images/icons/14.png";
+import {
+  FaSmile,
+  FaRegGrinBeam,
+  FaEye,
+  FaUserCircle,
+} from "react-icons/fa";
+import {
+  GiNoseFront,
+  GiEyeball,
+  GiHeadshot,
+  GiAbstract002,
+  GiLips,
+  GiHumanEar,
+  GiBodyHeight,
+} from "react-icons/gi";
+import { BsEmojiSmile } from "react-icons/bs";
+import { PiSmileyWinkBold } from "react-icons/pi";
 import avatar02 from "assets/images/avatar/02.png";
-import { Collapse } from "react-bootstrap";
+import icons14 from "assets/images/icons/14.png";
 import { useSelector } from "react-redux";
 import { RootState } from "Slices/theme/store";
 
 const LeftSidebar = () => {
-    const location = useLocation();
-    const themeSidebarToggle = useSelector((state: RootState) => state.theme.themeSidebarToggle);
-    const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const themeSidebarToggle = useSelector(
+    (state: RootState) => state.theme.themeSidebarToggle
+  );
 
-    const handleSettingsClick = () => {
-        setOpen(!open);
-    };
+  const sidebarItems = [
+    { name: "Mouth and Lips", icon: <GiLips />, path: "/mouth-lips" },
+    { name: "Cheeks and Cheekbones", icon: <FaRegGrinBeam />, path: "/cheeks" },
+    { name: "Nose", icon: <GiNoseFront />, path: "/nose" },
+    { name: "Eyes", icon: <FaEye />, path: "/eyes" },
+    { name: "Eyebrows", icon: <GiEyeball />, path: "/eyebrows" },
+    { name: "Forehead", icon: <GiHeadshot />, path: "/forehead" },
+    { name: "Face Shape", icon: <GiAbstract002 />, path: "/face-shape" },
+    { name: "Round Face", icon: <BsEmojiSmile />, path: "/round-face" },
+    {
+      name: "Skin Texture and Facial Wrinkles",
+      icon: <PiSmileyWinkBold />,
+      path: "/skin-texture",
+    },
+    { name: "Neck and Throat", icon: <GiBodyHeight />, path: "/neck-throat" },
+    { name: "Ears (Urechile)", icon: <GiHumanEar />, path: "/ears" },
+    { name: "Chin and Jawline", icon: <FaUserCircle />, path: "/chin-jawline" },
+  ];
 
-    const handleFaqClick = () => {
-        if (open) {
-            setOpen(false);
-        }
-    };
-    return (
-        <>
-            <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`}>
-                <div className="overlay-mobile-area"></div>
-                <div className="inner">
-                    <div className="single-menu-wrapper">
-                        <Link to="/" className={`single-menu openuptip ${location.pathname === "/" ? "active" : ""
-                            }`}>
-                            <div className="icon">
-                                <img src={icons01} alt="icons" />
-                            </div>
-                            <p>Home</p>
-                        </Link>
-                        <Link to="/community-feed"
-                            className={`single-menu openuptip ${location.pathname === "/community-feed" ? "active" : ""
-                                }`}
-                        >
-                            <div className="icon">
-                                <img src={icons02} alt="icons" />
-                            </div>
-                            <p>Community Feed</p>
-                        </Link>
-                        <Link to="/community-details"
-                            className={`single-menu openuptip ${location.pathname === "/community-details" ? "active" : ""
-                                }`}>
-                            <div className="icon">
-                                <img src={icons02} alt="icons" />
-                            </div>
-                            <p>Community Details</p>
-                        </Link>
-                        <Link to="/manage-subscription" className={`single-menu openuptip ${location.pathname === "/manage-subscription" ? "active" : ""
-                            }`}>
-                            <div className="icon">
-                                <img src={icons03} alt="icons" />
-                            </div>
-                            <p>Manage Subscription</p>
-                        </Link>
-                    </div>
-                    <div className="single-menu-wrapper">
-                        <Link to="/chatbot" className={`single-menu openuptip ${location.pathname === "/chatbot" ? "active" : ""
-                            }`}>
-                            <div className="icon">
-                                <img src={icons04} alt="icons" />
-                            </div>
-                            <p>AI Chat Bot</p>
-                        </Link>
-                        <Link to="/image-generator" className={`single-menu openuptip ${location.pathname === "/image-generator" ? "active" : ""
-                            }`}>
-                            <div className="icon">
-                                <img src={icons05} alt="icons" />
-                            </div>
-                            <p>Image Generator</p>
-                        </Link>
-                        <Link to="/voicegenerator" className={`single-menu openuptip ${location.pathname === "/voicegenerator" ? "active" : ""
-                            }`}>
-                            <div className="icon">
-                                <img src={icons06} alt="icons" />
-                            </div>
-                            <p>Voice Generate</p>
-                        </Link>
-                    </div>
-                    <div className="single-menu-wrapper">
-                        <Link to="/register" className="single-menu">
-                            <div className="icon">
-                                <img src={icons07} alt="icons" />
-                            </div>
-                            <p>Register</p>
-                        </Link>
-                        <Link
-                            onClick={handleSettingsClick}
-                            aria-expanded={open}
-                            className="collapse-btn collapsed single-menu" to="#" role="button">
-                            <div className="icon">
-                                <img src={icons08} alt="icons" />
-                            </div>
-                            <p>Settings</p>
-                        </Link>
-                        <Collapse in={open}>
-                            <ul className="submenu rts-default-sidebar-list">
-                                <li>
-                                    <Link to="/faq" className={`${location.pathname === "/faq" ? "active" : ""}`} onClick={handleFaqClick}>
-                                        <i className="fa-sharp fa-regular fa-user"></i>
-                                        <span>FAQ's</span>
-                                    </Link>
+  return (
+    <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`}>
+      <div className="overlay-mobile-area"></div>
 
-                                </li>
-                                <li>
-                                    <Link to="/login">
-                                        <i className="fa-sharp fa-regular fa-shopping-bag"></i>
-                                        <span>log In</span>
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/reset-password">
-                                        <i className="fa-sharp fa-regular fa-users"></i>
-                                        <span>Reset Password</span>
-                                    </Link>
-                                </li>
-                            </ul>
-                        </Collapse>
-                        <Link to="/login" className="single-menu">
-                            <div className="icon">
-                                <img src={icons09} alt="icons" />
-                            </div>
-                            <p>Logout</p>
-                        </Link>
-                    </div>
-                </div>
-                <div className="bottom-user">
-                    <div className="user-wrapper">
-                        <img src={avatar02} alt="avatar" />
-                        <div className="info">
-                            <h6 className="title">Mack Gok</h6>
-                            <Link to="#">intellactai@net.com</Link>
-                        </div>
-                        <span>Free</span>
-                    </div>
-                    <div className="pro-upgrade">
-                        <button className="rts-btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
-                            <img src={icons14} alt="icons" />
-                            Upgrade To Pro
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
+      <div className="inner" style={{height:"100%" , overflow:"auto"}}>
+        <div className="single-menu-wrapper">
+          {sidebarItems.map((item, index) => (
+            <Link
+              key={index}
+              to={item.path}
+              className={`single-menu openuptip ${
+                location.pathname === item.path ? "active" : ""
+              }`}
+            >
+              <div className="icon" style={{ fontSize: "20px", color: "#001C42" }}>
+                {item.icon}
+              </div>
+              <p>{item.name} : ____</p>
+              
+            </Link>
+          ))}
+        </div>
+      </div>
+
+     
+    </div>
+  );
 };
 
 export default LeftSidebar;

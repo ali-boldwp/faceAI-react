@@ -19,6 +19,9 @@ mongoose
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
 
+const aiRoutes = require('./routes/Ai');
+app.use('/api/ai', aiRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("Server running successfully 🔥");
