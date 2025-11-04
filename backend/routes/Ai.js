@@ -39,7 +39,7 @@ async function readFileText(filePath, mime) {
     }
     if (mime.startsWith("text/")) return fs.readFileSync(filePath, "utf8");
 
-   
+
     const buffer = fs.readFileSync(filePath);
     return `BASE64:${buffer.toString("base64")}`;
 }
@@ -82,7 +82,7 @@ router.post('/', upload, async (req, res) => {
                 ? `You are an expert research assistant.\nUser prompt: "${prompt}"\nDocument content:\n${filesText}`
                 : filesText;
 
-            
+
             if (mode === "deep") {
                 const uploadedImages = req.files?.image || [];
                 for (const image of uploadedImages) {
@@ -99,7 +99,7 @@ router.post('/', upload, async (req, res) => {
             return res.status(400).json({ error: "Invalid mode" });
         }
 
-      
+
         const aiResponse = await axios.post(
             'https://api.openai.com/v1/chat/completions',
             {
@@ -117,7 +117,7 @@ router.post('/', upload, async (req, res) => {
 
         const aiText = aiResponse.data.choices?.[0]?.message?.content || "No response";
 
-      
+
         const allFiles = [
             ...(req.files?.file || []).map(f => ({ fileName: f.originalname, filePath: f.path })),
             ...(req.files?.image || []).map(f => ({ fileName: f.originalname, filePath: f.path }))
