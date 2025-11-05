@@ -36,7 +36,7 @@ const ThemeLayout = ({ children }: ThemeLayoutProps) => {
       <div className="dash-board-main-wrapper">
         <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
         {childrenWithProps}
-        <RightSidebar />
+        {/*<RightSidebar />*/}
       </div>
     </>
   );
