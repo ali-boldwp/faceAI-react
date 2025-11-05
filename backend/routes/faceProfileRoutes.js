@@ -106,7 +106,6 @@ Please respond ONLY with the final structured analysis as described above.
 `;
 
 
-        // Get AI personality analysis
         const aiResponse = await axios.post(
             "https://api.openai.com/v1/chat/completions",
             {
@@ -126,7 +125,6 @@ Please respond ONLY with the final structured analysis as described above.
             aiResponse?.data?.choices?.[0]?.message?.content?.trim() ||
             "No analysis generated.";
 
-        // Save to database
         const faceProfile = new FaceProfile({
             title,
             images,
@@ -136,7 +134,6 @@ Please respond ONLY with the final structured analysis as described above.
 
         await faceProfile.save();
 
-        // Convert doc to plain object to ensure aiPersonality shows in response
         const responseProfile = faceProfile.toObject();
 
         res.status(201).json({

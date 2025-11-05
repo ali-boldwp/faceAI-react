@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import useSidebarToggle from "Common/UseSideberToggleHooks";
 import RightSidebar from "./RightSidebar";
 import LeftSidebar from "../../ThemeLayout/LeftSidebar";
-import {useNavigate, useParams} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./home.css";
 import toast from "react-hot-toast";
 
@@ -25,6 +25,9 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const [isExistingProfile, setIsExistingProfile] = useState(false);
+  const [aiPersonality, setAiPersonality] = useState("");
+
   const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
@@ -34,12 +37,14 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setStep(0);
       setSelectedOption("");
       setAnswers({});
+      setAiPersonality("")
       return
     }
 
+
+
     const fetchProfile = async () => {
       try {
-        console.log("Loading profile ID:", id);
         setSubmitting(true);
 
         const res = await axios.get(`http://localhost:5001/api/face-profiles/${id}`);
@@ -47,21 +52,20 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
         const profile = res.data.data;
 
-        // Populate Home state
         setFiles(
-            profile.images?.map((url: string) => {
-              // create a mock File object so `files.length > 0` triggers popup
-              return new File([], "placeholder.jpg");
-            }) || []
+          profile.images?.map((url: string) => new File([], "placeholder.jpg")) || []
         );
-
+        setAiPersonality(profile?.aiPersonality)
         setImagePreviews(profile.images || []);
         setAnswers(
-            profile.questions?.reduce((acc: any, q: any) => {
-              acc[q.question] = q.answer;
-              return acc;
-            }, {}) || {}
+          profile.questions?.reduce((acc: any, q: any) => {
+            acc[q.question] = q.answer;
+            return acc;
+          }, {}) || {}
         );
+
+        setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
+
         setStep(0);
         setSelectedOption("");
       } catch (err: any) {
@@ -71,6 +75,9 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setSubmitting(false);
       }
     };
+
+
+
 
     fetchProfile();
   }, [id]);
@@ -109,17 +116,17 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFiles = Array.from(e.dataTransfer.files).filter((f) =>
-        f.type.startsWith("image/")
+      f.type.startsWith("image/")
     );
     if (droppedFiles.length === 0) return;
 
     setFiles((prev) => [...prev, ...droppedFiles]);
 
     const uploadedUrls = await Promise.all(
-        droppedFiles.map(async (file) => {
-          const url = await uploadToCloudinary(file);
-          return url || URL.createObjectURL(file);
-        })
+      droppedFiles.map(async (file) => {
+        const url = await uploadToCloudinary(file);
+        return url || URL.createObjectURL(file);
+      })
     );
 
     setImagePreviews((prev) => [...prev, ...uploadedUrls]);
@@ -128,17 +135,17 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
     const imageFiles = selectedFiles.filter((file) =>
-        file.type.startsWith("image/")
+      file.type.startsWith("image/")
     );
     if (imageFiles.length === 0) return;
 
     setFiles((prev) => [...prev, ...imageFiles]);
 
     const uploadedUrls = await Promise.all(
-        imageFiles.map(async (file) => {
-          const url = await uploadToCloudinary(file);
-          return url || URL.createObjectURL(file);
-        })
+      imageFiles.map(async (file) => {
+        const url = await uploadToCloudinary(file);
+        return url || URL.createObjectURL(file);
+      })
     );
 
     setImagePreviews((prev) => [...prev, ...uploadedUrls]);
@@ -179,14 +186,13 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         questions: questionsArray,
       };
 
-      // 🔥 toast.promise gives you automatic loading/success/error states
       await toast.promise(
-          axios.post("http://localhost:5001/api/face-profiles", payload),
-          {
-            loading: "Saving profile...",
-            success: "Profile saved successfully!",
-            error: "Failed to save profile.",
-          }
+        axios.post("http://localhost:5001/api/face-profiles", payload),
+        {
+          loading: "Saving profile...",
+          success: "Profile saved successfully!",
+          error: "Failed to save profile.",
+        }
       );
 
       console.log("✅ Saved successfully");
@@ -208,7 +214,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   };
 
 
-  const optionsData: Record<string, string[]> ={
+  const optionsData: Record<string, string[]> = {
     "Face Shape": [
       "Round Face",
       "Oval Face",
@@ -418,25 +424,19 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
 
   const resetHomeScreen = () => {
-    console.log("we are here")
-
-
-
-    navigate(`/`); // ✅ React Router way
-
+    navigate(`/`);
   };
 
 
 
   return (
-      <>
+    <>
       <div
-          className={`main-center-content-m-left center-content search-sticky ${
-              themeSidebarToggle ? "collapsed" : ""
+        className={`main-center-content-m-left center-content search-sticky ${themeSidebarToggle ? "collapsed" : ""
           }`}
       >
-        {/* ✅ Drop Zone */}
-        <div
+        {(!id)
+          ? <>  <div
             className={`drop-zone ${isDragging ? "dragging" : ""}`}
             onDragOver={(e) => {
               e.preventDefault();
@@ -444,16 +444,16 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
             }}
             onDragLeave={() => setIsDragging(false)}
             onDrop={handleDrop}
-        >
-          {imagePreviews.length > 0 ? (
+          >
+            {imagePreviews.length > 0 ? (
               <div className="uploaded-image-container multiple">
                 {imagePreviews.map((src, i) => (
-                    <div key={i} className="uploaded-image-box">
-                      <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
-                    </div>
+                  <div key={i} className="uploaded-image-box">
+                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
+                  </div>
                 ))}
               </div>
-          ) : (
+            ) : (
               <div className="drop-zone-inner">
                 <label htmlFor="fileInput" className="browse-link">
                   <FiUploadCloud className="upload-icon" />
@@ -461,77 +461,106 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                   <p>Drop files here or click to browse</p>
                 </label>
               </div>
-          )}
-          <input
+            )}
+            <input
               id="fileInput"
               type="file"
               accept="image/*"
               multiple
               onChange={handleFileSelect}
               className="file-input"
-          />
-        </div>
+            />
+          </div></> : <>
+            <div className="uploaded-image-container multiple" style={{ paddingBottom: "20px" }}>
+              {imagePreviews.map((src, i) => (
+                <div key={i} className="uploaded-image-box">
+                  <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
+                </div>
+              ))}
+            </div>
+          </>
+        }
 
-        {/* ✅ Popup Question Section */}
         {files.length > 0 && (
-            <div className="popup">
-              <h4>
-                {submitting ? "Submitting..." : `Select Option for:`}
-              </h4>
+          <>
+            {(id) ? (
+              <div className="ai-personality-section">
+                <p>
+           { aiPersonality }
+           </p>
 
-              <AnimatePresence mode="wait">
-                <motion.div
+              </div>
+            ) : (
+              <div className="popup">
+                <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
                     key={step}
                     initial={{ x: 50, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: -50, opacity: 0 }}
                     transition={{ duration: 0.4 }}
-                >
-                  <label>{sidebarItems[step].name}</label>
-                  <select
+                  >
+                    <label>{sidebarItems[step].name}</label>
+                    <select
                       className="shape-select"
                       value={selectedOption}
                       onChange={(e) => setSelectedOption(e.target.value)}
                       disabled={submitting}
-                  >
-                    <option value="">-- Select Option --</option>
-                    {/* @ts-ignore */}
-                    {optionsData[sidebarItems[step].name]?.map((opt, i) => (
+                    >
+                      <option value="">-- Select Option --</option>
+                      {optionsData[sidebarItems[step].name]?.map((opt, i) => (
                         <option key={i} value={opt}>
                           {opt}
                         </option>
-                    ))}
-                  </select>
-                </motion.div>
-              </AnimatePresence>
+                      ))}
+                    </select>
+                  </motion.div>
+                </AnimatePresence>
 
-              <div className="popup-footer">
-                <div className="arrow-buttons">
-                  <button className="arrow-btn left" onClick={handlePrev} disabled={step === 0 || submitting}>
-                    <FiArrowLeft size={20} />
-                  </button>
-                  <button className="arrow-btn right" onClick={handleNext} disabled={submitting}>
-                    <FiArrowRight size={20} />
+                <div className="popup-footer">
+                  <div className="arrow-buttons">
+                    <button
+                      className="arrow-btn left"
+                      onClick={handlePrev}
+                      disabled={step === 0 || submitting}
+                    >
+                      <FiArrowLeft size={20} />
+                    </button>
+                    <button
+                      className="arrow-btn right"
+                      onClick={handleNext}
+                      disabled={submitting}
+                    >
+                      <FiArrowRight size={20} />
+                    </button>
+                  </div>
+                  <span className="step-counter">
+                    {step + 1} / {sidebarItems.length}
+                  </span>
+                  <button
+                    className="next-btn"
+                    onClick={handleNext}
+                    disabled={submitting}
+                  >
+                    {step < sidebarItems.length - 1 ? "Next" : "Finish"}
                   </button>
                 </div>
-                <span className="step-counter">
-              {step + 1} / {sidebarItems.length}
-            </span>
-                <button className="next-btn" onClick={handleNext} disabled={submitting}>
-                  {step < sidebarItems.length - 1 ? "Next" : "Finish"}
-                </button>
               </div>
-            </div>
+            )}
+          </>
         )}
+
       </div>
-        <RightSidebar
-            startNewChat={resetHomeScreen}
-        />
+      <RightSidebar
+        startNewChat={resetHomeScreen}
+      />
 
-        <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
+      <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
 
 
-      </>
+    </>
   );
 };
 
