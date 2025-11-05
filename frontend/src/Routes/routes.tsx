@@ -11,6 +11,10 @@ export interface RouteProps {
 
 const routes: RouteProps[] = [
     { path: "/", component: <Dashboard sidebarItems={[]} answers={{}} setAnswers={() => {}} /> },
+    {
+        path: "/:id",
+        component: <Dashboard sidebarItems={[]} answers={{}} setAnswers={() => {}} />
+    }
 
 ];
 

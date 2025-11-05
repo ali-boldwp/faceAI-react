@@ -22,6 +22,9 @@ app.use("/api/auth", authRoutes);
 const aiRoutes = require('./routes/Ai');
 app.use('/api/ai', aiRoutes);
 
+const faceProfileRoutes = require("./routes/faceProfileRoutes");
+app.use("/api/face-profiles", faceProfileRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("Server running successfully 🔥");
