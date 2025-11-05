@@ -42,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         console.log("Loading profile ID:", id);
         setSubmitting(true);
 
-        const res = await axios.get(`http://localhost:5000/api/face-profiles/${id}`);
+        const res = await axios.get(`http://localhost:5001/api/face-profiles/${id}`);
         if (!res.data.success) throw new Error("Profile not found");
 
         const profile = res.data.data;
@@ -181,7 +181,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
       // 🔥 toast.promise gives you automatic loading/success/error states
       await toast.promise(
-          axios.post("http://localhost:5000/api/face-profiles", payload),
+          axios.post("http://localhost:5001/api/face-profiles", payload),
           {
             loading: "Saving profile...",
             success: "Profile saved successfully!",

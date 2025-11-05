@@ -1,0 +1,924 @@
+{
+  "Face Shape Traits": [
+    {
+      "shape": "Round Face",
+      "measurements": "Nearly equal face width and height, cheekbone width ≈ face length, gently angled jaw",
+      "personality": "Caring, easy-going, nurturing (Lymphatic-Moon type)"
+    },
+    {
+      "shape": "Oval Face",
+      "measurements": "Longer than wide (face length > cheekbone width), broad/rounded forehead, slightly pointed jaw",
+      "personality": "Balance, optimism, sociability (Sanguine-Sun type)"
+    },
+    {
+      "shape": "Oblong (Long) Face",
+      "measurements": "Elongated, face length is greatest dimension, similar width for forehead, cheekbones, and jaw",
+      "personality": "Introspective, calm, detail-oriented (Lymphatic-Neptune type)"
+    },
+    {
+      "shape": "Triangular Face",
+      "measurements": "Tapered shape, broad forehead, narrow jaw, cheekbone width > forehead width, jaw much narrower",
+      "personality": "High intellect, creativity, sensitivity, possibly anxiety-prone (Nervous-Mercury type)"
+    },
+    {
+      "shape": "Heart-Shaped Face",
+      "measurements": "Variant of Triangular: wide temples/forehead/cheekbones, slender/pointed chin, softer upper face",
+      "personality": "Creativity, charisma, loving, sometimes dramatic nature (Sanguine-Venus type)"
+    },
+    {
+      "shape": "Square Face",
+      "measurements": "Forehead, cheekbones, jawline approximately equal width, well-defined/angular jaw, short and broad appearance",
+      "personality": "Confident, practical, strong-willed (Choleric-Earth temperament)"
+    },
+    {
+      "shape": "Rectangular Face",
+      "measurements": "Longer square face: angular features, roughly equal forehead and cheekbone width, face is longer vertically",
+      "personality": "Dynamic, ambitious, action-oriented (Sanguine-Mars or Pluto variant)"
+    },
+    {
+      "shape": "Diamond Face",
+      "measurements": "Narrow forehead and jaw, widest at the cheekbones, high/prominent cheekbones, narrow/pointed chin",
+      "personality": "Elegance, intensity, precision in character"
+    },
+    {
+      "shape": "Upward Trapezoid Face",
+      "measurements": "Wide forehead and smaller jaw (tapers down), lines slant inward from broad forehead to narrower jaw",
+      "personality": "Authoritative, strategic, disciplined (Choleric-Saturn/Uranus type)"
+    },
+    {
+      "shape": "Downward Trapezoid Face",
+      "measurements": "Narrow forehead and broad/strong jaw (inverts the trapezoid), lower face wider than the forehead",
+      "personality": "Grounded, dependable, oriented toward practical/material needs (Lymphatic-Jupiter type)"
+    },
+    {
+      "shape": "Wide Face",
+      "measurements": "Facial width proportionally larger relative to length (low facial index)",
+      "personality": "Strong physical presence, pragmatic, outgoing nature"
+    },
+    {
+      "shape": "Narrow Face",
+      "measurements": "Facial width small relative to length (high facial index), long and slender appearance",
+      "personality": "Refinement, focus, introverted or analytical nature"
+    }
+  ],
+  "Forehead Traits": [
+    {
+      "shape": "Square Forehead",
+      "characteristics": "Broad, straight hairline, upright shape",
+      "personality": "Logical, structured mind, decisive nature (earth type)"
+    },
+    {
+      "shape": "Round Forehead",
+      "characteristics": "Curved, dome-like profile",
+      "personality": "Creativity, intuitive, social, imaginative ('feminine' thinking style)"
+    },
+    {
+      "shape": "High Forehead",
+      "characteristics": "Taller than average (eyebrows to hairline)",
+      "personality": "Intelligence, long-term planning ability, strong influence from father's side"
+    },
+    {
+      "shape": "Low Forehead",
+      "characteristics": "Short vertical span (brow to hairline)",
+      "personality": "Quick thinking, pragmatism, strong influence from mother's side, active/action-oriented"
+    },
+    {
+      "shape": "Wide Forehead",
+      "characteristics": "Extended width across the temples",
+      "personality": "Openness in thinking, big-picture outlook ('Jupiterian' expansive mind)"
+    },
+    {
+      "shape": "Narrow Forehead",
+      "characteristics": "Limited temple width, sometimes sloping",
+      "personality": "Focus, specialization, cautious thinking ('Saturnian' reserved intellect)"
+    },
+    {
+      "shape": "Bulging Forehead",
+      "characteristics": "Convex, prominently curved profile (side view)",
+      "personality": "Strong imaginative faculties, creative mental energy"
+    },
+    {
+      "shape": "Straight Forehead",
+      "characteristics": "Flat or vertically straight profile",
+      "personality": "Very direct, factual thinker ('masculine' trait, denoting practicality)"
+    },
+    {
+      "shape": "Sloping Forehead",
+      "characteristics": "Backward-slanting from brow to hairline",
+      "personality": "Quick wit, decisiveness, but also impatience"
+    },
+    {
+      "shape": "Jagged/Irregular Forehead",
+      "characteristics": "Uneven contour, wavy hairline or bumpy skull shape",
+      "personality": "Thinks outside the box"
+    },
+    {
+      "shape": "Prominent Brow Ridges",
+      "characteristics": "Noticeably raised bony ridges above the eyes",
+      "personality": "Strong, assertive character with directness (often more pronounced in males)"
+    },
+    {
+      "shape": "Smooth Brow (No Brow Ridges)",
+      "characteristics": "Flat area above eyes with little bony projection",
+      "personality": "More approachable, less aggressive demeanor"
+    },
+    {
+      "shape": "Fleshy Brow between Eyes",
+      "characteristics": "A pad of flesh at the glabella (between eyebrows)",
+      "personality": "Driven, self-focused nature, personal ambition or stubbornness"
+    }
+  ],
+  "Eyebrow Traits": [
+    {
+      "shape": "\"New Moon\" Eyebrows (Arched)",
+      "characteristics": "High, semi-circular arches, smooth curve",
+      "personality": "Expressive, friendly, open approach, creativity, optimism"
+    },
+    {
+      "shape": "Triangular Eyebrows (Angular)",
+      "characteristics": "Sharply angled or 'broken' shape, pointed arch",
+      "personality": "Dynamic, action-oriented personality, leadership tendencies"
+    },
+    {
+      "shape": "Straight Eyebrows",
+      "characteristics": "Little to no arch, horizontal shape",
+      "personality": "Logical, straightforward thinker, practical, grounded"
+    },
+    {
+      "shape": "\"Frowning\" Up-Curved Eyebrows",
+      "characteristics": "Curve upward toward the center (inverted ' ' shape)",
+      "personality": "Analytical depth, skepticism, worry, overthinks"
+    },
+    {
+      "shape": "Ascending Eyebrows",
+      "characteristics": "Outer tail is higher than inner part, upward slope",
+      "personality": "Ambitious, optimistic, steadily pursues goals, alertness, confidence"
+    },
+    {
+      "shape": "Descending (\"Sad\") Eyebrows",
+      "characteristics": "Outer tail droops lower than inner part",
+      "personality": "Sensitivity, compassion, cautious nature, gentle, empathetic"
+    },
+    {
+      "shape": "High-Set Eyebrows",
+      "characteristics": "Placed farther above the eyes, large gap",
+      "personality": "Patience, restraint, reflective nature, observes before acting"
+    },
+    {
+      "shape": "Low-Set Eyebrows",
+      "characteristics": "Sit closer to the eyes, small gap",
+      "personality": "Direct, bold, impulsive, reacts quickly, asserts readily"
+    },
+    {
+      "shape": "Close (Narrow) Eyebrow Gap",
+      "characteristics": "Little space between inner ends",
+      "personality": "Intense focus, single-mindedness, sometimes impatience"
+    },
+    {
+      "shape": "Unibrow",
+      "characteristics": "Eyebrows grow together with no gap",
+      "personality": "Very intense, driven personality with deep thought, stubbornness, secretiveness, endurance"
+    },
+    {
+      "shape": "Wide Brow Gap",
+      "characteristics": "Large space between the brows",
+      "personality": "Open-minded, tolerant, many simultaneous interests, broad perspective, may struggle with concentration"
+    },
+    {
+      "shape": "Long Eyebrows",
+      "characteristics": "Extending beyond the outer corner of the eye (long tails)",
+      "personality": "Strong social connections, endurance, can handle stress, maintain long-term friendships"
+    },
+    {
+      "shape": "Short Eyebrows",
+      "characteristics": "Do not extend far beyond the eye",
+      "personality": "Independence, focus on a few close relationships, lower stress tolerance, may get overwhelmed easily"
+    },
+    {
+      "shape": "Separated Eyebrows",
+      "characteristics": "A visible gap or break in an eyebrow",
+      "personality": "Significant life interruption, changes direction unexpectedly"
+    },
+    {
+      "shape": "Asymmetric Eyebrows",
+      "characteristics": "The two eyebrows differ in shape or height",
+      "personality": "Dual nature: presents differently in public vs private life, imbalance between logic and emotion"
+    },
+    {
+      "shape": "Thick Eyebrows",
+      "characteristics": "Broad, full hair growth throughout the brow",
+      "personality": "High energy, confidence, strong will, assertive, passionate, straightforward nature"
+    },
+    {
+      "shape": "Thin Eyebrows",
+      "characteristics": "Fine or sparse eyebrow hair, light appearance",
+      "personality": "Sensitivity, precision, delicate approach, cautious, detail-oriented, sometimes less assertive"
+    },
+    {
+      "shape": "Bushy Eyebrows",
+      "characteristics": "Very thick, untamed brows with hairs often curling or merging",
+      "personality": "Bold, rebellious character, abundant life-force, quick temper or impatience when overgrown"
+    },
+    {
+      "shape": "Straight-haired Inner Brow",
+      "characteristics": "Brow hairs at the inner end (near the nose) grow straight upward or orderly",
+      "personality": "Principled, organized in thoughts, possibly stubborn in beliefs"
+    },
+    {
+      "shape": "Scattered-haired Eyebrows",
+      "characteristics": "Brow hairs, especially at the start, are messy or dispersed",
+      "personality": "May have had a chaotic early life or is searching for direction, creativity but difficulty in focus"
+    },
+    {
+      "shape": "\"Chameleon\" Eyebrows",
+      "characteristics": "Appear to change with expressions/lighting (medium thickness, no strong defining shape)",
+      "personality": "Adaptability, versatile, unpredictable nature"
+    }
+  ],
+  "Eye Traits": [
+    {
+      "shape_type": "Deer Eyes",
+      "characteristics": "Large, widely opened, big irises, often almond-shaped, sclera shows on 2-3 sides, horizontal/slightly down-tilted inner corners",
+      "personality": "Kindness, receptivity, peaceable, creative soul"
+    },
+    {
+      "shape_type": "Camel Eyes",
+      "characteristics": "Somewhat triangular, upper eyelid's highest point is at the middle (slight peak), sclera visible on three sides",
+      "personality": "Balanced mix of focus and calm, often patient but firm in views"
+    },
+    {
+      "shape_type": "Horse Eyes",
+      "characteristics": "Generally large, set horizontally, both inner and outer corners pointing slightly down, gentle curve to upper lid (wide arc)",
+      "personality": "Patience, reliability, but also potential sadness or resignation"
+    },
+    {
+      "shape_type": "Heavy Horse Eyes",
+      "characteristics": "More downward-tilted, outer/inner corners drop noticeably, pronounced upper lid curve",
+      "personality": "Great endurance and empathy but prone to melancholy or heavy-heartedness"
+    },
+    {
+      "shape_type": "Eagle Eyes",
+      "characteristics": "Oblique shape, inner corner tilted down and outer corner up, medium-sized but piercing, often reddish/intense whites",
+      "personality": "Keen perception, intensity, dominance, intimidating gaze"
+    },
+    {
+      "shape_type": "Owl Eyes",
+      "characteristics": "Very wide open, round-looking, relatively narrow compared to face width, narrow/pinched corners",
+      "personality": "Alertness, curiosity, wisdom, watchful, cautious approach"
+    },
+    {
+      "shape_type": "Peacock Eyes",
+      "characteristics": "Inner corner extends downward (hook-like), whole eye slants upward toward outer corner, descending curve near inner third",
+      "personality": "Proud or dramatic look, vanity, showmanship, love of attention"
+    },
+    {
+      "shape_type": "High Peacock Eyes",
+      "characteristics": "More up-tilted, elongated version of peacock eyes, sharply angled upward at outer corner, narrower overall",
+      "personality": "Even stronger pride and ambition, highly driven, seeking achievement and recognition"
+    },
+    {
+      "shape_type": "Ostrich Eyes",
+      "characteristics": "Drooping in the outer half of the upper eyelid (forming a fold), inner half unaffected/curving upward",
+      "personality": "Carries burdens or fatigue, hardworking, enduring, may struggle with delegation"
+    },
+    {
+      "shape_type": "Tiger Eyes",
+      "characteristics": "Rectangular or 'elongated almond' eyes, fierce, typically wider set, framed by strong brows, focused look",
+      "personality": "Courage, competitive drive, charisma, penetrating and confident"
+    },
+    {
+      "shape_type": "Lion Eyes",
+      "characteristics": "Majestic, somewhat heavy-lidded, large, set under strong brow bones, proud gaze",
+      "personality": "Leadership, generosity, power, confident, commands respect, can be imposing"
+    },
+    {
+      "shape_type": "Cat Eyes",
+      "characteristics": "Tilt upward on the outer corners, often dramatic almond shape",
+      "personality": "Playfulness, intuition, seductive charm, clever, adaptable, mysterious side"
+    },
+    {
+      "shape_type": "Fox Eyes",
+      "characteristics": "Sly, elongated, slight upward slant, often thinner shape",
+      "personality": "Cunning, witty, strategic, resourceful, observant, prefers subtle approaches"
+    },
+    {
+      "shape_type": "Whale Eyes",
+      "characteristics": "Very large, roundish, show a lot of white (sclera), gentle expression",
+      "personality": "Depth of emotion, empathy, sensitivity, wears heart on sleeve, nurturing"
+    },
+    {
+      "shape_type": "Dolphin Eyes",
+      "characteristics": "Warm, smiling eyes that curve a bit upward, often sparkle, medium-large, friendly vibe",
+      "personality": "Social, intelligent, balances playfulness with harmony-seeking, excellent communicators"
+    },
+    {
+      "shape_type": "Half-Moon Eyes",
+      "characteristics": "Form a crescent shape when smiling, lower part of iris hidden, lids curve like a half-moon",
+      "personality": "Genuine warmth, optimism, friendliness, laughs easily, connects readily"
+    },
+    {
+      "shape_type": "\"New Moon\" Eyes",
+      "characteristics": "Thin and curved, similar to a new moon shape (often when smiling)",
+      "personality": "Gentle, contented personality, prefers peace, avoids conflict"
+    },
+    {
+      "shape_type": "Wide-Set Eyes",
+      "characteristics": "Noticeable space between the eyes ($b>a$ or distance between eyes > eye width)",
+      "personality": "Open-minded, broad outlook, handles change well, sees the 'big picture', may struggle with detail focus"
+    },
+    {
+      "shape_type": "Close-Set Eyes",
+      "characteristics": "Little space between the eyes ($b<a$ or interocular distance < eye width)",
+      "personality": "Detail-oriented, concentrated approach, focused, attentive, may be perceived as intense or overly cautious"
+    },
+    {
+      "shape_type": "Deep-Set Eyes (Hidden Lids)",
+      "characteristics": "Positioned deeply in the sockets, upper eyelid crease not visible",
+      "personality": "Reflective, observant, reserved, strong analytical skills, calm demeanor"
+    },
+    {
+      "shape_type": "Deep-Set Eyes (Visible Lids)",
+      "characteristics": "Deeply set eyes but with some upper eyelid showing",
+      "personality": "Introspection combined with approachability, depth in thinking but engages openly"
+    },
+    {
+      "shape_type": "Bulging Eyes",
+      "characteristics": "Appear to protrude outward (prominent eye globes)",
+      "personality": "Expressive, spontaneous nature, open with feelings, quick to react, enthusiastic, though sometimes anxious"
+    },
+    {
+      "shape_type": "Visible Upper Sclera",
+      "characteristics": "White of the eye showing above the iris",
+      "personality": "High drive or tension, very ambitious but prone to stress or insomnia"
+    },
+    {
+      "shape_type": "Visible Lower Sclera",
+      "characteristics": "White showing under the iris",
+      "personality": "Sympathetic, precautious nature, sometimes linked to health issues or giving more than receiving"
+    },
+    {
+      "shape_type": "Visible Sclera All Around",
+      "characteristics": "White can be seen both above and below the iris (very rare naturally)",
+      "personality": "Extreme stress, highly eccentric, ungrounded personality, imbalance, anxious"
+    },
+    {
+      "shape_type": "Iris Smaller than White",
+      "characteristics": "Relatively small irises, a lot of white around",
+      "personality": "Critical, attentive to detail, possibly high-strung"
+    },
+    {
+      "shape_type": "Iris Larger than White",
+      "characteristics": "Very large irises (or dark eyes where whites are less visible)",
+      "personality": "Compassionate, open heart, trusts easily, perceived as kind or naive"
+    },
+    {
+      "shape_type": "Dilated Pupils",
+      "characteristics": "Unusually large pupil size (not due to lighting)",
+      "personality": "Enthusiastic nature, openness to new experiences, at times lack of control over impulses"
+    },
+    {
+      "shape_type": "Constricted Pupils",
+      "characteristics": "Very small pupils (in normal light)",
+      "personality": "Caution, scrutiny, tension, very analytical, reserved, experiencing stress/pain"
+    },
+    {
+      "shape_type": "\"Premonition Points\"",
+      "characteristics": "Little marks or indented dots on the iris (often lower part)",
+      "personality": "Intuitive or psychic tendencies, senses things before they happen"
+    },
+    {
+      "shape_type": "Under-Eye Bags",
+      "characteristics": "Puffy or baggy lower eyelids",
+      "personality": "Overworking or carrying emotional burdens, kindness and worry, 'carrying the weight of others' concerns'"
+    },
+    {
+      "shape_type": "Short Eyelashes",
+      "characteristics": "Brief or sparse lashes",
+      "personality": "Straightforward, no-frills, perhaps less concerned with flirting or superficial allure"
+    },
+    {
+      "shape_type": "Long Eyelashes",
+      "characteristics": "Lush, long lashes",
+      "personality": "Expressive, in touch with emotions, creative, able to draw others in ('magnetic' personality)"
+    },
+    {
+      "shape_type": "Heavy Upper Eyelids",
+      "characteristics": "Upper lids that droop, covering part of the iris",
+      "personality": "Calm, patient personality, love of comfort, sometimes artistic or philosophical, physical tiredness or sensuality"
+    },
+    {
+      "shape_type": "Drooping Lids (Fully)",
+      "characteristics": "Upper eyelids droop across the entire eye width",
+      "personality": "World-weary or very relaxed, reserved nature, doesn't easily get excited"
+    },
+    {
+      "shape_type": "Drooping Lids (Outer Corners)",
+      "characteristics": "Upper lids sag primarily on the outer side",
+      "personality": "Kind-hearted, empathetic individual, faced challenges but remains gentle"
+    },
+    {
+      "shape_type": "Straight Lower Eyelids",
+      "characteristics": "The lower lid forms a straight horizontal line",
+      "personality": "Emotional control, manages feelings carefully, presents a steadfast demeanor"
+    },
+    {
+      "shape_type": "Curved Lower Eyelids",
+      "characteristics": "Noticeable upward curve (smiley) or downward curve (sad)",
+      "personality": "Upward: warmth, optimism; Downward: empathy and concern"
+    },
+    {
+      "shape_type": "Hooded Upper Eyelids",
+      "characteristics": "Excess skin or structure on the upper lid covers the crease completely ('hooded' look)",
+      "personality": "Deep thinkers, cautious, love of privacy or strategy"
+    },
+    {
+      "shape_type": "Visible Upper Eyelid (Double Lid)",
+      "characteristics": "Clear, visible eyelid fold ('double eyelid')",
+      "personality": "Balanced trait, expresses emotion openly, sociability, emotional balance"
+    },
+    {
+      "shape_type": "Slightly Visible Upper Eyelid",
+      "characteristics": "A partial crease is visible (in-between hooded and fully visible)",
+      "personality": "Can be both private and open as needed, adaptable in emotional expression"
+    }
+  ],
+  "Nose Traits": [
+    {
+      "location": "Bridge",
+      "trait": "Fleshy Bridge",
+      "characteristics": "Thick, meaty nasal bridge with more soft tissue, less defined profile",
+      "personality": "Down-to-earth, indulgent nature, enjoys life's comforts, sometimes linked to generosity"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Straight Bridge (\"Greek nose\")",
+      "characteristics": "Perfectly straight dorsum from root to tip, no bumps or curves in profile",
+      "personality": "Rational, disciplined, unobtrusive (classical beauty and balance)"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Roman Nose (Small Bump)",
+      "characteristics": "Mostly straight nose with a slight bump or elevation at the nasal root",
+      "personality": "Strong character, ambition, leadership, love of challenge"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Aquiline (Hooked) Bridge",
+      "characteristics": "Prominent bone hump on the mid-bridge creating a bent or 'hook' shape",
+      "personality": "Analytical, strategic mind, resilience, independent, stubborn, keen insight ('eagle' quality)"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Nubian Nose (Wide base)",
+      "characteristics": "Long bridge that ends in a very broad base and large nostrils (distinctive African nose type)",
+      "personality": "Curiosity, openness, creativity, charismatic, optimistic, approachable"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Arched or Humped Bridge",
+      "characteristics": "Pronounced curvature on the bridge (dorsum curves outward)",
+      "personality": "Strong convictions, endurance, faces obstacles head-on, serious demeanor"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Bumpy Bridge",
+      "characteristics": "An irregular bridge with one or more small protrusions or depressions",
+      "personality": "Complex character, varied life experiences, adaptable"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Crooked Bridge",
+      "characteristics": "A twisted or off-center bridge shape, slanted when viewed from the front",
+      "personality": "Nonconformist, doesn't follow the beaten path, unconventional approach"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Deviated Bridge Right",
+      "characteristics": "Nose bridge visibly veers toward the right side of the face",
+      "personality": "Indicates issues or unique traits in one's outward/professional life or with father figures (right side relates to public life/male influence)"
+    },
+    {
+      "location": "Bridge",
+      "trait": "Deviated Bridge Left",
+      "characteristics": "Bridge veers toward the left side of the face",
+      "personality": "Implies personal life complexities or a strong maternal/feminine impact on character (left side relates to private life/female influence)"
+    },
+    {
+      "location": "Tip",
+      "trait": "Wide Tip",
+      "characteristics": "A broad, bulbous nasal tip (often with wide alar base)",
+      "personality": "Generosity, wealth attraction, practicality, straightforward personality, 'nothing to hide'"
+    },
+    {
+      "location": "Tip",
+      "trait": "Narrow Tip",
+      "characteristics": "A thin or pinched tip",
+      "personality": "Precision, calculating nature, detail-focused, less impulsive with money/emotions, sometimes reserved or frugal"
+    },
+    {
+      "location": "Tip",
+      "trait": "Bulbous (Rounded) Tip",
+      "characteristics": "A rounded, protruding tip (often slightly downturned)",
+      "personality": "Hearty, sociable spirit, optimism, indulgence, enjoys life's pleasures, usually friendly"
+    },
+    {
+      "location": "Tip",
+      "trait": "Cleft (Divided) Tip",
+      "characteristics": "A tip with a visible dent or line down the center (double-lobed appearance)",
+      "personality": "Multi-faceted personality, pulled in two directions when making decisions, generous, caring, but sometimes indecisive or self-contradictory"
+    },
+    {
+      "location": "Tip",
+      "trait": "Upturned Tip (\"Snub\")",
+      "characteristics": "Tip tilts upward, exposing the nostrils when viewed from the front",
+      "personality": "Optimistic, friendly, quick-to-act nature, a bit impulsive or nosey"
+    },
+    {
+      "location": "Tip",
+      "trait": "Downturned Tip",
+      "characteristics": "Tip points downward (sometimes called a 'droopy' nose)",
+      "personality": "More serious, conservative personality, hardworking, cautious, resilient, can imply slyness (in negative excess or if only the tip droops)"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Wide Nostrils",
+      "characteristics": "Broad nostril openings (alae spread out)",
+      "personality": "Generosity, strong life energy, tends to spend money freely, outgoing, risk-tolerant, very wide can mean money flows out easily (spendthrift)"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Narrow Nostrils",
+      "characteristics": "Small, tight nostril openings",
+      "personality": "More cautious approach to resources, lower physical stamina, careful with money/energy, introverted or guarded"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Thick Alae",
+      "characteristics": "Substantial nostril wings (thick sides of the nose)",
+      "personality": "Strong will, robustness, can handle pressure, determined, linked to stubbornness"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Thin Alae",
+      "characteristics": "Thin, delicate nostril wings",
+      "personality": "Sensitivity, refined taste, easily affected by environment, gentler approach, less physical robustness but more finesse"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Exposed Nostrils (Visible)",
+      "characteristics": "You can see into the nostrils from the front (they flare upward)",
+      "personality": "Openness, straightforwardness, 'doesn't hide anything', however, can mean wealth or energy tends to dissipate"
+    },
+    {
+      "location": "Nostrils",
+      "trait": "Hidden Nostrils",
+      "characteristics": "Nostrils are not visible from the front (point downward or are covered by tip)",
+      "personality": "Caution, privacy, discreet, good at saving money/energy, modest or reserved by nature"
+    }
+  ],
+  "Cheek and Cheekbone Traits": [
+    {
+      "location": "Cheeks",
+      "trait": "Full Cheeks",
+      "characteristics": "Plump, filled-out cheeks with convex fullness",
+      "personality": "Vitality, generosity of spirit, cheerful, good-natured, physically hearty, strong vital energy and kindness"
+    },
+    {
+      "location": "Cheeks",
+      "trait": "Hollow Cheeks",
+      "characteristics": "Sunken cheeks that curve inward (often under prominent cheekbones)",
+      "personality": "Driven or has endured hardships, independent, disciplined, sometimes emotionally guarded"
+    },
+    {
+      "location": "Cheeks",
+      "trait": "Lower Cheek-Jowls (\"Bulldog\" Cheeks)",
+      "characteristics": "Lower part of cheeks (jaw area) protrudes or is very fleshy",
+      "personality": "Strong will, sometimes stubbornness, solid sense of authority, imposing"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Fleshy Cheekbones",
+      "characteristics": "Covered with ample flesh, not visibly bony",
+      "personality": "Approachability, warmth, ambition softened by compassion, achieves goals through networking and charm"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Bony Cheekbones",
+      "characteristics": "Prominent, protruding zygomatic bones with less fat covering, stand out sharply",
+      "personality": "Pronounced ambition, courage, authority, bold, takes charge, strong pride, sometimes domineering or impatient"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Flat Cheekbones",
+      "characteristics": "Not prominent and sit relatively flat on the face",
+      "personality": "Modest, cooperative personality, does not seek spotlight or authority, works diligently behind the scenes, values harmony"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "High Cheekbones",
+      "characteristics": "Positioned high (near the eye level), often visibly sloping down to mouth corners",
+      "personality": "Leadership potential, influence, ambition, courage to assert oneself, likes to be in control, earns respect easily"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Low Cheekbones",
+      "characteristics": "Set lower on the face (closer to nose level)",
+      "personality": "Cooperative, supportive nature, team player, values security and relationships, dependable 'right-hand' person"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Cheekbones Near Nose (Front-Set)",
+      "characteristics": "Project more to the front (nearer to the nose) than to the sides, giving a narrower look",
+      "personality": "Earnest, intense personality, approaches life head-on, very direct, involved in detailed work or research"
+    },
+    {
+      "location": "Cheekbones",
+      "trait": "Cheekbones Near Ears (Side-Set)",
+      "characteristics": "Spread wide toward the ears (lateral prominence), giving width to the face",
+      "personality": "Engages broadly with the world, sociable, multi-tasking, authoritative in groups, carries ambition on the 'side' (delegates and networks)"
+    }
+  ],
+  "Mouth and Lip Traits": [
+    {
+      "trait": "Both Lips Full",
+      "characteristics": "Upper and lower lips are thick and well-rounded",
+      "personality": "Loving, giving nature, strong desires for affection and sensual pleasures, generous in relationships, values emotional connection"
+    },
+    {
+      "trait": "Both Lips Thin",
+      "characteristics": "Upper and lower lips are slender with little volume",
+      "personality": "Pragmatic, reserved nature, very self-reliant, not overly demonstrative, prefers clear communication, can be critical or precise in speech"
+    },
+    {
+      "trait": "Medium (Balanced) Lips",
+      "characteristics": "Neither notably full nor very thin, well-defined borders (ideal or neutral)",
+      "personality": "Balance in giving and receiving love, emotionally stable, communicates well, healthy self-esteem, enjoys social interactions but values independence"
+    },
+    {
+      "trait": "Short, Pouty Lips",
+      "characteristics": "Mouth is narrow in width, but the center of both lips is plump (natural pout)",
+      "personality": "A bit self-focused or enjoys being cared for, charming, sometimes coquettish, draws others in to assist or pamper"
+    },
+    {
+      "trait": "Straight Lip Line",
+      "characteristics": "When closed, the line between them is straight horizontal",
+      "personality": "Even-keeled, keeps emotions in check, reliable, steady, 'what you see is what you get'"
+    },
+    {
+      "trait": "Wavy Lip Line",
+      "characteristics": "The meeting line of the closed lips forms a gentle wave or Cupid's bow shape",
+      "personality": "Expressiveness, artistic, playful, good sense of humor, eloquent or poetic speech"
+    },
+    {
+      "trait": "Down-turned Lip Corners",
+      "characteristics": "The corners of the mouth naturally point downwards (even at rest)",
+      "personality": "Pessimistic or serious outlook, skeptical or critical, doesn't easily get excited, but often very compassionate"
+    },
+    {
+      "trait": "Up-turned Lip Corners",
+      "characteristics": "The mouth corners lift upward slightly, as if smiling subtly",
+      "personality": "Optimistic, positive disposition, cheerful, approachable, sees possibilities, recovers from setbacks quickly"
+    },
+    {
+      "trait": "Pursed (Protruding) Lips",
+      "characteristics": "Lips stick out slightly (subtle pout), often with a narrower mouth and forward-thrust center",
+      "personality": "Stubbornness, strong drive for self-gratification, demanding, 'my way' attitude, playful/flirtatious side"
+    },
+    {
+      "trait": "Upper Lip Fuller than Lower",
+      "characteristics": "Noticeably fuller upper lip",
+      "personality": "Rich imagination, idealism in love, tends to give more emotionally, can be emotionally high-strung or expect partners to intuit needs"
+    },
+    {
+      "trait": "Lower Lip Fuller than Upper",
+      "characteristics": "Noticeably fuller lower lip",
+      "personality": "Pragmatic approach to relationships, seeks tangible benefits and pleasure, persevering in getting what they want, a bit self-indulgent or demanding of affection"
+    },
+    {
+      "trait": "Protruding Lower Lip",
+      "characteristics": "Lower lip pushes forward beyond the upper (in profile)",
+      "personality": "Hard to satisfy, often stubborn in opinions, won't back down, might hold grudges"
+    },
+    {
+      "trait": "Upper Lip Juts Out",
+      "characteristics": "Upper lip protrudes beyond the lower (in profile)",
+      "personality": "Patience, restraint, holds back immediate gratification, endures hardship quietly, refined manners, careful with words"
+    },
+    {
+      "trait": "Epicurean Mouth (Full Projection)",
+      "characteristics": "Both lips, and the mouth as a whole, project forward on the face ('overbite' look or very fleshy, forward lips)",
+      "personality": "Deeply enjoys sensory pleasures (gourmet food, affection, luxuries), lives richly in the moment, seeks enjoyment, sometimes struggles with moderation"
+    }
+  ],
+  "Philtrum Traits": [
+    {
+      "trait": "Long Philtrum",
+      "characteristics": "A tall philtrum (distance from nose base to upper lip is large)",
+      "personality": "Strong vitality and sexual energy, active, driven life force, long life potential, perseverance, physically active"
+    },
+    {
+      "trait": "Short Philtrum",
+      "characteristics": "A very short distance between nose and upper lip",
+      "personality": "Impatience, love of instant results, impulsive, enjoys immediate pleasures, youthful/child-like charm, might rush decisions"
+    },
+    {
+      "trait": "Deep Philtrum",
+      "characteristics": "A well-carved, deep groove",
+      "personality": "Abundant innate energy and life force, strong vitality, creativity, good fertility and passion, recovers quickly from illness/setbacks, robust constitution"
+    },
+    {
+      "trait": "Shallow Philtrum",
+      "characteristics": "A barely indented groove",
+      "personality": "Lower reserves of stamina, low energy reserves, needs more rest, manages energy carefully, carefree or dissipative approach to life's resources"
+    },
+    {
+      "trait": "Wide Philtrum",
+      "characteristics": "The groove is broad or the ridges are far apart",
+      "personality": "Very outgoing, charismatic nature, breadth of life (many children or projects), generous, big 'life capacity'"
+    },
+    {
+      "trait": "Narrow Philtrum",
+      "characteristics": "A slim philtrum with ridges close together",
+      "personality": "Selectivity, focuses energy into a few channels (fewer children/projects, but dedicated), more introverted or narrowly specialized life"
+    },
+    {
+      "trait": "Downward Trapezoid Philtrum",
+      "characteristics": "Wider at bottom (near lips) and narrower at top",
+      "personality": "Early life energy constrained, later life expands, blooms later in life, gains influence or wealth as they age"
+    },
+    {
+      "trait": "Upward Trapezoid Philtrum",
+      "characteristics": "Wider at the top (nose end) and narrower at the lip line",
+      "personality": "Strong start in life (good inheritance or early opportunities), narrows down later, channels ancestral/parental strengths into a specific focused goal"
+    },
+    {
+      "trait": "Cylindrical Philtrum",
+      "characteristics": "Parallel sides, uniform width from top to bottom (like a column)",
+      "personality": "Steadiness and balance in life, consistent energy, straightforward life paths, combines parental influences evenly, stability"
+    },
+    {
+      "trait": "Rhomboid Philtrum",
+      "characteristics": "Looks diamond-shaped (broad in middle, tapering at both ends)",
+      "personality": "Mix of traits, creativity, adaptability, may reinvent self at mid-life, versatile, multi-talented, unorthodox path"
+    },
+    {
+      "trait": "Invisible Philtrum",
+      "characteristics": "The philtrum groove is essentially absent (upper lip area is flat)",
+      "personality": "Lacks strong familial support or keeps life purpose hidden, difficulty in expressing love openly"
+    },
+    {
+      "trait": "Deformed Philtrum",
+      "characteristics": "Any irregularity in philtrum shape (crooked, one ridge higher, scarred, etc.)",
+      "personality": "Unusual life journey or a challenge affecting the core vitality, resilience (scar might represent a specific trauma)"
+    }
+  ],
+  "Chin and Jawline Traits": [
+    {
+      "trait": "Rounded Chin",
+      "characteristics": "A chin that curves gently with no sharp angles",
+      "personality": "Agreeable, adaptable nature, prefers compromise over conflict, likable and diplomatic"
+    },
+    {
+      "trait": "Pointed Chin",
+      "characteristics": "A chin that comes to a distinct point (seen in heart/triangle face)",
+      "personality": "Strong personal will and imagination, creative or 'nervous temperament' individuals, determined, sensitive to criticism, insists on independence"
+    },
+    {
+      "trait": "Square Chin",
+      "characteristics": "A broad, flat-ended chin, often with a flat underside (profile)",
+      "personality": "Firmness of character, courage, sometimes obstinacy, 'fighter' or survivor personality, stands their ground"
+    },
+    {
+      "trait": "Protruding Chin",
+      "characteristics": "Chin juts forward beyond the plane of the face (profile shows it sticking out)",
+      "personality": "Strong willpower, assertiveness, leadership qualities, won't easily concede in arguments, pushes forward to achieve aims"
+    },
+    {
+      "trait": "Receding Chin",
+      "characteristics": "Chin that slopes back toward the neck ('weak chin')",
+      "personality": "More yielding, accommodating nature, avoids confrontation, tends to be a follower, kind and agreeable, might struggle with asserting themselves or endurance"
+    },
+    {
+      "trait": "Strong Jawline",
+      "characteristics": "Well-defined, broad jaw angles that are clearly visible, creates a 'frame'",
+      "personality": "Physical strength and a strong character, decisive, courageous, can be blunt, prominent in leaders or people who don't back down easily"
+    },
+    {
+      "trait": "Weak Jawline",
+      "characteristics": "A jaw that's narrow or has soft definition (cheeks flow into neck without a clear corner)",
+      "personality": "Gentle, flexible personality, prefers harmony, avoids hard competition, relies more on intellect or charm, bends rather than breaks in adversity"
+    },
+    {
+      "trait": "Wide Jaw",
+      "characteristics": "Jawbone extends broad, giving width to the lower face (often seen in square face types)",
+      "personality": "Practical strength, endurance, sometimes stubbornness, very grounded, handles stress well, can work hard physically, protective, family-oriented streak"
+    },
+    {
+      "trait": "Narrow Jaw",
+      "characteristics": "Tapered jawline that's much slimmer than the cheekbone width (common in V or heart shapes)",
+      "personality": "Refinement, strategy, adaptability, relies on wit and negotiation, appears less intimidating, occasionally less physical robustness but more intellectual approach"
+    },
+    {
+      "trait": "Jaw Corner Angle (Blunt vs. Sharp)",
+      "characteristics": "Gentle/rounded vs. sharp/angular gonial angle (90° or less)",
+      "personality": "Blunt: cooperative and tolerant character, easygoing; Sharp: more aggressive, resolute nature, highly driven, uncompromising"
+    },
+    {
+      "trait": "Asymmetric Jaw",
+      "characteristics": "One side of the jaw is different (stronger or higher) than the other",
+      "personality": "Imbalance between public and private persona, stronger right side (authoritative at work) vs. stronger left side (assertive at home)"
+    },
+    {
+      "trait": "Double Chin",
+      "characteristics": "A fleshy fold under the chin, visible when the head is upright",
+      "personality": "Enjoyment of comforts, slower/more reflective approach, generosity and indulgence, loves good food/relaxation, tendency to hold onto things (weight, grudges)"
+    },
+    {
+      "trait": "Receding Jaw (Retrognathism)",
+      "characteristics": "The jaw as a whole sits further back relative to the upper face (profile: chin/jaw set behind the lips)",
+      "personality": "Might defer to others rather than lead, excellent people skills, polite, good listeners, may struggle to assert their own needs"
+    },
+    {
+      "trait": "Prognathic Jaw",
+      "characteristics": "A forward-thrusting jaw (either upper or lower)",
+      "personality": "Lower jaw protrudes (underbite): very strong-willed, rebellious; Upper jaw (overbite) is extreme: very eager, could indicate impatience or biting off more than they can chew"
+    }
+  ],
+  "Ear Traits": [
+    {
+      "position": "High-Set Ears",
+      "characteristics": "Top is above the level of the eyebrows and/or above the nose tip line",
+      "personality": "Quick to learn, quick to act, assumes leadership early, willing to take risks, sets standards high, can be impatient"
+    },
+    {
+      "position": "Low-Set Ears",
+      "characteristics": "Top is below the eyebrow level or bottom is below the nose line",
+      "personality": "More methodical, slower-to-react, prefers to observe and fully understand before acting, considerate, good at following through, may achieve later"
+    },
+    {
+      "position": "Centrally Aligned Ears",
+      "characteristics": "Aligned right between the brow and nose reference lines (balanced position)",
+      "personality": "Even-keeled personality, balances risk and caution well, moderate, stable character with steady progress"
+    },
+    {
+      "position": "Uneven Height Ears",
+      "characteristics": "One ear set higher than the other (asymmetry)",
+      "personality": "Mixed influences, processes information differently in work vs home life, imbalance in logical vs emotional side, adaptability"
+    },
+    {
+      "position": "Ears Flat Against Head",
+      "characteristics": "Rest close to the skull with little gap (no protruding)",
+      "personality": "More conservative, cautious individual, respects rules and norms, reserved demeanor, doesn't like drawing attention"
+    },
+    {
+      "position": "Protruding Ears",
+      "characteristics": "Ears that stick out noticeably from the head",
+      "personality": "Independence, free-thinking, non-conformists, creative and bold, might be a bit self-conscious, doesn't readily take advice"
+    },
+    {
+      "position": "Ears Tilted Backward",
+      "characteristics": "The ear angle is such that the top tilts toward the back of the head (posterior rotation >15°)",
+      "personality": "Good listener and cautious, takes time to process input, usually polite, tendency to live in the past or have traditional values"
+    },
+    {
+      "position": "Ears Tilted Forward",
+      "characteristics": "Ears rotated so the top tilts forward (as if cupping forward)",
+      "personality": "Eager to grasp new ideas, a bit impulsive, innovative and future-oriented, might be poor listeners"
+    },
+    {
+      "position": "Vertical Ears",
+      "characteristics": "Ears that are straight up, with the long axis vertical (not tilted much either way)",
+      "personality": "Balance in approach and adaptability, adjusts to new info but respects old info, well-adjusted way of handling tasks"
+    },
+    {
+      "position": "Ears Close to Face",
+      "characteristics": "Proportionally small or positioned such that they don't extend far outwards (snug to head)",
+      "personality": "Introverted or self-contained nature, observant and careful with social energy, skilled in focused tasks and loyalty"
+    },
+    {
+      "position": "Ears Away from Face",
+      "characteristics": "Placed a bit outward or larger relative to face width",
+      "personality": "Extroversion and curiosity, likes to extend into their environment, social, easily distracted (picking up too many signals), generally open-minded and friendly"
+    },
+    {
+      "size": "Large Ears",
+      "characteristics": "Appear big relative to head (one facial length can fit into the face < 5 times)",
+      "personality": "Intelligence (especially practical and musical), good memory and wisdom, good at absorbing information, might take big risks, outspoken and self-confident"
+    },
+    {
+      "size": "Medium Ears",
+      "characteristics": "Neither large nor small (roughly the length of the nose - ideal proportion)",
+      "personality": "Well-balanced character, mix of caution and boldness, average appetite for risk, gets along with most people and adapts well"
+    },
+    {
+      "size": "Small Ears",
+      "characteristics": "Noticeably small ears compared to face",
+      "personality": "Detail-oriented, cautious personality, sensitive, refined tastes, attention to detail, may not enjoy loud environments or big crowds"
+    },
+    {
+      "size": "Different-Sized Ears",
+      "characteristics": "One ear is larger than the other to the naked eye",
+      "personality": "Inner conflict between logic and emotion, the larger ear may indicate which side (logic/right ear or emotion/left ear) dominates"
+    }
+  ]
+}

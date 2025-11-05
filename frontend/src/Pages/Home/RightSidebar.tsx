@@ -51,7 +51,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({ startNewChat , onSelectProf
     const fetchHistory = async () => {
         try {
             setLoading(true);
-            const res = await axios.get("http://localhost:5000/api/face-profiles");
+            const res = await axios.get("http://localhost:5001/api/face-profiles");
             if (res.data.success) {
                 setHistory(res.data.data);
             }
