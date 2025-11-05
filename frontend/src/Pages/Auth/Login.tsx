@@ -3,6 +3,7 @@ import { Col, Container, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { loginUser } from "../../feature/auth/authSlice";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -22,13 +23,22 @@ const Login = () => {
   // Redirect to dashboard after login
   useEffect(() => {
     if (user) {
+      toast.success("Logged in successfully!");
       navigate("/"); 
     }
   }, [user, navigate]);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
+
+    // ✅ Use toast.promise for async feedback
+    const promise = dispatch(loginUser({ email, password })).unwrap();
+
+    toast.promise(promise, {
+      loading: "Logging you in...",
+      success: "Welcome back!",
+      error: "Invalid credentials, please try again.",
+    });
   };
 
   return (

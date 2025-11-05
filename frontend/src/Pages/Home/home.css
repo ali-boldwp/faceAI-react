@@ -147,7 +147,7 @@
 
 .arrow-btn {
   border: none;
-  background-color:#007bff;
+  background-color:#3F3EED;
   color: #fff;
   padding: 10px 14px;
   border-radius: 50%;
@@ -168,7 +168,7 @@
 }
 
 .next-btn {
-  background-color: #007bff;
+  background-color: #3F3EED;
   color: #fff;
   border: none;
   padding: 10px 22px;
@@ -245,4 +245,11 @@
 }
 [data-theme='dark'] .shape-select option {
   background-color:  #0d102b !important;
+}
+.active .single-history{
+  background: #3F3EED !important;
+  color:white !important  ;
+}
+.active .single-history p{
+  color:white;
 }

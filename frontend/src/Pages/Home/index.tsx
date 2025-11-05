@@ -42,12 +42,11 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     }
 
 
-
     const fetchProfile = async () => {
       try {
         setSubmitting(true);
 
-        const res = await axios.get(`http://localhost:5001/api/face-profiles/${id}`);
+        const res = await axios.get(`http://localhost:5000/api/face-profiles/${id}`);
         if (!res.data.success) throw new Error("Profile not found");
 
         const profile = res.data.data;
@@ -187,7 +186,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       };
 
       await toast.promise(
-        axios.post("http://localhost:5001/api/face-profiles", payload),
+        axios.post("http://localhost:5000/api/face-profiles", payload),
         {
           loading: "Saving profile...",
           success: "Profile saved successfully!",
@@ -196,11 +195,6 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       );
 
       console.log("✅ Saved successfully");
-      setFiles([]);
-      setImagePreviews([]);
-      setStep(0);
-      setSelectedOption("");
-      setAnswers({});
     } catch (error) {
       console.error("❌ Error submitting data:", error);
       toast.error("Something went wrong while submitting!");
