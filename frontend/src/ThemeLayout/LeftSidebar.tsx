@@ -28,13 +28,21 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, answers }) => {
   const themeSidebarToggle = useSelector(
     (state: RootState) => state.theme.themeSidebarToggle
   );
-
-  const icons = [
-    <GiLips />, <FaRegGrinBeam />, <GiNoseFront />, <FaEye />, <GiEyeball />,
-    <GiHeadshot />, <GiAbstract002 />, <BsEmojiSmile />, <PiSmileyWinkBold />,
-    <GiBodyHeight />, <GiHumanEar />, <FaUserCircle />
-  ];
-
+ const themeType = useSelector((state: RootState) => state.theme.themeType);
+const icons = [
+  <GiHeadshot />,          
+  <GiAbstract002 />,        
+  <FaRegGrinBeam />,         
+  <FaEye />,                
+  <GiNoseFront />,   
+  <GiEyeball />,           
+  <GiLips />,                
+  <PiSmileyWinkBold />,      
+  <GiHumanEar />,           
+  <GiBodyHeight />,         
+  <FaUserCircle />,          
+];
+const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
   return (
     <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`}>
       <div className="inner" style={{ height: "100%", overflow: "auto" }}>
@@ -45,12 +53,12 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, answers }) => {
               to="#"
               className={`single-menu ${location.pathname === item.name ? "active" : ""}`}
             >
-              <div className="icon" style={{ fontSize: "20px", color: "#001C42" }}>
+              <div className="icon" style={{ fontSize: "20px", color: getIconColor() }}>
                 {icons[index]}
               </div>
-              <p>
+              <p style={{ color: getIconColor() }}>
                 {item.name}:{" "}
-                <span style={{ color: "#007bff" }}>
+                <span style={{ color: getIconColor() }}>
                   {answers[item.name] || "____"}
                 </span>
               </p>
