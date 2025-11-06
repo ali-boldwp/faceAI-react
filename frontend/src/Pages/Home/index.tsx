@@ -29,6 +29,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const navigate = useNavigate();
   const [isExistingProfile, setIsExistingProfile] = useState(false);
   const [aiPersonality, setAiPersonality] = useState("");
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const { id } = useParams<{ id: string }>();
 
@@ -48,7 +49,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       try {
         setSubmitting(true);
 
-        const res = await axios.get(`http://localhost:5001/api/face-profiles/${id}`);
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles/${id}`);
         if (!res.data.success) throw new Error("Profile not found");
 
         const profile = res.data.data;
@@ -186,15 +187,26 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         questions: questionsArray,
       };
 
-      await toast.promise(
-        axios.post("http://localhost:5001/api/face-profiles", payload),
-        {
-          loading: "Saving profile...",
-          success: "Profile saved successfully!",
-          error: "Failed to save profile.",
-        }
+      const res = await toast.promise(
+          axios.post(`${process.env.REACT_APP_API_URL}/face-profiles`, payload),
+          {
+            loading: "Saving profile...",
+            success: "Profile saved successfully!",
+            error: "Failed to save profile.",
+          }
       );
 
+      if (res.data?.data?.aiPersonality) {
+        setAiPersonality(res.data.data.aiPersonality);
+      }
+
+      // ✅ Redirect to the sidebar route with the new profile ID
+      const newProfileId = res.data?.data?._id;
+      if (newProfileId) {
+        navigate(`/${newProfileId}`);
+      }
+
+      setRefreshTrigger((prev) => prev + 1);
       console.log("✅ Saved successfully");
     } catch (error) {
       console.error("❌ Error submitting data:", error);
@@ -203,6 +215,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setSubmitting(false);
     }
   };
+
 
   const handlePrev = () => {
     if (step > 0) setStep(step - 1);
@@ -535,11 +548,15 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                     {step + 1} / {sidebarItems.length}
                   </span>
                   <button
-                    className="next-btn"
-                    onClick={handleNext}
-                    disabled={submitting}
+                      className="next-btn"
+                      onClick={handleNext}
+                      disabled={submitting}
                   >
-                    {step < sidebarItems.length - 1 ? "Next" : "Finish"}
+                    {submitting
+                        ? "Submitting..."
+                        : step < sidebarItems.length - 1
+                            ? "Next"
+                            : "Finish"}
                   </button>
                 </div>
               </div>
@@ -550,6 +567,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       </div>
       <RightSidebar
         startNewChat={resetHomeScreen}
+        refreshTrigger={refreshTrigger}
       />
 
       <LeftSidebar sidebarItems={sidebarItems} answers={answers} />

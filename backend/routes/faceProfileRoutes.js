@@ -186,5 +186,17 @@ router.get("/:id", async (req, res) => {
     }
 });
 
+router.delete("/:id", async (req, res) => {
+    try {
+        const profile = await FaceProfile.findByIdAndDelete(req.params.id);
+        if (!profile) return res.status(404).json({ success: false, message: "Profile not found" });
+
+        res.json({ success: true, message: "Profile deleted successfully", data: profile._id });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
 
 module.exports = router;
