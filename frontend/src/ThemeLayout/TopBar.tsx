@@ -4,14 +4,18 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { THEME_MODE, THEME_SIDEBAR_TOGGLE, changeTheme, changeSidebarThemeToggle } from "Slices/theme/reducer";
 import { RootState } from "Slices/theme/store";
+import { logout } from "../feature/auth/authSlice";
+import { useNavigate} from "react-router-dom";
 
-import logo01 from "assets/images/logo/logo-01.png";
-import avatar01 from "assets/images/avatar/01.png";
+import logo04 from "assets/images/logo/logo-04.png";
+import avatar05 from "assets/images/avatar/05.png";
 import user2 from "assets/images/avatar/user-2.svg";
 
 const TopBar = () => {
 
     const [isProfile, setIsProfile] = useState(false);
+    const navigate = useNavigate();
+
 
     const toggleProfile = () => {
         setIsProfile(!isProfile);
@@ -19,6 +23,13 @@ const TopBar = () => {
 
     const themeType = useSelector((state: RootState) => state.theme.themeType);
     const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
+
 
     const toggleModeTheme = () => {
         const newTheme = themeType === THEME_MODE.LIGHT ? THEME_MODE.DARK : THEME_MODE.LIGHT;
@@ -30,7 +41,7 @@ const TopBar = () => {
         document.documentElement.setAttribute("data-theme", themeType);
     }, [themeType]);
 
-    
+
     return (
         <>
             <div className="header-area-one">
@@ -38,14 +49,14 @@ const TopBar = () => {
                     <Col lg={12}>
                         <div className="header-inner-one">
                             <div className="left-logo-area">
-                                <Link to="/" className="logo">
-                                    <img src={logo01} alt="logo-image" />
+                                <Link to="/"  >
+                                    <img src={logo04} alt="logo-image" style={{maxWidth:"18%" , marginTop:"10px"}} />
                                 </Link>
                             </div>
                             <div className="header-right">
-                             
+
                                 <div className="action-interactive-area__header">
-                                
+
                                     <div className="single_action__haeader rts-dark-light openuptip" id="rts-data-toggle">
                                         <div onClick={toggleModeTheme} style={{ cursor: 'pointer' }}>
                                             {themeType === 'light' ? (
@@ -66,7 +77,7 @@ const TopBar = () => {
                                     </div>
                                     <div className="single_action__haeader user_avatar__information openuptip">
                                         <div onClick={toggleProfile} className="avatar">
-                                            <img src={avatar01} alt="avatar" />
+                                            <img src={avatar05} alt="avatar" />
                                         </div>
                                         <div style={{ display: isProfile ? "block" : "none" }} className="user_information_main_wrapper slide-down__click">
                                             <div className="user_header">
@@ -78,11 +89,15 @@ const TopBar = () => {
                                                     <span className="desig"></span>
                                                 </div>
                                             </div>
-                                          
+
                                             <div className="popup-footer-btn">
-                                                <Link to="#" className="geex-content__header__popup__footer__link">Logout
-                                                    <i className="fa-light fa-arrow-right"></i>
-                                                </Link>
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="geex-content__header__popup__footer__link"
+                                                    style={{ border: "none", background: "transparent", cursor: "pointer" }}
+                                                >
+                                                    Logout <i className="fa-light fa-arrow-right"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +108,7 @@ const TopBar = () => {
                 </div>
             </div>
 
-     
+
         </>
     );
 };
