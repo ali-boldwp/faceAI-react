@@ -26,10 +26,20 @@ const faceProfileRoutes = require("./routes/faceProfileRoutes");
 app.use("/api/face-profiles", faceProfileRoutes);
 
 
-app.get("/", (req, res) => {
+app.get("/api/", (req, res) => {
     res.send("Server running successfully 🔥");
+});
+
+// --- Static build (copied at image build time to /app/public) ---
+const staticDir = path.join(__dirname, "public");
+app.use(express.static(staticDir, { index: "index.html", maxAge: "1h" }));
+
+// --- SPA fallback (after API & static) ---
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(staticDir, "index.html"));
 });
 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
