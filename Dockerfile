@@ -9,6 +9,8 @@ COPY frontend/ ./
 # ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build    # -> /frontend/dist  (change if it's /build)
 
+RUN ls
+
 # --- Install backend production deps ---
 FROM node:20-alpine AS backend-deps
 WORKDIR /app
