@@ -25,9 +25,8 @@ const TopBar = () => {
     const dispatch = useDispatch();
 
     const handleLogout = () => {
-        dispatch(logout());
         localStorage.removeItem("token");
-        navigate("/login");
+        window.location.href = "/login";
     };
 
 
