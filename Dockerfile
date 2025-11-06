@@ -28,7 +28,8 @@ COPY backend/ ./
 
 # copy frontend build into backend/public (match your server.js path)
 # If your frontend outputs "build" instead of "dist", adjust the path.
-COPY --from=frontend-build /frontend/dist ./public
+COPY --from=frontend-build /frontend/build ./public
+
 
 EXPOSE 5000
 CMD ["npm", "start"]
