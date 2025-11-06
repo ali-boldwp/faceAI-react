@@ -14,11 +14,8 @@ RUN ls
 # --- Install backend production deps ---
 FROM node:20-alpine AS backend-deps
 WORKDIR /app
-# COPY backend/package*.json ./
-COPY backend/* ./
+COPY backend/package*.json ./
 RUN npm i --only=production
-
-RUN ls
 
 # --- Final image ---
 FROM node:20-alpine
@@ -34,6 +31,8 @@ COPY backend/ ./
 # copy frontend build into backend/public (match your server.js path)
 # If your frontend outputs "build" instead of "dist", adjust the path.
 COPY --from=frontend-build /frontend/build ./public
+
+RUN ls
 
 RUN npm install -g nodemon
 
