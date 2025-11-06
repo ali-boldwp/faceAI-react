@@ -8,6 +8,8 @@ import LeftSidebar from "../../ThemeLayout/LeftSidebar";
 import { useNavigate, useParams } from "react-router-dom";
 import "./home.css";
 import toast from "react-hot-toast";
+import DOMPurify from "dompurify";
+
 
 interface HomeProps {
   sidebarItems: { name: string }[];
@@ -46,7 +48,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       try {
         setSubmitting(true);
 
-        const res = await axios.get(`http://localhost:5000/api/face-profiles/${id}`);
+        const res = await axios.get(`http://localhost:5001/api/face-profiles/${id}`);
         if (!res.data.success) throw new Error("Profile not found");
 
         const profile = res.data.data;
@@ -162,7 +164,6 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     if (step < sidebarItems.length - 1) {
       setStep(step + 1);
     } else {
-      // ✅ All questions answered
       await submitData();
     }
   };
@@ -186,7 +187,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       };
 
       await toast.promise(
-        axios.post("http://localhost:5000/api/face-profiles", payload),
+        axios.post("http://localhost:5001/api/face-profiles", payload),
         {
           loading: "Saving profile...",
           success: "Profile saved successfully!",
@@ -478,12 +479,12 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         {files.length > 0 && (
           <>
             {(id) ? (
-              <div className="ai-personality-section">
-                <p>
-           { aiPersonality }
-           </p>
-
-              </div>
+          <div
+    className="ai-personality-section"
+    dangerouslySetInnerHTML={{
+      __html: DOMPurify.sanitize(aiPersonality),
+    }}
+  />
             ) : (
               <div className="popup">
                 <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>

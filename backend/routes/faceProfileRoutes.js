@@ -43,7 +43,7 @@ router.post("/", async (req, res) => {
         });
 
         // Create AI prompt
-        const finalPrompt = `
+const finalPrompt = `
 You are a professional facial morphology and personality analysis expert.
 I will provide detailed face attributes (eyes, nose, lips, jawline, etc.) extracted from an AI face analysis system.
 
@@ -81,29 +81,23 @@ Then calculate an overall “Facial Harmony Index” (weighted average):
 Based on morphology and proportional analysis, describe what kind of personality traits this face reflects.
 Include behavioral tendencies, emotional nature, confidence level, leadership or sensitivity traits, etc.
 
-### Step 5: Output Format
-Return a clean, structured JSON response:
-{
-  "summary": "...",
-  "ideal_comparison": "...",
-  "harmony_scores": {
-    "face_shape": 92,
-    "eyes_brows": 88,
-    "nose": 84,
-    "mouth": 90,
-    "chin_jawline": 86,
-    "overall_harmony_index": 88
-  },
-  "personality_analysis": "..."
-}
+### Step 5: Output Format — HTML body with inline CSS
+Return **only** the HTML <body> fragment (do not include <html>, <head>, or any surrounding text). The <body> should use inline CSS on all elements (no external or internal <style> blocks). Structure the body with clear semantic sections and headings that correspond to Steps 1–4. Example sections: <section id="summary">, <section id="ideal-comparison">, <section id="harmony-scores">, <section id="personality-analysis">.  
+
+Within the <section id="harmony-scores">, include a compact visual representation of the numeric scores (for example, labeled bars using <div> elements with inline width styles representing percentage). Also include a small JSON block displayed in a <pre> or <code> element showing the numeric scores and computed overall index (the JSON must match the numeric values shown visually).  
+
+All text must be human-readable, well-formatted, and accessible (use headings <h1>–<h3> as appropriate, paragraphs <p>, and lists <ul>/<li> where helpful). Use inline CSS for typography, spacing, borders, and the score bars. Keep the body self-contained and no scripts.
+
+Important: Do not output any additional debugging, commentary, or metadata. The response must be a single HTML <body> fragment that contains the complete analysis.
 
 ---
 
 Below is the user’s extracted face data (in JSON format):
-${JSON.stringify(enrichedQuestions, null, 2)}
+\${JSON.stringify(enrichedQuestions, null, 2)}
 
-Please respond ONLY with the final structured analysis as described above.
+Please respond ONLY with the final HTML <body> fragment containing the analysis, using inline CSS as described above.
 `;
+
 
 
         const aiResponse = await axios.post(
@@ -121,9 +115,14 @@ Please respond ONLY with the final structured analysis as described above.
             }
         );
 
-        const aiPersonality =
+        let aiPersonality =
             aiResponse?.data?.choices?.[0]?.message?.content?.trim() ||
             "No analysis generated.";
+
+            aiPersonality = aiPersonality
+  .replace(/```html|```/gi, "") // remove markdown code block wrappers
+  .replace(/<\/?(html|head|body)>/gi, "") // remove <html>, <head>, <body> tags
+  .trim();
 
         const faceProfile = new FaceProfile({
             title,
