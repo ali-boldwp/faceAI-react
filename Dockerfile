@@ -30,6 +30,7 @@ COPY backend/ ./
 # If your frontend outputs "build" instead of "dist", adjust the path.
 COPY --from=frontend-build /frontend/build ./public
 
+RUN npm install -g nodemon
 
 EXPOSE 5000
 CMD ["npm", "start"]
