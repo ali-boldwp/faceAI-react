@@ -14,7 +14,8 @@ RUN ls
 # --- Install backend production deps ---
 FROM node:20-alpine AS backend-deps
 WORKDIR /app
-COPY backend/package*.json ./
+# COPY backend/package*.json ./
+COPY backend/* ./
 RUN npm i --only=production
 
 RUN ls
