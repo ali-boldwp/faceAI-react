@@ -17,6 +17,8 @@ WORKDIR /app
 COPY backend/package*.json ./
 RUN npm i --only=production
 
+RUN ls
+
 # --- Final image ---
 FROM node:20-alpine
 WORKDIR /app
