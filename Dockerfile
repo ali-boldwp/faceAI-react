@@ -2,7 +2,7 @@
 FROM node:20-alpine AS frontend-build
 WORKDIR /frontend
 COPY frontend/package*.json ./
-RUN npm ci
+RUN npm i
 COPY frontend/ ./
 # Pass API base if your frontend needs it at build time:
 # ARG VITE_API_URL=/api
@@ -13,7 +13,7 @@ RUN npm run build    # -> /frontend/dist  (change if it's /build)
 FROM node:20-alpine AS backend-deps
 WORKDIR /app
 COPY backend/package*.json ./
-RUN npm ci --only=production
+RUN npm i --only=production
 
 # --- Final image ---
 FROM node:20-alpine
