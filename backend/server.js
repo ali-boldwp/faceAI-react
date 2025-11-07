@@ -31,15 +31,23 @@ app.get("/api/", (req, res) => {
     res.send("Server running successfully 🔥");
 });
 
+
+
 // --- Static build (copied at image build time to /app/public) ---
 const staticDir = path.join(__dirname, "public");
+if(staticDir.exist){
 app.use(express.static(staticDir, { index: "index.html", maxAge: "1h" }));
-
-// --- SPA fallback (after API & static) ---
-// after your API + static middleware
 app.get(/^(?!\/api).*/, (_req, res) => {
   res.sendFile(path.join(staticDir, "index.html"));
 });
+}else{
+}
+
+
+
+// --- SPA fallback (after API & static) ---
+// after your API + static middleware
+
 
 
 const PORT = process.env.PORT || 5000;
