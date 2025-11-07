@@ -44,7 +44,7 @@ const icons = [
 ];
 const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
   return (
-    <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`}>
+    <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`} style={{borderLeft:"1px solid #E5E4FF"}}>
       <div className="inner" style={{ height: "100%", overflow: "auto" }}>
         <div className="single-menu-wrapper">
           {sidebarItems.map((item, index) => (

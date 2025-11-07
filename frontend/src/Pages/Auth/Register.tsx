@@ -22,18 +22,6 @@ const Register = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // ✅ On successful registration
-    if (user) {
-      toast.success("Account created successfully!");
-      navigate("/login");
-    }
-  }, [user, navigate]);
-
-  useEffect(() => {
-    // ❌ On error
-    if (error) toast.error(error);
-  }, [error]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,6 +39,8 @@ const Register = () => {
       success: "Welcome! Your account has been created.",
       error: "Registration failed. Please try again.",
     });
+    navigate("/login");
+
   };
 
   return (

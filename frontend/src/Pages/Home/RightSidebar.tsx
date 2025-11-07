@@ -129,7 +129,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     const groupedHistory = groupHistoryByDate(history);
 
     return (
-        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`}>
+        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{borderRight:"1px solid #E5E4FF"}}>
             {/* New Chat Button */}
             <div className="new-chat-option">
                 <button onClick={resetHomeScreen} className="new-chat-btn">
