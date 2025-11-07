@@ -55,15 +55,15 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         const profile = res.data.data;
 
         setFiles(
-          profile.images?.map((url: string) => new File([], "placeholder.jpg")) || []
+            profile.images?.map((url: string) => new File([], "placeholder.jpg")) || []
         );
         setAiPersonality(profile?.aiPersonality)
         setImagePreviews(profile.images || []);
         setAnswers(
-          profile.questions?.reduce((acc: any, q: any) => {
-            acc[q.question] = q.answer;
-            return acc;
-          }, {}) || {}
+            profile.questions?.reduce((acc: any, q: any) => {
+              acc[q.question] = q.answer;
+              return acc;
+            }, {}) || {}
         );
 
         setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
@@ -118,17 +118,17 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     e.preventDefault();
     setIsDragging(false);
     const droppedFiles = Array.from(e.dataTransfer.files).filter((f) =>
-      f.type.startsWith("image/")
+        f.type.startsWith("image/")
     );
     if (droppedFiles.length === 0) return;
 
     setFiles((prev) => [...prev, ...droppedFiles]);
 
     const uploadedUrls = await Promise.all(
-      droppedFiles.map(async (file) => {
-        const url = await uploadToCloudinary(file);
-        return url || URL.createObjectURL(file);
-      })
+        droppedFiles.map(async (file) => {
+          const url = await uploadToCloudinary(file);
+          return url || URL.createObjectURL(file);
+        })
     );
 
     setImagePreviews((prev) => [...prev, ...uploadedUrls]);
@@ -137,17 +137,17 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFiles = e.target.files ? Array.from(e.target.files) : [];
     const imageFiles = selectedFiles.filter((file) =>
-      file.type.startsWith("image/")
+        file.type.startsWith("image/")
     );
     if (imageFiles.length === 0) return;
 
     setFiles((prev) => [...prev, ...imageFiles]);
 
     const uploadedUrls = await Promise.all(
-      imageFiles.map(async (file) => {
-        const url = await uploadToCloudinary(file);
-        return url || URL.createObjectURL(file);
-      })
+        imageFiles.map(async (file) => {
+          const url = await uploadToCloudinary(file);
+          return url || URL.createObjectURL(file);
+        })
     );
 
     setImagePreviews((prev) => [...prev, ...uploadedUrls]);
@@ -195,6 +195,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
             error: "Failed to save profile.",
           }
       );
+      setRefreshTrigger(prev => prev + 1);
 
       if (res.data?.data?.aiPersonality) {
         setAiPersonality(res.data.data.aiPersonality);
@@ -219,6 +220,32 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
   const handlePrev = () => {
     if (step > 0) setStep(step - 1);
+  };
+
+  const handleClick = async () => {
+    try {
+      console.log("👾 Calling random API...");
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
+          side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
+        }),
+
+      });
+
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      const data = await res.json();
+      console.log("✅ API Response:", data);
+      alert(`🤖 AI fetched data:\n${JSON.stringify(data, null, 2)}`);
+    } catch (err) {
+      console.error("❌ API Error:", err);
+      alert("API call failed!");
+    }
   };
 
 
@@ -438,142 +465,147 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
 
   return (
-    <>
-      <div
-        className={`main-center-content-m-left center-content search-sticky ${themeSidebarToggle ? "collapsed" : ""
-          }`}
-      >
-        {(!id)
-          ? <>  <div
-            className={`drop-zone ${isDragging ? "dragging" : ""}`}
-            onDragOver={(e) => {
-              e.preventDefault();
-              setIsDragging(true);
-            }}
-            onDragLeave={() => setIsDragging(false)}
-            onDrop={handleDrop}
-          >
-            {imagePreviews.length > 0 ? (
-              <div className="uploaded-image-container multiple">
-                {imagePreviews.map((src, i) => (
-                  <div key={i} className="uploaded-image-box">
-                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="drop-zone-inner">
-                <label htmlFor="fileInput" className="browse-link">
-                  <FiUploadCloud className="upload-icon" />
-                  <h4>{uploading ? "Uploading..." : "Drag & Drop or Select file"}</h4>
-                  <p>Drop files here or click to browse</p>
-                </label>
-              </div>
-            )}
-            <input
-              id="fileInput"
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleFileSelect}
-              className="file-input"
-            />
-          </div></> : <>
-            <div className="uploaded-image-container multiple" style={{ paddingBottom: "20px" }}>
-              {imagePreviews.map((src, i) => (
-                <div key={i} className="uploaded-image-box">
-                  <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
-                </div>
-              ))}
-            </div>
-          </>
-        }
-
-        {files.length > 0 && (
-          <>
-            {(id) ? (
-          <div
-    className="ai-personality-section"
-    dangerouslySetInnerHTML={{
-      __html: DOMPurify.sanitize(aiPersonality),
-    }}
-  />
-            ) : (
-              <div className="popup">
-                <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={step}
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -50, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <label>{sidebarItems[step].name}</label>
-                    <select
-                      className="shape-select"
-                      value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                      disabled={submitting}
-                    >
-                      <option value="">-- Select Option --</option>
-                      {optionsData[sidebarItems[step].name]?.map((opt, i) => (
-                        <option key={i} value={opt}>
-                          {opt}
-                        </option>
+      <>
+        <div
+            className={`main-center-content-m-left center-content search-sticky ${themeSidebarToggle ? "collapsed" : ""
+            }`}
+        >
+          {(!id)
+              ? <>  <div
+                  className={`drop-zone ${isDragging ? "dragging" : ""}`}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={handleDrop}
+              >
+                {imagePreviews.length > 0 ? (
+                    <div className="uploaded-image-container multiple">
+                      {imagePreviews.map((src, i) => (
+                          <div key={i} className="uploaded-image-box">
+                            <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
+                          </div>
                       ))}
-                    </select>
-                  </motion.div>
-                </AnimatePresence>
+                    </div>
+                ) : (
+                    <div className="drop-zone-inner">
+                      <label htmlFor="fileInput" className="browse-link">
+                        <FiUploadCloud className="upload-icon" />
+                        <h4>{uploading ? "Uploading..." : "Drag & Drop or Select file"}</h4>
+                        <p>Drop files here or click to browse</p>
+                      </label>
+                    </div>
+                )}
+                <input
+                    id="fileInput"
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleFileSelect}
+                    className="file-input"
+                />
+              </div></> : <>
+                <div className="uploaded-image-container multiple" style={{ paddingBottom: "20px" }}>
+                  {imagePreviews.map((src, i) => (
+                      <div key={i} className="uploaded-image-box">
+                        <img src={src} alt={`Preview ${i}`} className="uploaded-image" />
+                      </div>
+                  ))}
+                </div>
+              </>
+          }
 
-                <div className="popup-footer">
-                  <div className="arrow-buttons">
-                    <button
-                      className="arrow-btn left"
-                      onClick={handlePrev}
-                      disabled={step === 0 || submitting}
-                    >
-                      <FiArrowLeft size={20} />
-                    </button>
-                    <button
-                      className="arrow-btn right"
-                      onClick={handleNext}
-                      disabled={submitting}
-                    >
-                      <FiArrowRight size={20} />
-                    </button>
-                  </div>
-                  <span className="step-counter">
+          {files.length > 0 && (
+              <>
+                {(id) ? (
+                    <div
+                        className="ai-personality-section"
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(aiPersonality),
+                        }}
+                    />
+                ) : (
+                    <div className="popup">
+                      <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>
+
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                            key={step}
+                            initial={{ x: 50, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -50, opacity: 0 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                          <div className="labelBtn">
+                            <label>{sidebarItems[step].name}</label>
+                            <button className="ask-ai-btn" onClick={handleClick}>
+                               Ask by AI
+                            </button>
+                          </div>
+                          <select
+                              className="shape-select"
+                              value={selectedOption}
+                              onChange={(e) => setSelectedOption(e.target.value)}
+                              disabled={submitting}
+                          >
+                            <option value="">-- Select Option --</option>
+                            {optionsData[sidebarItems[step].name]?.map((opt, i) => (
+                                <option key={i} value={opt}>
+                                  {opt}
+                                </option>
+                            ))}
+                          </select>
+                        </motion.div>
+                      </AnimatePresence>
+
+                      <div className="popup-footer">
+                        <div className="arrow-buttons">
+                          <button
+                              className="arrow-btn left"
+                              onClick={handlePrev}
+                              disabled={step === 0 || submitting}
+                          >
+                            <FiArrowLeft size={20} />
+                          </button>
+                          <button
+                              className="arrow-btn right"
+                              onClick={handleNext}
+                              disabled={submitting}
+                          >
+                            <FiArrowRight size={20} />
+                          </button>
+                        </div>
+                        <span className="step-counter">
                     {step + 1} / {sidebarItems.length}
                   </span>
-                  <button
-                      className="next-btn"
-                      onClick={handleNext}
-                      disabled={submitting}
-                  >
-                    {submitting
-                        ? "Submitting..."
-                        : step < sidebarItems.length - 1
-                            ? "Next"
-                            : "Finish"}
-                  </button>
-                </div>
-              </div>
-            )}
-          </>
-        )}
+                        <button
+                            className="next-btn"
+                            onClick={handleNext}
+                            disabled={submitting}
+                        >
+                          {submitting
+                              ? "Submitting..."
+                              : step < sidebarItems.length - 1
+                                  ? "Next"
+                                  : "Finish"}
+                        </button>
+                      </div>
+                    </div>
+                )}
+              </>
+          )}
 
-      </div>
-      <RightSidebar
-        startNewChat={resetHomeScreen}
-        refreshTrigger={refreshTrigger}
-      />
+        </div>
+        <RightSidebar
+            startNewChat={resetHomeScreen}
+            refreshTrigger={refreshTrigger}
+        />
 
-      <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
+        <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
 
 
-    </>
+      </>
   );
 };
 
