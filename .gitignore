@@ -1,10 +1,12 @@
 node_modules
 
 ./frontend/node_modules
+/frontend/build
 ./frontend/package-lock.json
 
 ./backend/node_modules
 ./backend/package-lock.json
+/backend/public
 
 ./backend/.env
 
@@ -16,4 +18,4 @@ node_modules
 
 api.log
 web.log
-frontend/.env
+/frontend/.env
