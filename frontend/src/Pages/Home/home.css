@@ -1,0 +1,351 @@
+/* 🌙 Main wrapper */
+.main-center-content-m-left.center-content.search-sticky {
+  padding: 2rem;
+ 
+  /* min-height: 100vh; */
+  transition: margin-left 0.3s ease;
+}
+
+.main-center-content-m-left.collapsed {
+  margin-left: 80px;
+}
+
+/* 📤 Upload Section */
+.drop-zone {
+  width: 100%;
+  height:70vh;
+  margin: 10px auto;
+  border-radius: 12px;
+  
+  padding: 60px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.drop-zone.dragging {
+  border-color: #007bff;
+  background-color: #f0f8ff;
+ 
+}
+
+.drop-zone-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-icon {
+  font-size: 60px;
+  
+  margin-bottom: 15px;
+}
+
+.drop-zone h4 {
+  font-size: 1.4rem;
+ 
+  margin-bottom: 8px;
+}
+
+.drop-zone p {
+   
+  font-size: 1.4rem;
+}
+
+.browse-link {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.file-input {
+  display: none;
+}
+
+/* 🖼️ Uploaded Images */
+.uploaded-image-container {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 12px;
+  
+}
+
+.uploaded-image-box {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  overflow: hidden;
+ 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+/* 🎛️ Popup */
+.popup {
+  border-radius: 16px;
+   
+  padding: 25px 30px;
+  margin: 20px auto;
+  width:  55%;
+ 
+  animation: fadeIn 0.4s ease-in-out;
+  position: absolute;
+  bottom: 0;
+}
+
+.popup h4 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.popup label {
+  display: block;
+  color: #444;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.shape-select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: transparent!important;
+  font-size: 1.4rem;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+.shape-select option{
+  background-color: transparent !important;
+}
+
+.shape-select:focus {
+  border-color: #007bff;
+}
+
+/* 🔘 Footer buttons */
+.popup-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.arrow-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.arrow-btn {
+  border: none;
+  background-color:#3F3EED;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.arrow-btn:hover {
+   
+  box-shadow: 1px 1px 15px lightgray;
+}
+
+.arrow-btn:disabled {
+  background-color: #e0e0e0;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.next-btn {
+  background-color: #3F3EED;
+  color: #fff;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  width: auto;
+}
+
+.next-btn:hover {
+  background-color: #0056b3;
+}
+.labelBtn{
+  display: flex;
+  justify-content: space-between;
+ margin-bottom: 15px;
+}
+.ask-ai-btn {
+  background: linear-gradient(90deg, #3F3EED, #7A5FFF);
+  color: white;
+  border: none;
+  width:150px;
+  text-align: center;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 10px rgba(63, 62, 237, 0.4);
+  transition: all 0.3s ease;
+}
+
+.ask-ai-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(63, 62, 237, 0.6);
+}
+
+.ask-ai-btn:active {
+  transform: scale(0.98);
+}
+
+/* 🌟 Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .uploaded-image-box {
+    width: 100px;
+    height: 100px;
+  }
+
+  .popup {
+    padding: 15px;
+  }
+
+  .popup-footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .next-btn {
+    width: 100%;
+  }
+}
+/* Default (light mode) */
+.main-center-content-m-left {
+  color: #08395d; /* dark text for light mode */
+}
+
+/* Dark mode */
+[data-theme='dark'] .main-center-content-m-left {
+  color: #c5c5c5; /* white text for dark mode */
+}
+
+/* Optional: also update select, labels, headings */
+[data-theme='dark'] .popup label,
+[data-theme='dark'] .popup h4,
+[data-theme='dark'] .popup select,
+[data-theme='dark'] .drop-zone-inner h4,
+[data-theme='dark'] .drop-zone-inner p {
+  color: #c5c5c5;
+}
+
+
+[data-theme='dark'] .uploaded-image-container .uploaded-image-box img {
+  border: 2px solid #c5c5c5; /* optional: white border around previews */
+}
+
+/* Counter */
+[data-theme='dark'] .step-counter {
+  color: #c5c5c5;
+}
+[data-theme='dark'] .shape-select option {
+  background-color:  #0d102b !important;
+}
+.active .single-history{
+  background: #3F3EED !important;
+  color:white !important  ;
+}
+.active .single-history p{
+  color:white;
+}
+
+.chat-history-area-start.active-profile {
+  background-color: #d5d4fa; /* light highlight color */
+  border-left: 3px solid #3F3EED; /* optional accent */
+}
+
+.delete-icon {
+  cursor: pointer;
+  color: red;
+  margin-left: 8px;
+  font-size: 16px;
+  transition: transform 0.1s;
+}
+.delete-icon:hover {
+  transform: scale(1.2);
+}
+.delete-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.delete-modal {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.delete-modal h3 {
+  margin-bottom: 10px;
+  color: #333;
+}
+.delete-modal p {
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+}
+.cancel-btn {
+  margin: 0 10px;
+  padding: 8px 15px;
+  background: #ccc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.confirm-btn {
+  padding: 8px 15px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
