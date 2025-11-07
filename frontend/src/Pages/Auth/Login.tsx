@@ -20,18 +20,10 @@ const Login = () => {
     };
   }, []);
 
-  // Redirect to dashboard after login
-  useEffect(() => {
-    if (user) {
-      toast.success("Logged in successfully!");
-      navigate("/"); 
-    }
-  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // ✅ Use toast.promise for async feedback
     const promise = dispatch(loginUser({ email, password })).unwrap();
 
     toast.promise(promise, {
@@ -39,7 +31,16 @@ const Login = () => {
       success: "Welcome back!",
       error: "Invalid credentials, please try again.",
     });
+
+    try {
+      await promise; // wait for login to succeed
+      navigate("/"); // only navigate on success
+    } catch (err) {
+      // login failed, stay on page
+      console.error("Login failed:", err);
+    }
   };
+
 
   return (
     <div className="dash-board-main-wrapper pt--40">
