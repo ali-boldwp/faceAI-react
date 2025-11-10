@@ -78,7 +78,7 @@ const TopBar = () => {
                                         <div onClick={toggleProfile} className="avatar">
                                             <img src={avatar05} alt="avatar" />
                                         </div>
-                                        <div style={{ display: isProfile ? "block" : "none" }} className="user_information_main_wrapper slide-down__click">
+                                        <div style={{ display: isProfile ? "block" : "none"  }} className="user_information_main_wrapper slide-down__click">
                                             <div className="user_header">
                                                 <div className="main-avatar">
                                                     <img src={user2} alt="user" />

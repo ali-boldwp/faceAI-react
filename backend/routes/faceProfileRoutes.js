@@ -3,11 +3,14 @@ const router = express.Router();
 const FaceProfile = require("../models/FaceProfile");
 const traits = require("./traits.json")
 const axios = require('axios');
+const authMiddleware = require("../middleware/authMiddleware")
 
 
-router.post("/", async (req, res) => {
+router.post("/",authMiddleware, async (req, res) => {
     try {
         const { title, images, questions } = req.body;
+                const userId = req.user.id
+                        console.log(":userI",userId)
 
         if (!title) return res.status(400).json({ message: "Title is required." });
         if (!images || !images.length)
@@ -125,6 +128,7 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
   .trim();
 
         const faceProfile = new FaceProfile({
+            userId: userId,
             title,
             images,
             questions: enrichedQuestions,
@@ -148,9 +152,10 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
 
 
 
-router.get("/", async (req, res) => {
+router.get("/",authMiddleware, async (req, res) => {
     try {
-        const profiles = await FaceProfile.find().sort({ createdAt: -1 });
+        const userId = req.user.id
+        const profiles = await FaceProfile.find({userId : userId}).sort({ createdAt: -1 });
 
         const formatted = profiles.map((p) => ({
             _id: p._id,

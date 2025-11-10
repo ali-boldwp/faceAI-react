@@ -23,25 +23,24 @@ const Register = () => {
   }, []);
 
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-    if (!agree) {
-      toast.error("You must agree to the privacy policy and terms.");
-      return;
-    }
+  if (!agree) {
+    toast.error("You must agree to the privacy policy and terms.");
+    return;
+  }
 
-    // ✅ Show toast while waiting for API response
-    const promise = dispatch(registerUser({ name, email, password })).unwrap();
+  try {
+    const result = await dispatch(registerUser({ name, email, password })).unwrap();
 
-    toast.promise(promise, {
-      loading: "Creating your account...",
-      success: "Welcome! Your account has been created.",
-      error: "Registration failed. Please try again.",
-    });
-    navigate("/login");
+    toast.success("Welcome! Your account has been created.");
+    navigate("/"); 
+  } catch (err: any) {
+    toast.error(err?.message || "Registration failed. Please try again.");
+  }
+};
 
-  };
 
   return (
       <div className="dash-board-main-wrapper">

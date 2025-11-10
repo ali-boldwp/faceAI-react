@@ -72,14 +72,14 @@ const Login = () => {
                           required
                         />
                       </div>
-                      <div className="check-wrapper">
+                      {/* <div className="check-wrapper">
                         <Link
                           style={{ textAlign: "right", width: "100%" }}
                           to="/reset"
                         >
                           Forgot password?
                         </Link>
-                      </div>
+                      </div> */}
 
                       {error && <p style={{ color: "red" }}>{error}</p>}
 
