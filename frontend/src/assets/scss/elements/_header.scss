@@ -456,6 +456,8 @@
             border-inline-end: 10px solid transparent;
         }
         .user_header{
+
+            padding-bottom: 20px !important;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -533,6 +535,7 @@
             }
         }
         .popup-footer-btn{
+            margin-top: 20px !important;
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;

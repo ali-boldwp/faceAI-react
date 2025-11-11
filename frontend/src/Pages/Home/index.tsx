@@ -9,13 +9,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./home.css";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
+import Select from "react-select";
 
 
 interface HomeProps {
   sidebarItems: { name: string }[];
-  answers: { [key: string]: string };
-  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  answers: { [key: string]: string | string[] };
+  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string | string[] }>>;
 }
+
 
 const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const themeSidebarToggle = useSidebarToggle();
@@ -23,7 +25,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [step, setStep] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string[]>([]);
+
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -38,7 +41,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setFiles([]);
       setImagePreviews([]);
       setStep(0);
-      setSelectedOption("");
+      setSelectedOption([]);
       setAnswers({});
       setAiPersonality("")
       return
@@ -69,7 +72,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
 
         setStep(0);
-        setSelectedOption("");
+        setSelectedOption([]);
       } catch (err: any) {
         console.error("Failed to load profile:", err.message);
         toast.error("Failed to load profile data");
@@ -154,13 +157,14 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   };
 
   const handleNext = async () => {
-    if (selectedOption) {
+    if (selectedOption && selectedOption.length > 0) {
       setAnswers((prev) => ({
         ...prev,
         [sidebarItems[step].name]: selectedOption,
       }));
-      setSelectedOption("");
+      setSelectedOption([]);
     }
+
 
     if (step < sidebarItems.length - 1) {
       setStep(step + 1);
@@ -175,8 +179,9 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
       const questionsArray = Object.entries(answers).map(([question, answer]) => ({
         question,
-        answer,
+        answer: Array.isArray(answer) ? answer : [answer],
       }));
+
 
       const now = new Date();
       const title = `Face Profile – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
@@ -187,14 +192,25 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         questions: questionsArray,
       };
 
+      const token = localStorage.getItem("token");
+
       const res = await toast.promise(
-          axios.post(`${process.env.REACT_APP_API_URL}/face-profiles`, payload),
+        axios.post(
+          `${process.env.REACT_APP_API_URL}/face-profiles`,
+          payload,
           {
-            loading: "Saving profile...",
-            success: "Profile saved successfully!",
-            error: "Failed to save profile.",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
+        ),
+        {
+          loading: "Saving profile...",
+          success: "Profile saved successfully!",
+          error: "Failed to save profile.",
+        }
       );
+
       setRefreshTrigger(prev => prev + 1);
 
       if (res.data?.data?.aiPersonality) {
@@ -222,31 +238,31 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     if (step > 0) setStep(step - 1);
   };
 
-const handleClick = async () => {
-  try {
-    console.log("👾 Calling random API...");
-    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
-        side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
-      }),
-       
-    });
+  const handleClick = async () => {
+    try {
+      console.log("👾 Calling random API...");
+      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
+          side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
+        }),
 
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+      });
 
-    const data = await res.json();
-    console.log("✅ API Response:", data);
-    alert(`🤖 AI fetched data:\n${JSON.stringify(data, null, 2)}`);
-  } catch (err) {
-    console.error("❌ API Error:", err);
-    alert("API call failed!");
-  }
-};
+      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+      const data = await res.json();
+      console.log("✅ API Response:", data);
+      alert(`🤖 AI fetched data:\n${JSON.stringify(data, null, 2)}`);
+    } catch (err) {
+      console.error("❌ API Error:", err);
+      alert("API call failed!");
+    }
+  };
 
 
   const optionsData: Record<string, string[]> = {
@@ -519,12 +535,12 @@ const handleClick = async () => {
         {files.length > 0 && (
           <>
             {(id) ? (
-          <div
-    className="ai-personality-section"
-    dangerouslySetInnerHTML={{
-      __html: DOMPurify.sanitize(aiPersonality),
-    }}
-  />
+              <div
+                className="ai-personality-section"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(aiPersonality),
+                }}
+              />
             ) : (
               <div className="popup">
                 <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>
@@ -537,25 +553,41 @@ const handleClick = async () => {
                     exit={{ x: -50, opacity: 0 }}
                     transition={{ duration: 0.4 }}
                   >
-                  <div className="labelBtn">
-                    <label>{sidebarItems[step].name}</label>
-                    <button className="ask-ai-btn" onClick={handleClick}>
-                    👾 Ask by AI
-                    </button>
+                    <div className="labelBtn">
+                      <label>{sidebarItems[step].name}</label>
+                      <button className="ask-ai-btn" onClick={handleClick}>
+                        Ask by AI
+                      </button>
                     </div>
-                    <select
-                      className="shape-select"
-                      value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                      disabled={submitting}
-                    >
-                      <option value="">-- Select Option --</option>
-                      {optionsData[sidebarItems[step].name]?.map((opt, i) => (
-                        <option key={i} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                    <Select
+                        isMulti
+                        isSearchable
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                        placeholder="Select options..."
+                        value={selectedOption.map((opt) => ({ value: opt, label: opt }))}
+                        options={optionsData[sidebarItems[step].name]?.map((opt) => ({
+                          value: opt,
+                          label: opt,
+                        }))}
+                        onChange={(selected) => {
+                          setSelectedOption(selected ? selected.map((s) => s.value) : []);
+                        }}
+                        isDisabled={submitting}
+                        menuPortalTarget={document.body}
+                        menuPosition="fixed"
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                          control: (base) => ({ ...base, minHeight: "auto" }),
+                          valueContainer: (base) => ({ ...base, height: "auto", flexWrap: "wrap" }),
+                        }}
+                    />
+
+
+
+
+
+
                   </motion.div>
                 </AnimatePresence>
 
@@ -580,15 +612,15 @@ const handleClick = async () => {
                     {step + 1} / {sidebarItems.length}
                   </span>
                   <button
-                      className="next-btn"
-                      onClick={handleNext}
-                      disabled={submitting}
+                    className="next-btn"
+                    onClick={handleNext}
+                    disabled={submitting}
                   >
                     {submitting
-                        ? "Submitting..."
-                        : step < sidebarItems.length - 1
-                            ? "Next"
-                            : "Finish"}
+                      ? "Submitting..."
+                      : step < sidebarItems.length - 1
+                        ? "Next"
+                        : "Finish"}
                   </button>
                 </div>
               </div>

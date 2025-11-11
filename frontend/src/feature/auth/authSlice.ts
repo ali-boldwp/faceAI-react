@@ -50,6 +50,8 @@ export const registerUser = createAsyncThunk<
 >("auth/registerUser", async ({ name, email, password }, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${API_URL}/signup`, { name, email, password });
+    localStorage.setItem("token", response.data.token);
+
     return response.data;
   } catch (err: any) {
     return rejectWithValue(err.response.data);

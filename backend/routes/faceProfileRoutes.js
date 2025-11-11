@@ -3,11 +3,22 @@ const router = express.Router();
 const FaceProfile = require("../models/FaceProfile");
 const traits = require("./traits.json")
 const axios = require('axios');
+<<<<<<< HEAD
 
 
 router.post("/", async (req, res) => {
     try {
         const { title, images, questions } = req.body;
+=======
+const authMiddleware = require("../middleware/authMiddleware")
+
+
+router.post("/",authMiddleware, async (req, res) => {
+    try {
+        const { title, images, questions } = req.body;
+                const userId = req.user.id
+                        console.log(":userI",userId)
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
 
         if (!title) return res.status(400).json({ message: "Title is required." });
         if (!images || !images.length)
@@ -17,14 +28,27 @@ router.post("/", async (req, res) => {
 
         // Enrich questions with traits
         const enrichedQuestions = questions.map((q) => {
+<<<<<<< HEAD
+=======
+            const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
             let matchedTrait = null;
 
             for (const [section, traitList] of Object.entries(traits)) {
                 matchedTrait = traitList.find((trait) => {
+<<<<<<< HEAD
                     const answer = q.answer.toLowerCase().trim();
                     const shape = (trait.shape || "").toLowerCase().trim();
                     const name = (trait.name || "").toLowerCase().trim();
                     return answer.includes(shape) || answer.includes(name);
+=======
+                    return answers.some((ans) => {
+                        const answer = ans.toLowerCase().trim();
+                        const shape = (trait.shape || "").toLowerCase().trim();
+                        const name = (trait.name || "").toLowerCase().trim();
+                        return answer.includes(shape) || answer.includes(name);
+                    });
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
                 });
                 if (matchedTrait) break;
             }
@@ -42,6 +66,10 @@ router.post("/", async (req, res) => {
             };
         });
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
         // Create AI prompt
 const finalPrompt = `
 You are a professional facial morphology and personality analysis expert.
@@ -125,6 +153,10 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
   .trim();
 
         const faceProfile = new FaceProfile({
+<<<<<<< HEAD
+=======
+            userId: userId,
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
             title,
             images,
             questions: enrichedQuestions,
@@ -148,6 +180,7 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
 
 
 
+<<<<<<< HEAD
 router.get("/", async (req, res) => {
     try {
         const profiles = await FaceProfile.find().sort({ createdAt: -1 });
@@ -164,10 +197,49 @@ router.get("/", async (req, res) => {
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).json({ success: false, message: "Server error." });
+=======
+router.get("/", authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user.id;
+
+
+        const profiles = await FaceProfile.find({ userId })
+            .sort({ createdAt: -1 })
+            .lean();
+
+        // Format response for clean frontend use
+        const formatted = profiles.map((p) => ({
+            _id: p._id,
+            title: p.title,
+            images: p.images,
+            questions: p.questions.map((q) => ({
+                question: q.question,
+                answer: q.answer,
+            })),
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
+        }));
+
+        res.status(200).json({
+            success: true,
+            message: "Profiles fetched successfully!",
+            count: formatted.length,
+            data: formatted,
+        });
+    } catch (error) {
+        console.error("Error fetching face profiles:", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Server error while fetching profiles." });
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
     }
 });
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
 router.get("/:id", async (req, res) => {
     try {
         const profile = await FaceProfile.findById(req.params.id);

@@ -23,10 +23,10 @@ interface FaceProfile {
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
-                                                       startNewChat,
-                                                       onSelectProfile,
-                                                       refreshTrigger,
-                                                   }) => {
+    startNewChat,
+    onSelectProfile,
+    refreshTrigger,
+}) => {
     const [isToggleRightSidebar, setIsToggleRightSidebar] = useState<boolean>(true);
     const [history, setHistory] = useState<FaceProfile[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -58,7 +58,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     const fetchHistory = async () => {
         try {
             setLoading(true);
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles`);
+
+            const token = localStorage.getItem("token");
+
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
             if (res.data.success) {
                 const sorted = res.data.data.sort(
                     (a: FaceProfile, b: FaceProfile) =>
@@ -129,7 +137,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     const groupedHistory = groupHistoryByDate(history);
 
     return (
-        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{borderRight:"1px solid #E5E4FF"}}>
+        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{ borderRight: "1px solid #E5E4FF" }}>
             {/* New Chat Button */}
             <div className="new-chat-option">
                 <button onClick={resetHomeScreen} className="new-chat-btn">
@@ -156,14 +164,14 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                                     <div className="single-history" onClick={() => handleHistoryClick(profile)}>
                                         <p>{profile.title}</p>
 
-                                    <IoTrashOutline
-                                        className="delete-icon"
-                                        onClick={(e) => {
-                                            e.stopPropagation();
-                                            setProfileToDelete(profile);
-                                            setShowDeleteModal(true);
-                                        }}
-                                    />
+                                        <IoTrashOutline
+                                            className="delete-icon"
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                setProfileToDelete(profile);
+                                                setShowDeleteModal(true);
+                                            }}
+                                        />
                                     </div>
                                 </div>
                             ))}
