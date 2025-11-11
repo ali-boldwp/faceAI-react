@@ -572,14 +572,18 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                           label: opt,
                         }))}
                         onChange={(selected) => {
-                          if (!selected) {
-                            setSelectedOption([]);
-                          } else {
-                            setSelectedOption(selected.map((s) => s.value));
-                          }
+                          setSelectedOption(selected ? selected.map((s) => s.value) : []);
                         }}
                         isDisabled={submitting}
+                        menuPortalTarget={document.body}
+                        menuPosition="fixed"
+                        styles={{
+                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+                          control: (base) => ({ ...base, minHeight: "auto" }),
+                          valueContainer: (base) => ({ ...base, height: "auto", flexWrap: "wrap" }),
+                        }}
                     />
+
 
 
 
