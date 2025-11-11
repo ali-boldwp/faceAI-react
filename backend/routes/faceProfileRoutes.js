@@ -102,7 +102,7 @@ Important: Do not output any additional debugging, commentary, or metadata. The 
 Below is the user’s extracted face data (in JSON format):
 \${JSON.stringify(enrichedQuestions, null, 2)}
 
-Please respond ONLY with the final HTML <body> fragment containing the analysis, using inline CSS as described above.
+Please respond ONLY with the final HTML <body> fragment containing the analysis, using inline CSS as described above.The analysis should be written in **Romanian**.
 `;
 
 

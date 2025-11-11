@@ -185,7 +185,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
 
       const now = new Date();
-      const title = `Face Profile – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+      const title = `Profil facial – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
       const payload = {
         title,
