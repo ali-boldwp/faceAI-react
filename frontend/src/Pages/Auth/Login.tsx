@@ -27,17 +27,18 @@ const Login = () => {
     const promise = dispatch(loginUser({ email, password })).unwrap();
 
     toast.promise(promise, {
-      loading: "Logging you in...",
-      success: "Welcome back!",
-      error: "Invalid credentials, please try again.",
+      loading: "Se autentifică...",
+      success: "Bine ai revenit!",
+      error: "Date de autentificare invalide, te rugăm să încerci din nou.",
     });
+
 
     try {
       await promise; // wait for login to succeed
       navigate("/"); // only navigate on success
     } catch (err) {
       // login failed, stay on page
-      console.error("Login failed:", err);
+      console.error("Autentificarea a eșuat:", err);
     }
   };
 
@@ -51,22 +52,22 @@ const Login = () => {
               <Col lg={12}>
                 <div className="single-form-s-wrapper">
                   <div className="head">
-                    <span>Welcome Back</span>
-                    <h5 className="title">Login to continue</h5>
+                    <span>Bine ai revenit</span>
+                    <h5 className="title">Autentifică-te pentru a continua</h5>
                   </div>
                   <div className="body">
                     <form onSubmit={handleSubmit}>
                       <div className="input-wrapper">
                         <input
                           type="email"
-                          placeholder="Enter your mail"
+                          placeholder="Introdu adresa ta de email"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
                         />
                         <input
                           type="password"
-                          placeholder="Password"
+                            placeholder="Parolă"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
@@ -88,13 +89,14 @@ const Login = () => {
                         className="rts-btn btn-primary"
                         disabled={loading}
                       >
-                        {loading ? "Logging in..." : "Log In"}
+                        {loading ? "Se autentifică..." : "Autentificare"}
+
                       </button>
 
                       <p>
-                        Don't have an account?{" "}
+                        Nu ai un cont?{" "}
                         <Link className="ml--5" to="/register">
-                          Sign Up for Free
+                          Înscrie-te gratuit
                         </Link>
                       </p>
                     </form>
