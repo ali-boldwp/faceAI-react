@@ -81,7 +81,6 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         }
     };
 
-
     useEffect(() => {
         fetchHistory();
     }, [refreshTrigger]);
