@@ -20,14 +20,17 @@ router.post("/",authMiddleware, async (req, res) => {
 
         // Enrich questions with traits
         const enrichedQuestions = questions.map((q) => {
+            const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
             let matchedTrait = null;
 
             for (const [section, traitList] of Object.entries(traits)) {
                 matchedTrait = traitList.find((trait) => {
-                    const answer = q.answer.toLowerCase().trim();
-                    const shape = (trait.shape || "").toLowerCase().trim();
-                    const name = (trait.name || "").toLowerCase().trim();
-                    return answer.includes(shape) || answer.includes(name);
+                    return answers.some((ans) => {
+                        const answer = ans.toLowerCase().trim();
+                        const shape = (trait.shape || "").toLowerCase().trim();
+                        const name = (trait.name || "").toLowerCase().trim();
+                        return answer.includes(shape) || answer.includes(name);
+                    });
                 });
                 if (matchedTrait) break;
             }
@@ -44,6 +47,7 @@ router.post("/",authMiddleware, async (req, res) => {
                     : null,
             };
         });
+
 
         // Create AI prompt
 const finalPrompt = `
@@ -152,25 +156,42 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
 
 
 
-router.get("/",authMiddleware, async (req, res) => {
+router.get("/", authMiddleware, async (req, res) => {
     try {
-        const userId = req.user.id
-        const profiles = await FaceProfile.find({userId : userId}).sort({ createdAt: -1 });
+        const userId = req.user.id;
 
+
+        const profiles = await FaceProfile.find({ userId })
+            .sort({ createdAt: -1 })
+            .lean();
+
+        // Format response for clean frontend use
         const formatted = profiles.map((p) => ({
             _id: p._id,
             title: p.title,
-            createdAt: p.createdAt,
-            questions: p.questions,
             images: p.images,
+            questions: p.questions.map((q) => ({
+                question: q.question,
+                answer: q.answer,
+            })),
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt,
         }));
 
-        res.json({ success: true, data: formatted });
+        res.status(200).json({
+            success: true,
+            message: "Profiles fetched successfully!",
+            count: formatted.length,
+            data: formatted,
+        });
     } catch (error) {
-        console.error("Error fetching data:", error);
-        res.status(500).json({ success: false, message: "Server error." });
+        console.error("Error fetching face profiles:", error);
+        res
+            .status(500)
+            .json({ success: false, message: "Server error while fetching profiles." });
     }
 });
+
 
 
 router.get("/:id", async (req, res) => {

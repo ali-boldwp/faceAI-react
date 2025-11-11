@@ -9,13 +9,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./home.css";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
+import Select from "react-select";
 
 
 interface HomeProps {
   sidebarItems: { name: string }[];
-  answers: { [key: string]: string };
-  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
+  answers: { [key: string]: string | string[] };
+  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string | string[] }>>;
 }
+
 
 const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const themeSidebarToggle = useSidebarToggle();
@@ -23,7 +25,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [step, setStep] = useState(0);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string[]>([]);
+
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
@@ -38,7 +41,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setFiles([]);
       setImagePreviews([]);
       setStep(0);
-      setSelectedOption("");
+      setSelectedOption([]);
       setAnswers({});
       setAiPersonality("")
       return
@@ -69,7 +72,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
 
         setStep(0);
-        setSelectedOption("");
+        setSelectedOption([]);
       } catch (err: any) {
         console.error("Failed to load profile:", err.message);
         toast.error("Failed to load profile data");
@@ -154,13 +157,14 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   };
 
   const handleNext = async () => {
-    if (selectedOption) {
+    if (selectedOption && selectedOption.length > 0) {
       setAnswers((prev) => ({
         ...prev,
         [sidebarItems[step].name]: selectedOption,
       }));
-      setSelectedOption("");
+      setSelectedOption([]);
     }
+
 
     if (step < sidebarItems.length - 1) {
       setStep(step + 1);
@@ -169,14 +173,16 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     }
   };
 
+
   const submitData = async () => {
     try {
       setSubmitting(true);
 
       const questionsArray = Object.entries(answers).map(([question, answer]) => ({
         question,
-        answer,
+        answer: Array.isArray(answer) ? answer : [answer],
       }));
+
 
       const now = new Date();
       const title = `Face Profile – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
@@ -554,19 +560,31 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                         Ask by AI
                       </button>
                     </div>
-                    <select
-                      className="shape-select"
-                      value={selectedOption}
-                      onChange={(e) => setSelectedOption(e.target.value)}
-                      disabled={submitting}
-                    >
-                      <option value="">-- Select Option --</option>
-                      {optionsData[sidebarItems[step].name]?.map((opt, i) => (
-                        <option key={i} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
+                    <Select
+                        isMulti
+                        isSearchable
+                        className="react-select-container"
+                        classNamePrefix="react-select"
+                        placeholder="Select options..."
+                        value={selectedOption.map((opt) => ({ value: opt, label: opt }))}
+                        options={optionsData[sidebarItems[step].name]?.map((opt) => ({
+                          value: opt,
+                          label: opt,
+                        }))}
+                        onChange={(selected) => {
+                          if (!selected) {
+                            setSelectedOption([]);
+                          } else {
+                            setSelectedOption(selected.map((s) => s.value));
+                          }
+                        }}
+                        isDisabled={submitting}
+                    />
+
+
+
+
+
                   </motion.div>
                 </AnimatePresence>
 

@@ -20,7 +20,7 @@ interface SidebarItem {
 }
 interface LeftSidebarProps {
   sidebarItems: SidebarItem[];
-  answers: { [key: string]: string };
+  answers: { [key: string]: string | string[] };
 }
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, answers }) => {
@@ -59,9 +59,12 @@ const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
               <p style={{ color: getIconColor() }}>
                 {item.name}:{" "}
                 <span style={{ color: getIconColor() }}>
-                  {answers[item.name] || "____"}
-                </span>
+    {Array.isArray(answers[item.name])
+        ? (answers[item.name] as string[]).join(", ")
+        : (answers[item.name] as string) || "____"}
+  </span>
               </p>
+
             </Link>
           ))}
         </div>

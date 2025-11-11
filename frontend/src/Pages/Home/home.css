@@ -348,3 +348,8 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.shape-select {
+  width: 100%;
+  height: 150px; /* multiple options visible */
+}
