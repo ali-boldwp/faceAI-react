@@ -53,7 +53,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setSubmitting(true);
 
         const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles/${id}`);
-        if (!res.data.success) throw new Error("Profile not found");
+        if (!res.data.success) throw new Error("Profilul nu a fost găsit");
 
         const profile = res.data.data;
 
@@ -74,14 +74,12 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setStep(0);
         setSelectedOption([]);
       } catch (err: any) {
-        console.error("Failed to load profile:", err.message);
-        toast.error("Failed to load profile data");
+        console.error("Încărcarea profilului a eșuat:", err.message);
+        toast.error("Încărcarea datelor profilului a eșuat");
       } finally {
         setSubmitting(false);
       }
     };
-
-
 
 
     fetchProfile();
@@ -111,7 +109,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setUploading(false);
       return res.data.secure_url;
     } catch (err: any) {
-      console.error("❌ Cloudinary upload failed:", err.message);
+      console.error("❌ Încărcarea pe Cloudinary a eșuat:", err.message);
       setUploading(false);
       return null;
     }
@@ -185,7 +183,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
 
       const now = new Date();
-      const title = `Face Profile – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+      const title = `Profilul feței – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
       const payload = {
         title,
@@ -206,9 +204,10 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
           }
         ),
         {
-          loading: "Saving profile...",
-          success: "Profile saved successfully!",
-          error: "Failed to save profile.",
+          loading: "Se salvează profilul...",
+          success: "Profilul a fost salvat cu succes!",
+          error: "Salvarea profilului a eșuat.",
+
         }
       );
 
@@ -225,10 +224,10 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       }
 
       setRefreshTrigger((prev) => prev + 1);
-      console.log("✅ Saved successfully");
+      console.log("✅ Salvat cu succes");
     } catch (error) {
-      console.error("❌ Error submitting data:", error);
-      toast.error("Something went wrong while submitting!");
+      console.error("❌ Eroare la trimiterea datelor:", error);
+      toast.error("Ceva nu a mers bine la trimitere!");
     } finally {
       setSubmitting(false);
     }
@@ -258,10 +257,10 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
       const data = await res.json();
       console.log("✅ API Response:", data);
-      alert(`🤖 AI fetched data:\n${JSON.stringify(data, null, 2)}`);
+      alert(`🤖 Date preluate de AI:\n${JSON.stringify(data, null, 2)}`);
     } catch (err) {
-      console.error("❌ API Error:", err);
-      alert("API call failed!");
+      console.error("❌ Eroare API:", err);
+      alert("Apelul API a eșuat!");
     }
   };
 
@@ -509,8 +508,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
               <div className="drop-zone-inner">
                 <label htmlFor="fileInput" className="browse-link">
                   <FiUploadCloud className="upload-icon" />
-                  <h4>{uploading ? "Uploading..." : "Drag & Drop or Select file"}</h4>
-                  <p>Drop files here or click to browse</p>
+                  <h4>{uploading ? "Se încarcă..." : "Trage și plasează sau selectează fișierul"}</h4>
+                  <p>Trage fișierele aici sau fă clic pentru a răsfoi</p>
                 </label>
               </div>
             )}
@@ -544,7 +543,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
               />
             ) : (
               <div className="popup">
-                <h4>{submitting ? "Submitting..." : `Select Option for:`}</h4>
+                <h4>{submitting ? "Se trimite..." : `Selectează opțiunea pentru:`}</h4>
 
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -557,7 +556,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                     <div className="labelBtn">
                       <label>{sidebarItems[step].name}</label>
                       <button className="ask-ai-btn" onClick={handleClick}>
-                        Ask by AI
+                        Întrebat de AI
                       </button>
                     </div>
                     <Select
@@ -565,7 +564,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                         isSearchable
                         className="react-select-container"
                         classNamePrefix="react-select"
-                        placeholder="Select options..."
+                        placeholder="Selectează opțiuni..."
                         value={selectedOption.map((opt) => ({ value: opt, label: opt }))}
                         options={optionsData[sidebarItems[step].name]?.map((opt) => ({
                           value: opt,
@@ -618,10 +617,10 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                     disabled={submitting}
                   >
                     {submitting
-                      ? "Submitting..."
+                      ? "Se trimite..."
                       : step < sidebarItems.length - 1
-                        ? "Next"
-                        : "Finish"}
+                        ? "Următor"
+                        : "Finalizează"}
                   </button>
                 </div>
               </div>
