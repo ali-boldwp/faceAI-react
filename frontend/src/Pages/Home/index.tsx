@@ -171,6 +171,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     }
   };
 
+
   const submitData = async () => {
     try {
       setSubmitting(true);

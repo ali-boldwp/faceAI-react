@@ -51,23 +51,22 @@ const Login = () => {
               <Col lg={12}>
                 <div className="single-form-s-wrapper">
                   <div className="head">
-                    <span>Bine ai revenit</span>
-                    <h5 className="title">Autentifică-te pentru a continua</h5>
+                    <span>Welcome Back</span>
+                    <h5 className="title">Login to continue</h5>
                   </div>
                   <div className="body">
                     <form onSubmit={handleSubmit}>
                       <div className="input-wrapper">
                         <input
                           type="email"
-                          
-                          placeholder="Introdu adresa ta de e-mail"
+                          placeholder="Enter your mail"
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
                         />
                         <input
                           type="password"
-                          placeholder="Parolă"
+                          placeholder="Password"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           required
@@ -89,13 +88,13 @@ const Login = () => {
                         className="rts-btn btn-primary"
                         disabled={loading}
                       >
-                        {loading ? "Se autentifică..." : "Autentificare"}
+                        {loading ? "Logging in..." : "Log In"}
                       </button>
 
                       <p>
-                        Nu ai un cont?{" "}
+                        Don't have an account?{" "}
                         <Link className="ml--5" to="/register">
-                          Înscrie-te gratuit
+                          Sign Up for Free
                         </Link>
                       </p>
                     </form>
