@@ -4,12 +4,15 @@ const FaceProfile = require("../models/FaceProfile");
 const traits = require("./traits.json")
 const axios = require('axios');
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 router.post("/", async (req, res) => {
     try {
         const { title, images, questions } = req.body;
 =======
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
 const authMiddleware = require("../middleware/authMiddleware")
 
 
@@ -18,7 +21,10 @@ router.post("/",authMiddleware, async (req, res) => {
         const { title, images, questions } = req.body;
                 const userId = req.user.id
                         console.log(":userI",userId)
+<<<<<<< HEAD
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
 
         if (!title) return res.status(400).json({ message: "Title is required." });
         if (!images || !images.length)
@@ -29,26 +35,36 @@ router.post("/",authMiddleware, async (req, res) => {
         // Enrich questions with traits
         const enrichedQuestions = questions.map((q) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+            const answers = Array.isArray(q.answer) ? q.answer : [q.answer];
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
             let matchedTrait = null;
 
             for (const [section, traitList] of Object.entries(traits)) {
                 matchedTrait = traitList.find((trait) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
                     const answer = q.answer.toLowerCase().trim();
                     const shape = (trait.shape || "").toLowerCase().trim();
                     const name = (trait.name || "").toLowerCase().trim();
                     return answer.includes(shape) || answer.includes(name);
 =======
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
                     return answers.some((ans) => {
                         const answer = ans.toLowerCase().trim();
                         const shape = (trait.shape || "").toLowerCase().trim();
                         const name = (trait.name || "").toLowerCase().trim();
                         return answer.includes(shape) || answer.includes(name);
                     });
+<<<<<<< HEAD
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
                 });
                 if (matchedTrait) break;
             }
@@ -67,9 +83,13 @@ router.post("/",authMiddleware, async (req, res) => {
         });
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
         // Create AI prompt
 const finalPrompt = `
 You are a professional facial morphology and personality analysis expert.
@@ -123,7 +143,11 @@ Important: Do not output any additional debugging, commentary, or metadata. The 
 Below is the user’s extracted face data (in JSON format):
 \${JSON.stringify(enrichedQuestions, null, 2)}
 
+<<<<<<< HEAD
 Please respond ONLY with the final HTML <body> fragment containing the analysis, using inline CSS as described above.
+=======
+Please respond ONLY with the final HTML <body> fragment containing the analysis, using inline CSS as described above.The analysis should be written in **Romanian**.
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
 `;
 
 
@@ -154,9 +178,13 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
 
         const faceProfile = new FaceProfile({
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
             userId: userId,
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+            userId: userId,
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
             title,
             images,
             questions: enrichedQuestions,
@@ -181,6 +209,7 @@ Please respond ONLY with the final HTML <body> fragment containing the analysis,
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 router.get("/", async (req, res) => {
     try {
         const profiles = await FaceProfile.find().sort({ createdAt: -1 });
@@ -198,6 +227,8 @@ router.get("/", async (req, res) => {
         console.error("Error fetching data:", error);
         res.status(500).json({ success: false, message: "Server error." });
 =======
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
 router.get("/", authMiddleware, async (req, res) => {
     try {
         const userId = req.user.id;
@@ -231,15 +262,22 @@ router.get("/", authMiddleware, async (req, res) => {
         res
             .status(500)
             .json({ success: false, message: "Server error while fetching profiles." });
+<<<<<<< HEAD
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
     }
 });
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> dec84a2660a987751f51d3f7ee1d057e0d5b92b9
+=======
+
+>>>>>>> c885b105198062ca564ffe44700f7984fdcbcfab
 router.get("/:id", async (req, res) => {
     try {
         const profile = await FaceProfile.findById(req.params.id);
