@@ -27,17 +27,17 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   if (!agree) {
-    toast.error("You must agree to the privacy policy and terms.");
+    toast.error("Trebuie să fii de acord cu politica de confidențialitate și termenii.");
     return;
   }
 
   try {
     const result = await dispatch(registerUser({ name, email, password })).unwrap();
 
-    toast.success("Welcome! Your account has been created.");
+    toast.success("Bine ai venit! Contul tău a fost creat.");
     navigate("/"); 
   } catch (err: any) {
-    toast.error(err?.message || "Registration failed. Please try again.");
+    toast.error(err?.message || "Înregistrarea a eșuat. Te rugăm să încerci din nou.");
   }
 };
 
@@ -51,15 +51,15 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                 <Col lg={12}>
                   <div className="single-form-s-wrapper">
                     <div className="head">
-                      <span>Start your Journey</span>
-                      <h5 className="title">Create an account</h5>
+                      <span>Începe-ți călătoria</span>
+                      <h5 className="title">Creează un cont</h5>
                     </div>
                     <div className="body">
                       <form onSubmit={handleSubmit}>
                         <div className="input-wrapper">
                           <input
                               type="text"
-                              placeholder="Full Name"
+                              placeholder="Nume complet"
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               required
@@ -73,7 +73,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                           />
                           <input
                               type="password"
-                              placeholder="Password"
+                              placeholder="Parolă"
                               value={password}
                               onChange={(e) => setPassword(e.target.value)}
                               required
@@ -92,8 +92,9 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                             <label
                                 className="form-check-label"
                                 htmlFor="flexCheckDefault"
+                                style={{"fontSize": "14px"}}
                             >
-                              I agree to privacy policy &amp; terms
+                              Sunt de acord cu politica de confidențialitate și termenii.
                             </label>
                           </div>
                         </div>
@@ -103,11 +104,11 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                             className="rts-btn btn-primary"
                             disabled={loading}
                         >
-                          {loading ? "Creating..." : "Create Account"}
+                          {loading ? "Se creează..." : "Creează cont"}
                         </button>
 
                         <p>
-                          Already have an account? <Link to="/login">Sign in</Link>
+                          Ai deja un cont? <Link to="/login">Autentificare</Link>
                         </p>
                       </form>
                     </div>
