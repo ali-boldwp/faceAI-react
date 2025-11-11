@@ -95,7 +95,7 @@ const TopBar = () => {
                                                     className="geex-content__header__popup__footer__link"
                                                     style={{ border: "none", background: "transparent", cursor: "pointer" }}
                                                 >
-                                                    Logout <i className="fa-light fa-arrow-right"></i>
+                                                    Deconectare <i className="fa-light fa-arrow-right"></i>
                                                 </button>
                                             </div>
                                         </div>
