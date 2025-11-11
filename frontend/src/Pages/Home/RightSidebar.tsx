@@ -119,8 +119,8 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         items.forEach((item) => {
             const itemDate = formatDate(new Date(item.createdAt));
             let groupKey;
-            if (itemDate === todayStr) groupKey = "Today";
-            else if (itemDate === yesterdayStr) groupKey = "Yesterday";
+            if (itemDate === todayStr) groupKey = "Astăzi";
+            else if (itemDate === yesterdayStr) groupKey = "Ieri";
             else
                 groupKey = new Date(item.createdAt).toLocaleDateString("en-US", {
                     month: "short",
@@ -141,11 +141,15 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{ borderRight: "1px solid #E5E4FF" }}>
             {/* New Chat Button */}
             <div className="new-chat-option">
-                <button onClick={resetHomeScreen} className="new-chat-btn">
-                    <img src={logo02} alt="logo" />
-                    <img src={icons04} alt="icons" />
+                <button
+                    onClick={resetHomeScreen}
+                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', cursor: 'pointer',justifyContent: 'center', }}
+                >
+                    <p style={{ margin: 0 }}>Conversație nouă</p>
+                    <img src={icons04} alt="icons" style={{ width: '20px', height: '20px' }} />
                 </button>
             </div>
+
 
             {/* Chat History */}
             <div className="chat-history-wrapper">

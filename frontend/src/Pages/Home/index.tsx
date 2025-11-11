@@ -582,12 +582,6 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                           valueContainer: (base) => ({ ...base, height: "auto", flexWrap: "wrap" }),
                         }}
                     />
-
-
-
-
-
-
                   </motion.div>
                 </AnimatePresence>
 
