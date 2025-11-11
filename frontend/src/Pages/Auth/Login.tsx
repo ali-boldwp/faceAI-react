@@ -27,9 +27,9 @@ const Login = () => {
     const promise = dispatch(loginUser({ email, password })).unwrap();
 
     toast.promise(promise, {
-      loading: "Autentificare în curs…",
-      success: "Bine ai revenit!",
-      error: "Date de autentificare invalide, te rugăm să încerci din nou.",
+      loading: "Logging you in...",
+      success: "Welcome back!",
+      error: "Invalid credentials, please try again.",
     });
 
     try {
@@ -37,7 +37,7 @@ const Login = () => {
       navigate("/"); // only navigate on success
     } catch (err) {
       // login failed, stay on page
-      console.error("Autentificare eșuată:", err);
+      console.error("Login failed:", err);
     }
   };
 
