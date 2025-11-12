@@ -194,11 +194,11 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
             {showDeleteModal && profileToDelete && (
                 <div className="delete-modal-overlay">
                     <div className="delete-modal">
-                        <h3>Delete Profile?</h3>
-                        <p>Are you sure you want to delete "{profileToDelete.title}"?</p>
+                        <h3>Șterge profilul?</h3>
+                        <p>Ești sigur că vrei să ștergi "{profileToDelete.title}"?</p>
                         <div className="modal-actions">
                             <button className="cancel-btn" onClick={() => setShowDeleteModal(false)}>
-                                Cancel
+                                Anulează
                             </button>
                             <button
                                 className="confirm-btn"
@@ -207,7 +207,7 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
                                     setShowDeleteModal(false);
                                 }}
                             >
-                                Delete
+                                Șterge
                             </button>
                         </div>
                     </div>
