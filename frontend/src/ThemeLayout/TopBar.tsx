@@ -11,12 +11,28 @@ import { FaRegUserCircle } from "react-icons/fa";
 import logo04 from "assets/images/logo/logo.png";
 import avatar05 from "assets/images/avatar/05.png";
 import user2 from "assets/images/avatar/user-2.svg";
+import {useMainContext} from "../context/useMainContext";
 
 const TopBar = () => {
 
     const [isProfile, setIsProfile] = useState(false);
     const navigate = useNavigate();
+    const api = useMainContext();
+    const [user, setUser] = useState<{ name: string } | null>(null);
 
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const res = await api.getCurrentUser();
+                setUser(res);
+            } catch (err) {
+                console.error("Failed to fetch user:", err);
+            }
+        };
+
+        fetchUser();
+    }, [api]);
 
     const toggleProfile = () => {
         setIsProfile(!isProfile);
@@ -68,7 +84,7 @@ const TopBar = () => {
                                                     <img src={user2} alt="user" />
                                                 </div>
                                                 <div className="user_naim-information">
-                                                    <h3 className="title">MR.Zaman Habib</h3>
+                                                    <h3 className="title">{user?.name || "Nume utilizator"}</h3>
                                                     <span className="desig"></span>
                                                 </div>
                                             </div>

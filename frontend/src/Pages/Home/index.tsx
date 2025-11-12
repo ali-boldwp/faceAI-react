@@ -10,6 +10,7 @@ import "./home.css";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
 import Select from "react-select";
+import {useMainContext} from "../../context/useMainContext";
 
 
 interface HomeProps {
@@ -20,6 +21,8 @@ interface HomeProps {
 
 
 const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
+  const { getFaceProfile  } = useMainContext();
+  const api = useMainContext();
   const themeSidebarToggle = useSidebarToggle();
   const [files, setFiles] = useState<File[]>([]);
   const [isDragging, setIsDragging] = useState(false);
@@ -43,33 +46,33 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       setStep(0);
       setSelectedOption([]);
       setAnswers({});
-      setAiPersonality("")
-      return
+      setAiPersonality("");
+      setIsExistingProfile(false);
+      return;
     }
-
 
     const fetchProfile = async () => {
       try {
         setSubmitting(true);
 
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles/${id}`);
-        if (!res.data.success) throw new Error("Profilul nu a fost găsit");
+        const res = await getFaceProfile(id);
 
-        const profile = res.data.data;
+        if (!res?.success) throw new Error("Profilul nu a fost găsit");
 
-        setFiles(
-          profile.images?.map((url: string) => new File([], "placeholder.jpg")) || []
-        );
-        setAiPersonality(profile?.aiPersonality)
+        const profile = res.data;
+
+        setFiles(profile.images?.map((url: string) => new File([], "placeholder.jpg")) || []);
         setImagePreviews(profile.images || []);
-        setAnswers(
-          profile.questions?.reduce((acc: any, q: any) => {
-            acc[q.question] = q.answer;
-            return acc;
-          }, {}) || {}
-        );
+        setAiPersonality(profile?.aiPersonality || "");
 
-        console.log("answer" , answers)
+        const newAnswers: { [key: string]: string | string[] } =
+            profile.questions?.reduce((acc: any, q: any) => {
+              acc[q.question] = q.answer;
+              return acc;
+            }, {}) || {};
+
+        setAnswers(newAnswers);
+        console.log("Fetched answers:", newAnswers);
 
         setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
 
@@ -83,9 +86,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
       }
     };
 
-
     fetchProfile();
-  }, [id]);
+  }, [id, getFaceProfile]);
 
 
 
@@ -202,7 +204,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         setAiPersonality(res.data.data.aiPersonality);
       }
 
-      // ✅ Redirect to the sidebar route with the new profile ID
+
       const newProfileId = res.data?.data?._id;
       if (newProfileId) {
         navigate(`/${newProfileId}`);
@@ -225,26 +227,16 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
 
   const handleClick = async () => {
     try {
-      console.log("👾 Calling random API...");
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
-          side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
-        }),
+      console.log("👾 Calling Face Shape API...");
 
-      });
+      const data = await api.analyzeFaceShape(
+          "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
+          "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg"
+      );
 
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-      const data = await res.json();
       console.log("✅ API Response:", data);
       alert(`🤖 Date preluate de AI:\n${JSON.stringify(data, null, 2)}`);
     } catch (err) {
-      console.error("❌ Eroare API:", err);
       alert("Apelul API a eșuat!");
     }
   };
