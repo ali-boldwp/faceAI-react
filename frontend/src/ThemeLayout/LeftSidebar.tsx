@@ -295,7 +295,14 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
       await submitData();
     }
   };
-
+useEffect(() => {
+  if (!id) {
+    // ✅ Jab new chat start ho (no id in URL), sab reset kar do
+    setAnswers({});
+    setSelectedOption([]);
+    setStep(0);
+  }
+}, [id, setAnswers]);
 
   const submitData = async () => {
     try {
@@ -345,6 +352,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
       // ✅ Redirect to the sidebar route with the new profile ID
       const newProfileId = res.data?.data?._id;
       if (newProfileId) {
+          window.dispatchEvent(new Event("refreshChatHistory"));
         navigate(`/${newProfileId}`);
       }
 
@@ -453,7 +461,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
               >
 
                 <h6>{sidebarItems[step].name}</h6>
-
+                <div style={{ width:"100%",height:"60vh",overflowY:"auto" }}>
                 {currentOptions.map((opt) => (
                   <label
                     key={opt}
@@ -474,10 +482,11 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
                     {opt}
                   </label>
                 ))}
+                </div>
               </motion.div>
             </AnimatePresence>
 
-            <div className="popup-footer">
+            <div className="popup-footer" style={{position:"absolute",bottom:"10px",width:"90%"}}>
               <div className="arrow-buttons">
                 <button
                   className="arrow-btn left"
