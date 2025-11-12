@@ -499,8 +499,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
             {imagePreviews.length > 0 ? (
               <div className="uploaded-image-container multiple">
                 {imagePreviews.map((src, i) => (
-                  <div key={i} className="uploaded-image-box">
-                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" style={{ height: "350px"}} />
+                  <div key={i} className="uploaded-image-box"  style={{ height: "350px", width: "auto"}}>
+                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" style={{ height: "350px", width: "auto"}} />
                   </div>
                 ))}
               </div>
