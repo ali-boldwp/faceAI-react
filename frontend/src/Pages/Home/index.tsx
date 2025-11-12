@@ -69,6 +69,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
           }, {}) || {}
         );
 
+        console.log("answer" , answers)
+
         setIsExistingProfile(profile.images?.length > 0 || profile.questions?.length > 0);
 
         setStep(0);
@@ -152,23 +154,6 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     );
 
     setImagePreviews((prev) => [...prev, ...uploadedUrls]);
-  };
-
-  const handleNext = async () => {
-    if (selectedOption && selectedOption.length > 0) {
-      setAnswers((prev) => ({
-        ...prev,
-        [sidebarItems[step].name]: selectedOption,
-      }));
-      setSelectedOption([]);
-    }
-
-
-    if (step < sidebarItems.length - 1) {
-      setStep(step + 1);
-    } else {
-      await submitData();
-    }
   };
 
 
@@ -265,214 +250,6 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   };
 
 
-  const optionsData: Record<string, string[]> = {
-    "Face Shape": [
-      "Round Face",
-      "Oval Face",
-      "Oblong (Long) Face",
-      "Triangular Face",
-      "Heart-Shaped Face",
-      "Square Face",
-      "Rectangular Face",
-      "Diamond Face",
-      "Upward Trapezoid Face",
-      "Downward Trapezoid Face",
-      "Wide Face",
-      "Narrow Face"
-    ],
-    "Forehead": [
-      "Square Forehead / Frunte pătrată –",
-      "Round Forehead / Frunte rotundă",
-      "High Forehead / Frunte înaltă",
-      "Low Forehead / Frunte joasă",
-      "Wide Forehead / Frunte lată",
-      "Narrow Forehead / Frunte îngustă",
-      "Bulging Forehead / Frunte bombată",
-      "Straight Forehead / Frunte dreaptă",
-      "Sloping Forehead / Frunte înclinată",
-      "Jagged/Irregular Forehead / Frunte dantelată",
-      "Prominent Brow Ridges / Arcade proeminente",
-      "Smooth Brow (No Brow Ridges) / Fără arcade proeminente",
-      "Fleshy Brow between Eyes / Umflătură cărnoasă între sprâncene"
-    ],
-    "Eyebrows": [
-      "New Moon” Eyebrows (Arched)/ Sprâncene lună nouă (arcuite) ",
-      "Triangular Eyebrows (Angular)/ Sprâncene triunghiulare (sabie)",
-      "Straight Eyebrows / Sprâncene drepte",
-      "Frowning” Up-Curved Eyebrows / Sprâncene încruntate (curbate în sus) ",
-      "Ascending Eyebrows / Sprâncene ascendente",
-      "Descending (“Sad”) Eyebrows / Sprâncene triste (descendente)",
-      "High-Set Eyebrows / Sprâncene înalte",
-      "Low-Set Eyebrows / Sprâncene joase",
-      "Close (Narrow) Eyebrow Gap / Sprâncene apropiate",
-      "Unibrow / Sprâncene unite",
-      "Wide Brow Gap / Sprâncene depărtate",
-      "Long Eyebrows / Sprâncene lungi",
-      "Short Eyebrows / Sprâncene scurte",
-      "Separated Eyebrows / Sprâncene despărțite",
-      "Asymmetric Eyebrows / Sprâncene asimetrice",
-      "Thick Eyebrows / Sprâncene dese (groase)",
-      "Thin Eyebrows / Sprâncene rare (subțiri)",
-      "Bushy Eyebrows / Sprâncene încâlcite (stufoase)",
-      "Straight-haired Inner Brow / Sprâncene cu păr drept la început",
-      "Scattered-haired Eyebrows / Sprâncene cu păr împrăștiat",
-      "Chameleon” Eyebrows / Sprâncene cameleon"
-    ],
-    "Eyes": [
-      "Deer Eyes / Ochi de căprioară ",
-      "Camel Eyes / Ochi de cămilă",
-      "Horse Eyes / Ochi de cal",
-      "Heavy Horse Eyes / Ochi de cal greu",
-      "Eagle Eyes / Ochi de vultur",
-      "Owl Eyes / Ochi de bufniță",
-      "Peacock Eyes / Ochi de păun",
-      "High Peacock Eyes / Ochii de păun înalt ",
-      "Ostrich Eyes / Ochi de struț ",
-      "Ostrich Eyes / Ochi de struț ",
-      "Lion Eyes / Ochi de leu",
-      "Cat Eyes / Ochi de pisică ",
-      "Fox Eyes / Ochi de vulpe",
-      "Whale Eyes / Ochi de balenă",
-      "Dolphin Eyes / Ochi de delfin",
-      "Half-Moon Eyes / Ochi semilună",
-      "New Moon Eyes / Ochi lună nouă",
-      "Wide-Set Eyes / Ochi depărtați ",
-      "Close-Set Eyes / Ochi apropiați ",
-      "Deep-Set Eyes (Hidden Lids) / Ochi adânciți, fără pleoape vizibile",
-      "Deep-Set Eyes (Visible Lids) / Ochi adânciți, cu pleoape vizibile",
-      "Bulging Eyes / Ochi bulbucați",
-      "Visible Upper Sclera / Sclera vizibilă în partea superioară",
-      "Visible Lower Sclera / Sclera vizibilă în partea inferioară",
-      "Visible Sclera All Around / Sclera vizibilă sus și jos",
-      "Iris Smaller than White / Irisul mai mic decât sclera ",
-      "Iris Larger than White / Irisul mai mare decât sclera ",
-      "Dilated Pupils / Pupile dilatate",
-      "Constricted Pupils / Pupile contractate ",
-      "Premonition Points” / Punctele premoniției ",
-      "Under-Eye Bags / Pungi sub ochi",
-      "Short Eyelashes / Gene scurte",
-      "Long Eyelashes / Gene lungi",
-      "Heavy Upper Eyelids / Pleoape grele",
-      "Drooping Lids (Fully) / Pleoape căzute pe tot ochiul",
-      "Drooping Lids (Outer Corners) / Pleoape căzute pe exteriorul ochiului",
-      "Straight Lower Eyelids / Pleoape inferioare drepte",
-      "Curved Lower Eyelids / Pleoape inferioare curbate",
-      "Hooded Upper Eyelids / Pleoape superioare acoperite ",
-      "Visible Upper Eyelid (Double Lid) / Pleoape superioare vizibile",
-      "Slightly Visible Upper Eyelid / Pleoape superioare puțin vizibile",
-    ],
-    "Nose": [
-      "Fleshy Bridge / Pod cărnos",
-      "Straight Bridge (“Greek nose”) / Pod drept (nas grecesc) ",
-      "Roman Nose (Small Bump) / Nas roman ",
-      "Aquiline (Hooked) Bridge / Pod cu os proeminent (nas acvilin)",
-      " Nubian Nose (Wide base) / Nasul nubian",
-      "Arched or Humped Bridge / Pod arcuit (cocoșat) ",
-      "Bumpy Bridge / Pod denivelat",
-      "Crooked Bridge / Pod deformat (strâmb)",
-      "Deviated Bridge Right / Pod deviat spre dreapta",
-      "Deviated Bridge Left / Pod deviat spre stânga ",
-
-    ],
-    "Cheeks and Cheekbones": [
-      "Full Cheeks / Obraji umflați (plini)",
-      "Hollow Cheeks / Obraji scobiți",
-      "Lower Cheek-Jowls (“Bulldog” Cheeks) / Obraji inferiori proeminenți (fălcoșii)",
-      "Fleshy Cheekbones / Pomeți cărnoși",
-      "Bony Cheekbones / Pomeți osoși",
-      "Flat Cheekbones / Pomeți plați",
-      "High Cheekbones / Pomeți înalți (ridicați) ",
-      "Low Cheekbones / Pomeți joși",
-      "Cheekbones Near Nose (Front-Set) / Pomeți apropiați de nas",
-      "Cheekbones Near Ears (Side-Set) / Pomeți apropiați de urechi",
-    ],
-    "Mouth and Lips": [
-      "Both Lips Full / Buze cărnoase (pline)",
-      "Both Lips Thin / Buze subțiri ",
-      "Medium (Balanced) Lips / Buze medii (obișnuite)",
-      "Short, Pouty Lips / Buze mici (scurte) și voluminoase în centru",
-      "Straight Lip Line / Linie orizontală între buze",
-      "Wavy Lip Line / Linie ondulată între buze",
-      "Down-turned Lip Corners / Colțurile buzelor în jos ",
-      "Up-turned Lip Corners / Colțurile buzelor în sus",
-      "Pursed (Protruding) Lips / Buze țuguiate",
-      "Upper Lip Fuller than Lower / Buză superioară mai plină decât inferioară ",
-      "Lower Lip Fuller than Upper / Buză inferioară mai plină decât superioară ",
-      "Protruding Lower Lip / Buza inferioară împinsă în față ",
-      "Upper Lip Juts Out / Buza superioară iese în afară ",
-      "Epicurean Mouth (Full Projection) / Gură “epicureică” (ieșită în afară)",
-      "Micro-Movements of Lower Lip / Coborâre mijlocie a buzei inferioare ",
-      "Lower Lip Muscle Bumps / Umflături sub buza inferioară",
-      "Chin Dimple (Cleft Chin) / Gropiță în bărbie",
-    ],
-    "Chin and Jawline": [
-      "Rounded Chin / Bărbie rotunjită ",
-      "Pointed Chin / Bărbie ascuțită",
-      "Square Chin / Bărbie pătrată",
-      "Protruding Chin / Bărbie proeminentă",
-      " Receding Chin / Bărbie retrasă",
-      "Strong Jawline / Maxilar puternic (proeminent)",
-      "Weak Jawline / Maxilar slab (slab definit) ",
-      "Wide Jaw / Maxilar lat",
-      "Narrow Jaw / Maxilar îngust",
-      "Jaw Corner Angle (Blunt vs. Sharp) / Unghiul maxilarului blând vs. pronunțat ",
-      "Asymmetric Jaw / Maxilar asimetric",
-      "Double Chin / Gușă (bărbie dublă) ",
-      "Receding Jaw (Retrognathism) / Maxilar retras ",
-      "Prognathic Jaw / Maxilar prognat",
-    ],
-    "Ear (Urechile)": [
-      "High-Set Ears / Urechi înalte ",
-      "Low-Set Ears / Urechi joase",
-      "Centrally Aligned Ears / Urechi mijlocii",
-      "Uneven Height Ears / Urechi poziționate inegal",
-      "Ears Flat Against Head / Urechi lipite de cap",
-      "Protruding Ears / Urechi depărtate de cap (decolate)",
-      "Ears Tilted Backward / Urechi înclinate spre spate",
-      "Ears Tilted Forward / Urechi înclinate spre față",
-      "Vertical Ears / Urechi drepte ",
-      "Ears Close to Face / Urechi apropiate de chip",
-      "Ears Away from Face / Urechi depărtate de chip",
-      "Large Ears / Urechi mari",
-      "Medium Ears / Urechi medii",
-      "Small Ears / Urechi mici",
-      "Different-Sized Ears / Urechi de mărimi diferite",
-      "Hairy Ears / Urechi păroase",
-      "Deformed Ears / Urechi deformate",
-      "Pale Ears / Urechi palide ",
-      "Grayish Ears / Urechi gri",
-      "Reddish Ears / Urechi roșiatice",
-      "Brownish Ears / Urechi maronii",
-      "Visible Red Veins on Ears / Vene roșii pe urechi",
-      "Pronounced Ear Cartilage Inside / Cartilaj interior evidențiat ",
-      "Large Earlobe Hole / Gaură mare în lobul urechii",
-      "Small Earlobe Hole / Gaură mică în lobul urechii",
-    ],
-    "Neck and Throat": [
-      "Thick Neck / Gât gros",
-      "Thin Neck / Gât subțire",
-      "Long Neck / Gât lung",
-      "Short Neck / Gât scurt ",
-      "Sharp Mento-Cervical Angle / Unghi mento-cervical ascuțit ",
-      "Obtuse Mento-Cervical Angle / Unghi mento-cervical obtuz ",
-      "Prominent Adam's Apple / “Mărul lui Adam” proeminent ",
-      "Neck Folds or Rings / Pliuri pe gât (linii ale gâtului)",
-      "Visible Neck Tendons / Tendoane vizibile pe gât",
-      "Inclined Head Posture / Cap aplecat sau înclinat",
-    ],
-    "Skin Texture and Facial Wrinkles": [
-      "Smooth, Oily Skin / Ten neted, gras",
-      "Dry, Matte Skin / Ten uscat, mat",
-      "Freckles or Sunspots / Pistrui sau pete solare",
-      " Facial Moles (Beauty Marks) / Alunițe pe față",
-      "Facial Scars / Cicatrici faciale",
-      "Acne or Blemishes / Acnee sau pete",
-      " Facial Redness / Roșeață în obraz",
-      " Sagging or Firm Skin ",
-      "Facial Hair (Unusual) / Păr facial (excesiv)",
-    ]
-  }
-
 
   const resetHomeScreen = () => {
     navigate(`/`);
@@ -542,82 +319,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
                 }}
               />
             ) : (
-              <div className="popup">
-                <h4>{submitting ? "Se trimite..." : `Selectează opțiunea pentru:`}</h4>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={step}
-                    initial={{ x: 50, opacity: 0 }}
-                    animate={{ x: 0, opacity: 1 }}
-                    exit={{ x: -50, opacity: 0 }}
-                    transition={{ duration: 0.4 }}
-                  >
-                    <div className="labelBtn">
-                      <label>{sidebarItems[step].name}</label>
-                      <button className="ask-ai-btn" onClick={handleClick}>
-                        Întrebat de AI
-                      </button>
-                    </div>
-                    <Select
-                        isMulti
-                        isSearchable
-                        className="react-select-container"
-                        classNamePrefix="react-select"
-                        placeholder="Selectează opțiuni..."
-                        value={selectedOption.map((opt) => ({ value: opt, label: opt }))}
-                        options={optionsData[sidebarItems[step].name]?.map((opt) => ({
-                          value: opt,
-                          label: opt,
-                        }))}
-                        onChange={(selected) => {
-                          setSelectedOption(selected ? selected.map((s) => s.value) : []);
-                        }}
-                        isDisabled={submitting}
-                        menuPortalTarget={document.body}
-                        menuPosition="fixed"
-                        styles={{
-                          menuPortal: (base) => ({ ...base, zIndex: 9999 }),
-                          control: (base) => ({ ...base, minHeight: "auto" }),
-                          valueContainer: (base) => ({ ...base, height: "auto", flexWrap: "wrap" }),
-                        }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
-
-                <div className="popup-footer">
-                  <div className="arrow-buttons">
-                    <button
-                      className="arrow-btn left"
-                      onClick={handlePrev}
-                      disabled={step === 0 || submitting}
-                    >
-                      <FiArrowLeft size={20} />
-                    </button>
-                    <button
-                      className="arrow-btn right"
-                      onClick={handleNext}
-                      disabled={submitting}
-                    >
-                      <FiArrowRight size={20} />
-                    </button>
-                  </div>
-                  <span className="step-counter">
-                    {step + 1} / {sidebarItems.length}
-                  </span>
-                  <button
-                    className="next-btn"
-                    onClick={handleNext}
-                    disabled={submitting}
-                  >
-                    {submitting
-                      ? "Se trimite..."
-                      : step < sidebarItems.length - 1
-                        ? "Următor"
-                        : "Finalizează"}
-                  </button>
-                </div>
-              </div>
+          <></>
             )}
           </>
         )}
@@ -628,7 +330,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         refreshTrigger={refreshTrigger}
       />
 
-      <LeftSidebar sidebarItems={sidebarItems} answers={answers} />
+      <LeftSidebar sidebarItems={sidebarItems} imagePreviews={imagePreviews}  answers={answers} setAnswers={setAnswers}/>
 
 
     </>
