@@ -81,6 +81,17 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         }
     };
 
+useEffect(() => {
+  const handleRefresh = () => {
+    fetchHistory();
+  };
+
+  window.addEventListener("refreshChatHistory", handleRefresh);
+
+  return () => {
+    window.removeEventListener("refreshChatHistory", handleRefresh);
+  };
+}, []);
 
     useEffect(() => {
         fetchHistory();
