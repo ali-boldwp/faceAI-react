@@ -500,7 +500,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
               <div className="uploaded-image-container multiple">
                 {imagePreviews.map((src, i) => (
                   <div key={i} className="uploaded-image-box">
-                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" style="height; 350px" />
+                    <img src={src} alt={`Preview ${i}`} className="uploaded-image" style={{ height: "350px"}} />
                   </div>
                 ))}
               </div>
