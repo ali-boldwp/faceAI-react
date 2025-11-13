@@ -8,7 +8,7 @@ import { logout } from "../feature/auth/authSlice";
 import { useNavigate} from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 
-import logo04 from "assets/images/logo/logo.png";
+import logo04 from "assets/images/logo/logo-04.png";
 import avatar05 from "assets/images/avatar/05.png";
 import user2 from "assets/images/avatar/user-2.svg";
 
@@ -44,13 +44,13 @@ const TopBar = () => {
 
     return (
         <>
-            <div className="header-area-one">
+            <div className="header-area-one" style={{padding:"10px"}}>
                 <div className="container-30">
                     <Col lg={12}>
                         <div className="header-inner-one">
                             <div className="left-logo-area">
                                 <Link to="/"  >
-                                    <img src={logo04} alt="logo-image" style={{ width:"100%",height:"50px" }} />
+                                    <img src={logo04} alt="logo-image" style={{ width:"100px", }} />
                                 </Link>
                             </div>
                             <div className="header-right">

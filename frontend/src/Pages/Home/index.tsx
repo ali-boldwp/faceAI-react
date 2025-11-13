@@ -33,6 +33,8 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const [isExistingProfile, setIsExistingProfile] = useState(false);
   const [aiPersonality, setAiPersonality] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [isNoData,setIsNoData] = useState(true);
+  
 
   const { id } = useParams<{ id: string }>();
 
@@ -254,12 +256,24 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
   const resetHomeScreen = () => {
     navigate(`/`);
   };
+useEffect(() => {
+  if (imagePreviews.length > 0) {
+    setIsNoData(false);
+  } else {
+    setIsNoData(true);
+  }
+}, [imagePreviews]);
 
 
 
   return (
     <>
-      <div
+      <div 
+        style={{
+    maxWidth: isNoData ? "100%" : id ? "calc(100% - 624px)" : "calc(100% - 900px)",
+    
+
+  }}
         className={`main-center-content-m-left center-content search-sticky ${themeSidebarToggle ? "collapsed" : ""
           }`}
       >
@@ -330,7 +344,14 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
         refreshTrigger={refreshTrigger}
       />
 
-      <LeftSidebar sidebarItems={sidebarItems} imagePreviews={imagePreviews}  answers={answers} setAnswers={setAnswers}/>
+      {imagePreviews.length > 0 && (
+  <LeftSidebar
+    sidebarItems={sidebarItems}
+    imagePreviews={imagePreviews}
+    answers={answers}
+    setAnswers={setAnswers}
+  />
+)}
 
 
     </>
