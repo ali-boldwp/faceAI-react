@@ -8,31 +8,15 @@ import { logout } from "../feature/auth/authSlice";
 import { useNavigate} from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 
-import logo04 from "assets/images/logo/logo.png";
+import logo04 from "assets/images/logo/logo-04.png";
 import avatar05 from "assets/images/avatar/05.png";
 import user2 from "assets/images/avatar/user-2.svg";
-import {useMainContext} from "../context/useMainContext";
 
 const TopBar = () => {
 
     const [isProfile, setIsProfile] = useState(false);
     const navigate = useNavigate();
-    const api = useMainContext();
-    const [user, setUser] = useState<{ name: string } | null>(null);
 
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const res = await api.getCurrentUser();
-                setUser(res);
-            } catch (err) {
-                console.error("Failed to fetch user:", err);
-            }
-        };
-
-        fetchUser();
-    }, [api]);
 
     const toggleProfile = () => {
         setIsProfile(!isProfile);
@@ -60,13 +44,13 @@ const TopBar = () => {
 
     return (
         <>
-            <div className="header-area-one">
+            <div className="header-area-one" style={{padding:"10px"}}>
                 <div className="container-30">
                     <Col lg={12}>
                         <div className="header-inner-one">
                             <div className="left-logo-area">
                                 <Link to="/"  >
-                                    <img src={logo04} alt="logo-image" style={{ width:"100%",height:"50px" }} />
+                                    <img src={logo04} alt="logo-image" style={{ width:"100px", }} />
                                 </Link>
                             </div>
                             <div className="header-right">
@@ -84,7 +68,7 @@ const TopBar = () => {
                                                     <img src={user2} alt="user" />
                                                 </div>
                                                 <div className="user_naim-information">
-                                                    <h3 className="title">{user?.name || "Nume utilizator"}</h3>
+                                                    <h3 className="title">MR.Zaman Habib</h3>
                                                     <span className="desig"></span>
                                                 </div>
                                             </div>
