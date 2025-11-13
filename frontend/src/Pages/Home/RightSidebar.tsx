@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { IoTrashOutline } from "react-icons/io5";
 import toast from "react-hot-toast";
 
-
+// Import images
 import logo02 from "assets/images/logo/logo-02.png";
 import icons04 from "assets/images/icons/04.png";
 import icons05 from "assets/images/icons/05.svg";
 import icons01 from "assets/images/icons/01.svg";
-import {useMainContext} from "../../context/useMainContext";
 
 interface RightSidebarProps {
     startNewChat?: () => void;
@@ -22,19 +22,17 @@ interface FaceProfile {
     createdAt: string;
 }
 
-
 const RightSidebar: React.FC<RightSidebarProps> = ({
     startNewChat,
     onSelectProfile,
     refreshTrigger,
 }) => {
-    const api = useMainContext();
     const [isToggleRightSidebar, setIsToggleRightSidebar] = useState<boolean>(true);
     const [history, setHistory] = useState<FaceProfile[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [activeProfileId, setActiveProfileId] = useState<string | null>(null);
 
-
+    // Delete modal state
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [profileToDelete, setProfileToDelete] = useState<FaceProfile | null>(null);
 
@@ -60,17 +58,24 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
     const fetchHistory = async () => {
         try {
             setLoading(true);
-            const res = await api.getFaceProfiles();
-            if (res.success) {
-                const sorted = res.data.sort(
+
+            const token = localStorage.getItem("token");
+
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/face-profiles`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (res.data.success) {
+                const sorted = res.data.data.sort(
                     (a: FaceProfile, b: FaceProfile) =>
                         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                 );
-
                 setHistory(sorted);
             }
         } catch (err) {
-            console.error(err);
+            console.error("Error fetching chat history:", err);
         } finally {
             setLoading(false);
         }
@@ -95,12 +100,18 @@ useEffect(() => {
 
     const handleDeleteProfile = async (id: string) => {
         try {
-            await api.deleteFaceProfile(id);
-            setHistory(prev => prev.filter(p => p._id !== id));
+            await axios.delete(`${process.env.REACT_APP_API_URL}/face-profiles/${id}`);
+
+            // Remove from local history
+            setHistory((prev) => prev.filter((p) => p._id !== id));
             if (activeProfileId === id) setActiveProfileId(null);
+
+
             toast.success("Profile deleted successfully");
         } catch (err) {
-            console.error(err);
+            console.error("Error deleting profile:", err);
+
+
             toast.error("Failed to delete profile");
         }
     };
@@ -139,7 +150,7 @@ useEffect(() => {
 
     return (
         <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{ borderRight: "1px solid #E5E4FF" }}>
-
+            {/* New Chat Button */}
             <div className="new-chat-option">
                 <button
                     onClick={resetHomeScreen}
@@ -151,7 +162,7 @@ useEffect(() => {
             </div>
 
 
-
+            {/* Chat History */}
             <div className="chat-history-wrapper">
                 {loading ? (
                     <p style={{ padding: "10px" }}>Loading...</p>
@@ -185,12 +196,12 @@ useEffect(() => {
                 )}
             </div>
 
-
+            {/* Toggle Sidebar */}
             <div onClick={toggleRightSidebar} className="right-side-open-clouse" id="collups-right">
                 <img src={icons01} alt="icons" />
             </div>
 
-
+            {/* Delete Confirmation Modal */}
             {showDeleteModal && profileToDelete && (
                 <div className="delete-modal-overlay">
                     <div className="delete-modal">
