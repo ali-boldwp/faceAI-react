@@ -19,7 +19,6 @@ import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
-import {useMainContext} from "../context/useMainContext";
 
 interface SidebarItem {
   name: string;
@@ -55,7 +54,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
-  const api = useMainContext();
   const [step, setStep] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string[]>([]);
 
@@ -126,6 +124,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
       "Owl Eyes / Ochi de bufniță",
       "Peacock Eyes / Ochi de păun",
       "High Peacock Eyes / Ochii de păun înalt ",
+      "Ostrich Eyes / Ochi de struț ",
       "Ostrich Eyes / Ochi de struț ",
       "Lion Eyes / Ochi de leu",
       "Cat Eyes / Ochi de pisică ",
@@ -314,6 +313,7 @@ useEffect(() => {
         answer: Array.isArray(answer) ? answer : [answer],
       }));
 
+
       const now = new Date();
       const title = `Profilul feței – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
 
@@ -323,26 +323,40 @@ useEffect(() => {
         questions: questionsArray,
       };
 
-      // ✅ Use api from MainContext instead of axios
-      const res = await toast.promise(api.createFaceProfile(payload), {
-        loading: "Se salvează profilul...",
-        success: "Profilul a fost salvat cu succes!",
-        error: "Salvarea profilului a eșuat.",
-      });
+      const token = localStorage.getItem("token");
+
+      const res = await toast.promise(
+        axios.post(
+          `${process.env.REACT_APP_API_URL}/face-profiles`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
+        {
+          loading: "Se salvează profilul...",
+          success: "Profilul a fost salvat cu succes!",
+          error: "Salvarea profilului a eșuat.",
+
+        }
+      );
 
       setRefreshTrigger(prev => prev + 1);
 
-      if (res.data?.aiPersonality) {
-        setAiPersonality(res.data.aiPersonality);
+      if (res.data?.data?.aiPersonality) {
+        setAiPersonality(res.data.data.aiPersonality);
       }
 
-      const newProfileId = res.data?._id;
+      // ✅ Redirect to the sidebar route with the new profile ID
+      const newProfileId = res.data?.data?._id;
       if (newProfileId) {
-        window.dispatchEvent(new Event("refreshChatHistory"));
+          window.dispatchEvent(new Event("refreshChatHistory"));
         navigate(`/${newProfileId}`);
       }
 
-      setRefreshTrigger(prev => prev + 1);
+      setRefreshTrigger((prev) => prev + 1);
       console.log("✅ Salvat cu succes");
     } catch (error) {
       console.error("❌ Eroare la trimiterea datelor:", error);
@@ -351,7 +365,6 @@ useEffect(() => {
       setSubmitting(false);
     }
   };
-
 
 
   const handlePrev = () => {
@@ -495,8 +508,11 @@ useEffect(() => {
               </span>
 
             </div>
-           </div>
-          }
+          </div>}
+
+
+
+
         </div>
       </div>
     </div>
