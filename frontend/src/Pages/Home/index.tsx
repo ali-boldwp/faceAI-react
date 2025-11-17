@@ -225,31 +225,7 @@ const Home: React.FC<HomeProps> = ({ sidebarItems, answers, setAnswers }) => {
     if (step > 0) setStep(step - 1);
   };
 
-  const handleClick = async () => {
-    try {
-      console.log("👾 Calling random API...");
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
-          side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
-        }),
 
-      });
-
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-      const data = await res.json();
-      console.log("✅ API Response:", data);
-      alert(`🤖 Date preluate de AI:\n${JSON.stringify(data, null, 2)}`);
-    } catch (err) {
-      console.error("❌ Eroare API:", err);
-      alert("Apelul API a eșuat!");
-    }
-  };
 
 
 

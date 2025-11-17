@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   GiNoseFront,
   GiEyeball,
@@ -11,23 +11,22 @@ import {
 } from "react-icons/gi";
 import { FaRegGrinBeam, FaEye, FaUserCircle } from "react-icons/fa";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { BsEmojiSmile } from "react-icons/bs";
 import { PiSmileyWinkBold } from "react-icons/pi";
 import { useSelector } from "react-redux";
 import { RootState } from "Slices/theme/store";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface SidebarItem {
   name: string;
 }
+
 interface LeftSidebarProps {
   sidebarItems: SidebarItem[];
   imagePreviews: string[];
-   answers: { [key: string]: string | string[] };
-    setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string | string[] }>>;
+  answers: { [key: string]: string | string[] };
+  setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string | string[] }>>;
 }
 
 const nameTranslations: { [key: string]: string } = {
@@ -44,23 +43,43 @@ const nameTranslations: { [key: string]: string } = {
   "Skin Texture and Facial Wrinkles": "Textura pielii și ridurile feței",
 };
 
-
-const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, answers, setAnswers }) => {
+const LeftSidebar: React.FC<LeftSidebarProps> = ({
+                                                   sidebarItems,
+                                                   imagePreviews,
+                                                   answers,
+                                                   setAnswers,
+                                                 }) => {
   const location = useLocation();
-  const themeSidebarToggle = useSelector(
-    (state: RootState) => state.theme.themeSidebarToggle
-  );
-  const themeType = useSelector((state: RootState) => state.theme.themeType);
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
 
+  const themeSidebarToggle = useSelector((state: RootState) => state.theme.themeSidebarToggle);
+  const themeType = useSelector((state: RootState) => state.theme.themeType);
+
   const [step, setStep] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string[]>([]);
-
+  const [customInput, setCustomInput] = useState("");
+  const [nameCompleted, setNameCompleted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [aiPersonality, setAiPersonality] = useState("");
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [aiResponse, setAiResponse] = useState<any>(null);
 
+
+  const icons = [
+    <GiHeadshot />,
+    <GiAbstract002 />,
+    <FaRegGrinBeam />,
+    <FaEye />,
+    <GiNoseFront />,
+    <GiEyeball />,
+    <GiLips />,
+    <PiSmileyWinkBold />,
+    <GiHumanEar />,
+    <GiBodyHeight />,
+    <FaUserCircle />,
+  ];
+  const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
 
   const optionsData: Record<string, string[]> = {
     "Face Shape": [
@@ -270,43 +289,60 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({ sidebarItems, imagePreviews, 
     ]
   }
 
+
+  // Load previous answers when step changes
   useEffect(() => {
-    const prevAnswer = answers[sidebarItems[step].name];
-    if (prevAnswer) {
-      setSelectedOption(Array.isArray(prevAnswer) ? prevAnswer : [prevAnswer]);
-    } else {
-      setSelectedOption([]);
-    }
-  }, [step, answers, sidebarItems]);
+    const key = sidebarItems[step]?.name;
+    if (!key) return;
 
-  const handleNext = async () => {
-    if (selectedOption && selectedOption.length > 0) {
-      setAnswers((prev) => ({
-        ...prev,
-        [sidebarItems[step].name]: selectedOption,
-      }));
-      setSelectedOption([]);
+    const prev = answers[key];
+    setSelectedOption(prev ? (Array.isArray(prev) ? prev : [prev]) : []);
+  }, [step]);
+
+
+  const handleCheckboxChange = (value: string) => {
+    setSelectedOption(prev => prev.includes(value) ? prev.filter(opt => opt !== value) : [...prev, value]);
+  };
+
+  const handleNext = () => {
+    const stepKey = sidebarItems[step]?.name;
+    if (!stepKey) return;
+
+    if (step === 0 && !nameCompleted) {
+      if (!customInput.trim()) {
+        toast.error("Please enter a name!");
+        return;
+      }
+      setAnswers(prev => ({ ...prev, [stepKey + "_custom"]: customInput.trim() }));
+      setNameCompleted(true);
+      return;
     }
 
+    if (selectedOption.length === 0) {
+      toast.error("Te rog selectează sau completează un răspuns!");
+      return;
+    }
+
+    setAnswers(prev => ({ ...prev, [stepKey]: selectedOption }));
 
     if (step < sidebarItems.length - 1) {
-      setStep(step + 1);
+      setStep(prev => prev + 1);
     } else {
-      await submitData();
+      submitData();
     }
   };
-useEffect(() => {
-  if (!id) {
-    // ✅ Jab new chat start ho (no id in URL), sab reset kar do
-    setAnswers({});
-    setSelectedOption([]);
-    setStep(0);
-  }
-}, [id, setAnswers]);
+
+  const handlePrev = () => {
+    if (step > 0) setStep(prev => prev - 1);
+  };
 
   const submitData = async () => {
     try {
       setSubmitting(true);
+
+
+      const customNameKey = sidebarItems[0].name + "_custom";
+      const customName = answers[customNameKey] || "Profilul feței";
 
       const questionsArray = Object.entries(answers).map(([question, answer]) => ({
         question,
@@ -314,52 +350,31 @@ useEffect(() => {
       }));
 
 
-      const now = new Date();
-      const title = `Profilul feței – ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-
-      const payload = {
-        title,
-        images: imagePreviews,
-        questions: questionsArray,
-      };
-
+      const title = `${customName}`;
+      const payload = { title, images: imagePreviews, questions: questionsArray };
       const token = localStorage.getItem("token");
 
       const res = await toast.promise(
-        axios.post(
-          `${process.env.REACT_APP_API_URL}/face-profiles`,
-          payload,
+          axios.post(`${process.env.REACT_APP_API_URL}/face-profiles`, payload, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            loading: "Se salvează profilul...",
+            success: "Profilul a fost salvat cu succes!",
+            error: "Salvarea profilului a eșuat.",
           }
-        ),
-        {
-          loading: "Se salvează profilul...",
-          success: "Profilul a fost salvat cu succes!",
-          error: "Salvarea profilului a eșuat.",
-
-        }
       );
 
-      setRefreshTrigger(prev => prev + 1);
+      if (res.data?.data?.aiPersonality) setAiPersonality(res.data.data.aiPersonality);
 
-      if (res.data?.data?.aiPersonality) {
-        setAiPersonality(res.data.data.aiPersonality);
-      }
-
-      // ✅ Redirect to the sidebar route with the new profile ID
       const newProfileId = res.data?.data?._id;
       if (newProfileId) {
-          window.dispatchEvent(new Event("refreshChatHistory"));
+        window.dispatchEvent(new Event("refreshChatHistory"));
         navigate(`/${newProfileId}`);
       }
-
       setRefreshTrigger((prev) => prev + 1);
-      console.log("✅ Salvat cu succes");
-    } catch (error) {
-      console.error("❌ Eroare la trimiterea datelor:", error);
+    } catch (err) {
+      console.error(err);
       toast.error("Ceva nu a mers bine la trimitere!");
     } finally {
       setSubmitting(false);
@@ -367,155 +382,171 @@ useEffect(() => {
   };
 
 
-  const handlePrev = () => {
-    if (step > 0) setStep(step - 1);
-  };
 
-  const handleClick = async () => {
+  const handleAskByAI = async () => {
     try {
-      console.log("👾 Calling random API...");
       const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          front_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436079/wre7a82g4lojlbem3dl8.jpg",
-          side_image_url: "https://res.cloudinary.com/dxcocwxzs/image/upload/v1762436083/zdg2deynsyjvg1dcmojz.jpg",
+          front_image_url: imagePreviews[0],
+          side_image_url: imagePreviews[1],
         }),
-
       });
 
-      if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
       const data = await res.json();
-      console.log("✅ API Response:", data);
-      alert(`🤖 Date preluate de AI:\n${JSON.stringify(data, null, 2)}`);
+      setAiResponse(data);
+
+      const mapped = autoSelectFromAI(data);
+      setAnswers(prev => ({ ...prev, ...mapped }));
+
+
+      const currentKey = sidebarItems[step].name;
+      if (mapped[currentKey]) {
+        setSelectedOption(mapped[currentKey]);
+      }
+
+      toast.success("AI suggested options applied!");
     } catch (err) {
-      console.error("❌ Eroare API:", err);
-      alert("Apelul API a eșuat!");
+      console.error(err);
+      toast.error("AI request failed.");
     }
   };
 
-  const handleCheckboxChange = (value: string) => {
-    if (selectedOption.includes(value)) {
-      setSelectedOption(selectedOption.filter((opt) => opt !== value));
-    } else {
-      setSelectedOption([...selectedOption, value]);
+
+  const autoSelectFromAI = (data: any) => {
+    const updates: any = {};
+
+    if (data.primary_shape) {
+      updates["Face Shape"] = optionsData["Face Shape"].filter(opt =>
+          opt.toLowerCase().includes(data.primary_shape.toLowerCase())
+      );
     }
+
+    if (data.hairline_shape) {
+      updates["Forehead"] = optionsData["Forehead"].filter(opt =>
+          opt.toLowerCase().includes(data.hairline_shape.toLowerCase())
+      );
+    }
+
+    return updates;
   };
 
-  const currentOptions = optionsData[sidebarItems[step].name] || [];
 
 
+  useEffect(() => {
+    if (!id) {
+      setAnswers({});
+      setSelectedOption([]);
+      setStep(0);
+      setCustomInput("");
+      setNameCompleted(false);
+    }
+  }, [id, setAnswers]);
 
-  const icons = [
-    <GiHeadshot />,
-    <GiAbstract002 />,
-    <FaRegGrinBeam />,
-    <FaEye />,
-    <GiNoseFront />,
-    <GiEyeball />,
-    <GiLips />,
-    <PiSmileyWinkBold />,
-    <GiHumanEar />,
-    <GiBodyHeight />,
-    <FaUserCircle />,
-  ];
-  const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
+  const currentOptions = optionsData[sidebarItems[step]?.name] || [];
+
   return (
-    <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`} style={{ borderLeft: "1px solid #E5E4FF",  width: id ? "320px" : "620px",}}>
-      <div className="inner" style={{ height: "100%", overflow: "auto" }}>
-        <div className="single-menu-wrapper">
-
-
-          {(id) ? <>
-            {sidebarItems.map((item, index) => (
-              <Link
-                key={index}
-                to="#"
-                className={`single-menu ${location.pathname === item.name ? "active" : ""}`}
-              >
-                <div className="icon" style={{ fontSize: "20px", color: getIconColor() }}>
-                  {icons[index]}
-                </div>
-                <p style={{ color: getIconColor() }}>
-                  {nameTranslations[item.name] || item.name}:{" "}
-                  <span style={{ color: getIconColor() }}>
-                    {Array.isArray(answers[item.name])
-                      ? (answers[item.name] as string[]).join(", ")
-                      : (answers[item.name] as string) || "____"}
+      <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`} style={{ borderLeft: "1px solid #E5E4FF", width: id ? "320px" : "620px" }}>
+        <div className="inner" style={{ height: "100%", overflow: "auto" }}>
+          <div className="single-menu-wrapper">
+            {id ? (
+                sidebarItems.map((item, index) => (
+                    <Link key={index} to="#" className={`single-menu ${location.pathname === item.name ? "active" : ""}`}>
+                      <div className="icon" style={{ fontSize: "20px", color: getIconColor() }}>{icons[index]}</div>
+                      <p style={{ color: getIconColor() }}>
+                        {nameTranslations[item.name] || item.name}:{" "}
+                        <span style={{ color: getIconColor() }}>
+                    {Array.isArray(answers[item.name]) ? (answers[item.name] as string[]).join(", ") : (answers[item.name] as string) || "____"}
                   </span>
-                </p>
-              </Link>
-            ))}</> : <div >
-            <h4>{submitting ? "Se trimite..." : `Selectează opțiunea pentru:`}</h4>
+                      </p>
+                    </Link>
+                ))
+            ) : (
+                <div>
+                  <h4>{submitting ? "Se trimite..." : `Selectează opțiunea pentru:`}</h4>
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                        key={step}
+                        initial={{ x: 50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -50, opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                    >
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={step}
-                initial={{ x: 50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -50, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
+                      {step === 0 && !nameCompleted ? (
+                          <input
+                              type="text"
+                              value={customInput}
+                              onChange={(e) => setCustomInput(e.target.value)}
+                              placeholder="Introdu numele"
+                              disabled={submitting}
+                              style={{ width: "100%", padding: "8px", margin: "10px 0" ,border:"1px solid #E5E4FF", borderRadius: 10 }}
+                          />
+                      ) : (
 
-                <h6>{sidebarItems[step].name}</h6>
-                <div style={{ width:"100%",height:"60vh",overflowY:"auto" }}>
-                {currentOptions.map((opt) => (
-                  <label
-                    key={opt}
-                    style={{
-                      display: "block",
-                      marginBottom: "5px",
-                      cursor: submitting ? "not-allowed" : "pointer",
-                    }}
-                  >
-                    <input
-                      type="checkbox"
-                      value={opt}
-                      checked={selectedOption.includes(opt)}
-                      onChange={() => handleCheckboxChange(opt)}
-                      disabled={submitting}
-                      style={{ marginRight: "8px" }}
-                    />
-                    {opt}
-                  </label>
-                ))}
+                        <div style={{ width: "100%", height: "60vh", overflowY: "auto" }}>
+                          <h6>{sidebarItems[step].name}</h6>
+                          {currentOptions.map((opt) => (
+                                <label
+                                    key={opt}
+                                    style={{
+                                      display: "block",
+                                      marginBottom: "5px",
+                                      cursor: submitting ? "not-allowed" : "pointer",
+                                    }}
+                                >
+                                  <input
+                                      type="checkbox"
+                                      value={opt}
+                                      checked={selectedOption.includes(opt)}
+                                      onChange={() => handleCheckboxChange(opt)}
+                                      disabled={submitting}
+                                      style={{ marginRight: "8px" }}
+                                  />
+                                  {opt}
+                                </label>
+                            ))}
+                          </div>
+                      )}
+                    </motion.div>
+                  </AnimatePresence>
+
+                  <div className="popup-footer" style={{ position: "absolute", bottom: "10px", width: "90%" }}>
+                    <div className="arrow-buttons">
+                      <button className="arrow-btn left" onClick={handlePrev} disabled={step === 0 || submitting}><FiArrowLeft size={20} /></button>
+                      <button className="arrow-btn right" onClick={handleNext} disabled={submitting}><FiArrowRight size={20} /></button>
+                    </div>
+                    <div>
+                      <button
+                          onClick={handleAskByAI}
+                          style={{
+                            padding: "10px 20px",
+                            backgroundColor: "#3F3EED",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "6px",
+                            cursor: "pointer",
+                            fontSize: "15px",
+                            fontWeight: 600,
+                            transition: "0.2s ease",
+                          }}
+                          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#3a7acc")}
+                          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#4A90E2")}
+                      >
+                        Ask by AI
+                      </button>
+                    </div>
+
+                    <span className="step-counter">{step + 1} / {sidebarItems.length}</span>
+                  </div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="popup-footer" style={{position:"absolute",bottom:"10px",width:"90%"}}>
-              <div className="arrow-buttons">
-                <button
-                  className="arrow-btn left"
-                  onClick={handlePrev}
-                  disabled={step === 0 || submitting}
-                >
-                  <FiArrowLeft size={20} />
-                </button>
-                <button
-                  className="arrow-btn right"
-                  onClick={handleNext}
-                  disabled={submitting}
-                >
-                  <FiArrowRight size={20} />
-                </button>
-              </div>
-              <span className="step-counter">
-                {step + 1} / {sidebarItems.length}
-              </span>
-
-            </div>
-          </div>}
-
-
-
-
+            )}
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 

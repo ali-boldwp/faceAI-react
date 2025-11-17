@@ -123,28 +123,34 @@ useEffect(() => {
         const yesterday = new Date();
         yesterday.setDate(today.getDate() - 1);
 
-        const formatDate = (date: Date) => date.toISOString().split("T")[0];
+        const formatDate = (date: Date) => date.toISOString().split("T")[0]; // 'YYYY-MM-DD'
         const todayStr = formatDate(today);
         const yesterdayStr = formatDate(yesterday);
 
         items.forEach((item) => {
             const itemDate = formatDate(new Date(item.createdAt));
-            let groupKey;
+            let groupKey: string;
+
             if (itemDate === todayStr) groupKey = "Astăzi";
             else if (itemDate === yesterdayStr) groupKey = "Ieri";
-            else
-                groupKey = new Date(item.createdAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                });
+            else {
+
+                const d = new Date(item.createdAt);
+                groupKey = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+            }
 
             if (!groups[groupKey]) groups[groupKey] = [];
             groups[groupKey].push(item);
         });
 
+
+        Object.keys(groups).forEach((key) => {
+            groups[key].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        });
+
         return groups;
     };
+
 
     const groupedHistory = groupHistoryByDate(history);
 
