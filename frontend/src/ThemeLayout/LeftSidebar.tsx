@@ -392,7 +392,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
         },
         body: JSON.stringify({
           front_image_url: imagePreviews[0],
-          side_image_url: imagePreviews[1],
+          side_image_url: imagePreviews[1] ? imagePreviews[1] : imagePreviews[0],
         }),
       });
 
@@ -551,3 +551,4 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 };
 
 export default LeftSidebar;
+
