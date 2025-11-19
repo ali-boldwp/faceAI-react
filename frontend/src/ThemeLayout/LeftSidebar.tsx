@@ -388,7 +388,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
       const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain",
         },
         body: JSON.stringify({
           front_image_url: imagePreviews[0],
@@ -551,4 +551,5 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 };
 
 export default LeftSidebar;
+
 
