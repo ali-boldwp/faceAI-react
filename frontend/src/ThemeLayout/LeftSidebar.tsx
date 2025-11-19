@@ -395,7 +395,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
           side_image_url: imagePreviews[1] ? imagePreviews[1] : imagePreviews[0],
         }),
       });
-
+      
       const data = await res.json();
       setAiResponse(data);
 
@@ -551,5 +551,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 };
 
 export default LeftSidebar;
+
 
 
