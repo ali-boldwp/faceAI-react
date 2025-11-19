@@ -385,7 +385,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
   const handleAskByAI = async () => {
     try {
-      const res = await fetch(`${process.env.REACT_APP_BASE_URL}/face/shape`, {
+      const res = await fetch(`http://projects-faceai-python-vajn5g-e6a6cc-185-185-80-245.traefik.me/face/shape`, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain",
@@ -551,6 +551,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 };
 
 export default LeftSidebar;
+
 
 
 
