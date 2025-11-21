@@ -385,7 +385,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
     const handleAskByAI = async () => {
         try {
-            const res = await fetch(`https://preview--main--faecai--ali.code.devregion.com/face/shape`, {
+            const res = await fetch(`${process.env.REACT_APP_AI_URL}/face/full`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "text/plain",
@@ -415,25 +415,149 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
         }
     };
 
+    // Try to pick options whose English part appears in the AI text
+    const matchOptionsFromText = (sectionKey: string, text: string): string[] => {
+        const options = optionsData[sectionKey] || [];
+        const lowerText = text.toLowerCase();
+
+        return options.filter((opt) => {
+            const english = opt.split("/")[0].replace(/[”“"]/g, "").trim().toLowerCase();
+            if (!english) return false;
+            return lowerText.includes(english);
+        });
+    };
+
 
     const autoSelectFromAI = (data: any) => {
-        const updates: any = {};
+        const updates: Record<string, string[]> = {};
 
-        if (data.primary_shape) {
-            updates["Face Shape"] = optionsData["Face Shape"].filter(opt =>
-                opt.toLowerCase().includes(data.primary_shape.toLowerCase())
-            );
+        // helper to find a section in the full-analysis JSON
+        const getSection = (name: string) =>
+            data?.sections?.find((sec: any) => sec.section === name);
+
+
+        // --------------------------------------------------------
+        // 1) Face Shape (top-level)
+        // --------------------------------------------------------
+        if (data?.primary_shape) {
+            const text = String(data.primary_shape);
+            const matched = matchOptionsFromText("Face Shape", text);
+            if (matched.length) updates["Face Shape"] = matched;
         }
 
-        if (data.hairline_shape) {
-            updates["Forehead"] = optionsData["Forehead"].filter(opt =>
-                opt.toLowerCase().includes(data.hairline_shape.toLowerCase())
-            );
+
+        // --------------------------------------------------------
+        // 2) Forehead
+        // --------------------------------------------------------
+        const foreheadSection = getSection("Forehead");
+        if (foreheadSection?.traits?.length) {
+            const traitName = String(foreheadSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Forehead", traitName);
+            if (matched.length) updates["Forehead"] = matched;
         }
+
+
+        // --------------------------------------------------------
+        // 3) Eyebrows (if backend adds this later)
+        // --------------------------------------------------------
+        const eyebrowsSection = getSection("Eyebrows");
+        if (eyebrowsSection?.traits?.length) {
+            const traitName = String(eyebrowsSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Eyebrows", traitName);
+            if (matched.length) updates["Eyebrows"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 4) Eyes
+        // --------------------------------------------------------
+        const eyesSection = getSection("Eyes");
+        if (eyesSection?.traits?.length) {
+            const traitName = String(eyesSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Eyes", traitName);
+            if (matched.length) updates["Eyes"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 5) Nose
+        // --------------------------------------------------------
+        const noseSection = getSection("Nose");
+        if (noseSection?.traits?.length) {
+            const traitName = String(noseSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Nose", traitName);
+            if (matched.length) updates["Nose"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 6) Cheeks and Cheekbones
+        // --------------------------------------------------------
+        const cheeksSection = getSection("Cheeks and Cheekbones");
+        if (cheeksSection?.traits?.length) {
+            const traitName = String(cheeksSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Cheeks and Cheekbones", traitName);
+            if (matched.length) updates["Cheeks and Cheekbones"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 7) Mouth and Lips
+        // --------------------------------------------------------
+        const mouthSection = getSection("Mouth and Lips");
+        if (mouthSection?.traits?.length) {
+            const traitName = String(mouthSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Mouth and Lips", traitName);
+            if (matched.length) updates["Mouth and Lips"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 8) Chin and Jawline
+        // --------------------------------------------------------
+        const chinSection = getSection("Chin and Jawline");
+        if (chinSection?.traits?.length) {
+            const traitName = String(chinSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Chin and Jawline", traitName);
+            if (matched.length) updates["Chin and Jawline"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 9) Ear (Urechile)
+        // --------------------------------------------------------
+        const earSection = getSection("Ear (Urechile)");
+        if (earSection?.traits?.length) {
+            const traitName = String(earSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Ear (Urechile)", traitName);
+            if (matched.length) updates["Ear (Urechile)"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 10) Neck and Throat
+        // --------------------------------------------------------
+        const neckSection = getSection("Neck and Throat");
+        if (neckSection?.traits?.length) {
+            const traitName = String(neckSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Neck and Throat", traitName);
+            if (matched.length) updates["Neck and Throat"] = matched;
+        }
+
+
+        // --------------------------------------------------------
+        // 11) Skin Texture and Facial Wrinkles
+        // --------------------------------------------------------
+        const skinSection = getSection("Skin Texture and Facial Wrinkles");
+        if (skinSection?.traits?.length) {
+            const traitName = String(skinSection.traits[0].name || "");
+            const matched = matchOptionsFromText("Skin Texture and Facial Wrinkles", traitName);
+            if (matched.length) updates["Skin Texture and Facial Wrinkles"] = matched;
+        }
+
 
         return updates;
     };
-
 
 
     useEffect(() => {
