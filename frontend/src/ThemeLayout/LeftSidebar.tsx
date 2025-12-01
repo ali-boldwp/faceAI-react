@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {Link, useLocation, useNavigate, useParams} from "react-router-dom";
 import {
     GiNoseFront,
     GiEyeball,
@@ -9,14 +9,15 @@ import {
     GiHumanEar,
     GiBodyHeight,
 } from "react-icons/gi";
-import { FaRegGrinBeam, FaEye, FaUserCircle } from "react-icons/fa";
-import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-import { PiSmileyWinkBold } from "react-icons/pi";
-import { useSelector } from "react-redux";
-import { RootState } from "Slices/theme/store";
+import {FaRegGrinBeam, FaEye, FaUserCircle} from "react-icons/fa";
+import {FiArrowLeft, FiArrowRight} from "react-icons/fi";
+import {PiSmileyWinkBold} from "react-icons/pi";
+import {useSelector} from "react-redux";
+import {RootState} from "Slices/theme/store";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { motion, AnimatePresence } from "framer-motion";
+import {motion, AnimatePresence} from "framer-motion";
+import {InforDataType} from "../Pages/Home";
 
 interface SidebarItem {
     name: string;
@@ -27,6 +28,8 @@ interface LeftSidebarProps {
     imagePreviews: string[];
     answers: { [key: string]: string | string[] };
     setAnswers: React.Dispatch<React.SetStateAction<{ [key: string]: string | string[] }>>;
+    setInforData: React.Dispatch<React.SetStateAction<InforDataType>>;
+    togglePopup: any;
 }
 
 const nameTranslations: { [key: string]: string } = {
@@ -44,14 +47,16 @@ const nameTranslations: { [key: string]: string } = {
 };
 
 const LeftSidebar: React.FC<LeftSidebarProps> = ({
-    sidebarItems,
-    imagePreviews,
-    answers,
-    setAnswers,
-}) => {
+                                                     sidebarItems,
+                                                     imagePreviews,
+                                                     answers,
+                                                     setAnswers,
+                                                     setInforData,
+                                                     togglePopup
+                                                 }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
 
     const themeSidebarToggle = useSelector((state: RootState) => state.theme.themeSidebarToggle);
     const themeType = useSelector((state: RootState) => state.theme.themeType);
@@ -67,17 +72,17 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
 
     const icons = [
-        <GiHeadshot />,
-        <GiAbstract002 />,
-        <FaRegGrinBeam />,
-        <FaEye />,
-        <GiNoseFront />,
-        <GiEyeball />,
-        <GiLips />,
-        <PiSmileyWinkBold />,
-        <GiHumanEar />,
-        <GiBodyHeight />,
-        <FaUserCircle />,
+        <GiHeadshot/>,
+        <GiAbstract002/>,
+        <FaRegGrinBeam/>,
+        <FaEye/>,
+        <GiNoseFront/>,
+        <GiEyeball/>,
+        <GiLips/>,
+        <PiSmileyWinkBold/>,
+        <GiHumanEar/>,
+        <GiBodyHeight/>,
+        <FaUserCircle/>,
     ];
     const getIconColor = () => (themeType === "dark" ? "#c5c5c5" : "#001C42");
 
@@ -313,7 +318,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                 toast.error("Please enter a name!");
                 return;
             }
-            setAnswers(prev => ({ ...prev, [stepKey + "_custom"]: customInput.trim() }));
+            setAnswers(prev => ({...prev, [stepKey + "_custom"]: customInput.trim()}));
             setNameCompleted(true);
             return;
         }
@@ -323,7 +328,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
             return;
         }
 
-        setAnswers(prev => ({ ...prev, [stepKey]: selectedOption }));
+        setAnswers(prev => ({...prev, [stepKey]: selectedOption}));
 
         if (step < sidebarItems.length - 1) {
             setStep(prev => prev + 1);
@@ -351,12 +356,12 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
 
 
             const title = `${customName}`;
-            const payload = { title, images: imagePreviews, questions: questionsArray };
+            const payload = {title, images: imagePreviews, questions: questionsArray};
             const token = localStorage.getItem("token");
 
             const res = await toast.promise(
                 axios.post(`${process.env.REACT_APP_API_URL}/face-profiles`, payload, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    headers: {Authorization: `Bearer ${token}`},
                 }),
                 {
                     loading: "Se salvează profilul...",
@@ -382,7 +387,6 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
     };
 
 
-
     const handleAskByAI = async () => {
         try {
             const res = await fetch(`${process.env.REACT_APP_AI_URL}/face/full`, {
@@ -391,6 +395,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                     "Content-Type": "text/plain",
                 },
                 body: JSON.stringify({
+                    ID: "testing",
                     front_image_url: imagePreviews[0],
                     side_image_url: imagePreviews[1] ? imagePreviews[1] : imagePreviews[0],
                 }),
@@ -400,7 +405,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
             setAiResponse(data);
 
             const mapped = autoSelectFromAI(data);
-            setAnswers(prev => ({ ...prev, ...mapped }));
+            setAnswers(prev => ({...prev, ...mapped}));
 
 
             const currentKey = sidebarItems[step].name;
@@ -573,16 +578,19 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
     const currentOptions = optionsData[sidebarItems[step]?.name] || [];
 
     return (
-        <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`} style={{ borderLeft: "1px solid #E5E4FF", width: id ? "320px" : "620px" }}>
-            <div className="inner" style={{ height: "100%", overflow: "auto" }}>
+        <div className={`left-side-bar ${themeSidebarToggle ? "collapsed" : ""}`}
+             style={{position: 'relative', borderLeft: "1px solid #E5E4FF", width: id ? "320px" : "620px"}}>
+            <div className="inner" style={{height: "100%", overflow: "auto"}}>
                 <div className="single-menu-wrapper">
                     {id ? (
                         sidebarItems.map((item, index) => (
-                            <Link key={index} to="#" className={`single-menu ${location.pathname === item.name ? "active" : ""}`}>
-                                <div className="icon" style={{ fontSize: "20px", color: getIconColor() }}>{icons[index]}</div>
-                                <p style={{ color: getIconColor() }}>
+                            <Link key={index} to="#"
+                                  className={`single-menu ${location.pathname === item.name ? "active" : ""}`}>
+                                <div className="icon"
+                                     style={{fontSize: "20px", color: getIconColor()}}>{icons[index]}</div>
+                                <p style={{color: getIconColor()}}>
                                     {nameTranslations[item.name] || item.name}:{" "}
-                                    <span style={{ color: getIconColor() }}>
+                                    <span style={{color: getIconColor()}}>
                                         {Array.isArray(answers[item.name]) ? (answers[item.name] as string[]).join(", ") : (answers[item.name] as string) || "____"}
                                     </span>
                                 </p>
@@ -594,10 +602,10 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={step}
-                                    initial={{ x: 50, opacity: 0 }}
-                                    animate={{ x: 0, opacity: 1 }}
-                                    exit={{ x: -50, opacity: 0 }}
-                                    transition={{ duration: 0.4 }}
+                                    initial={{x: 50, opacity: 0}}
+                                    animate={{x: 0, opacity: 1}}
+                                    exit={{x: -50, opacity: 0}}
+                                    transition={{duration: 0.4}}
                                 >
 
                                     {step === 0 && !nameCompleted ? (
@@ -607,12 +615,29 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                                             onChange={(e) => setCustomInput(e.target.value)}
                                             placeholder="Introdu numele"
                                             disabled={submitting}
-                                            style={{ width: "100%", padding: "8px", margin: "10px 0", border: "1px solid #E5E4FF", borderRadius: 10 }}
+                                            style={{
+                                                width: "100%",
+                                                padding: "8px",
+                                                margin: "10px 0",
+                                                border: "1px solid #E5E4FF",
+                                                borderRadius: 10
+                                            }}
                                         />
                                     ) : (
 
-                                        <div style={{ width: "100%", height: "60vh", overflowY: "auto" }}>
-                                            <h6>{sidebarItems[step].name}</h6>
+                                        <div style={{width: "100%", height: "60vh", overflowY: "auto"}}>
+                                            <h6>{sidebarItems[step].name}
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                                                     style={{marginLeft: '10px', cursor: "pointer"}}
+                                                     onClick={() => { setInforData( aiResponse.sections[ step ]); togglePopup( true ); }
+                                                         }
+                                                     width="15px" height="15px">
+                                                    <path fill="#25B7D3"
+                                                          d="M504.1,256C504.1,119,393,7.9,256,7.9C119,7.9,7.9,119,7.9,256C7.9,393,119,504.1,256,504.1C393,504.1,504.1,393,504.1,256z"/>
+                                                    <path fill="#FFF"
+                                                          d="M323.2 367.5c-1.4-2-4-2.8-6.3-1.7-24.6 11.6-52.5 23.9-58 25-.1-.1-.4-.3-.6-.7-.7-1-1.1-2.3-1.1-4 0-13.9 10.5-56.2 31.2-125.7 17.5-58.4 19.5-70.5 19.5-74.5 0-6.2-2.4-11.4-6.9-15.1-4.3-3.5-10.2-5.3-17.7-5.3-12.5 0-26.9 4.7-44.1 14.5-16.7 9.4-35.4 25.4-55.4 47.5-1.6 1.7-1.7 4.3-.4 6.2 1.3 1.9 3.8 2.6 6 1.8 7-2.9 42.4-17.4 47.6-20.6 4.2-2.6 7.9-4 10.9-4 .1 0 .2 0 .3 0 0 .2.1.5.1.9 0 3-.6 6.7-1.9 10.7-30.1 97.6-44.8 157.5-44.8 183 0 9 2.5 16.2 7.4 21.5 5 5.4 11.8 8.1 20.1 8.1 8.9 0 19.7-3.7 33.1-11.4 12.9-7.4 32.7-23.7 60.4-49.7C324.3 372.2 324.6 369.5 323.2 367.5zM322.2 84.6c-4.9-5-11.2-7.6-18.7-7.6-9.3 0-17.5 3.7-24.2 11-6.6 7.2-9.9 15.9-9.9 26.1 0 8 2.5 14.7 7.3 19.8 4.9 5.2 11.1 7.8 18.5 7.8 9 0 17-3.9 24-11.6 6.9-7.6 10.4-16.4 10.4-26.4C329.6 96 327.1 89.6 322.2 84.6z"/>
+                                                </svg>
+                                            </h6>
                                             {currentOptions.map((opt) => (
                                                 <label
                                                     key={opt}
@@ -628,7 +653,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                                                         checked={selectedOption.includes(opt)}
                                                         onChange={() => handleCheckboxChange(opt)}
                                                         disabled={submitting}
-                                                        style={{ marginRight: "8px" }}
+                                                        style={{marginRight: "8px"}}
                                                     />
                                                     {opt}
                                                 </label>
@@ -638,10 +663,12 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                                 </motion.div>
                             </AnimatePresence>
 
-                            <div className="popup-footer" style={{ position: "absolute", bottom: "10px", width: "90%" }}>
+                            <div className="popup-footer" style={{position: "absolute", bottom: "10px", width: "90%"}}>
                                 <div className="arrow-buttons">
-                                    <button className="arrow-btn left" onClick={handlePrev} disabled={step === 0 || submitting}><FiArrowLeft size={20} /></button>
-                                    <button className="arrow-btn right" onClick={handleNext} disabled={submitting}><FiArrowRight size={20} /></button>
+                                    <button className="arrow-btn left" onClick={handlePrev}
+                                            disabled={step === 0 || submitting}><FiArrowLeft size={20}/></button>
+                                    <button className="arrow-btn right" onClick={handleNext} disabled={submitting}>
+                                        <FiArrowRight size={20}/></button>
                                 </div>
                                 <div>
                                     <button

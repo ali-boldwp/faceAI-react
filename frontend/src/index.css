@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.measurements_used {
+    /*background-color: red;*/
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.measurements_used > div {
+    background-color: aliceblue;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.measurements_used > div pre,
+.measurements_used > div p {
+    margin: 0;
+    font-style: italic;
+    font-size: 14px;
+}
+
+.measurements_used > div pre {
+    background: #FFF;
+    border-radius: 10px;
+}
