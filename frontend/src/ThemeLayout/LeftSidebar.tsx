@@ -695,7 +695,7 @@ const LeftSidebar: React.FC<LeftSidebarProps> = ({
                                         onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#3a7acc")}
                                         onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#4A90E2")}
                                     >
-                                        Ask by AI
+                                        CALCULEAZA FATA
                                     </button>
                                 </div>
 

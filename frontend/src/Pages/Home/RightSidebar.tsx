@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, Dispatch, SetStateAction} from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { IoTrashOutline } from "react-icons/io5";
+import {useNavigate} from "react-router-dom";
+import {IoTrashOutline} from "react-icons/io5";
 import toast from "react-hot-toast";
 
 // Import images
@@ -12,8 +12,14 @@ import icons01 from "assets/images/icons/01.svg";
 
 interface RightSidebarProps {
     startNewChat?: () => void;
-    onSelectProfile?: (profileId: string) => void;
     refreshTrigger?: number;
+    newChat?: () => boolean;
+    onSelectProfile?: (profileId: string) => void;
+
+    // 👇 add this line
+    openPopup: Dispatch<SetStateAction<boolean>>;
+    // or, if you only ever "open" it and don't need the boolean:
+    // openPopup?: () => void;
 }
 
 interface FaceProfile {
@@ -23,10 +29,11 @@ interface FaceProfile {
 }
 
 const RightSidebar: React.FC<RightSidebarProps> = ({
-    startNewChat,
-    onSelectProfile,
-    refreshTrigger,
-}) => {
+                                                       startNewChat,
+                                                       onSelectProfile,
+                                                       refreshTrigger,
+                                                       openPopup
+                                                   }) => {
     const [isToggleRightSidebar, setIsToggleRightSidebar] = useState<boolean>(true);
     const [history, setHistory] = useState<FaceProfile[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -81,17 +88,17 @@ const RightSidebar: React.FC<RightSidebarProps> = ({
         }
     };
 
-useEffect(() => {
-  const handleRefresh = () => {
-    fetchHistory();
-  };
+    useEffect(() => {
+        const handleRefresh = () => {
+            fetchHistory();
+        };
 
-  window.addEventListener("refreshChatHistory", handleRefresh);
+        window.addEventListener("refreshChatHistory", handleRefresh);
 
-  return () => {
-    window.removeEventListener("refreshChatHistory", handleRefresh);
-  };
-}, []);
+        return () => {
+            window.removeEventListener("refreshChatHistory", handleRefresh);
+        };
+    }, []);
 
     useEffect(() => {
         fetchHistory();
@@ -136,7 +143,7 @@ useEffect(() => {
             else {
 
                 const d = new Date(item.createdAt);
-                groupKey = d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+                groupKey = d.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"});
             }
 
             if (!groups[groupKey]) groups[groupKey] = [];
@@ -155,15 +162,23 @@ useEffect(() => {
     const groupedHistory = groupHistoryByDate(history);
 
     return (
-        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`} style={{ borderRight: "1px solid #E5E4FF" }}>
+        <div className={`right-side-bar-new-chat-option ${isToggleRightSidebar ? "" : "close-right"}`}
+             style={{borderRight: "1px solid #E5E4FF"}}>
             {/* New Chat Button */}
             <div className="new-chat-option">
                 <button
-                    onClick={resetHomeScreen}
-                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px', cursor: 'pointer',justifyContent: 'center', }}
+                    onClick={ () => openPopup( true ) }
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        padding: '8px 12px',
+                        cursor: 'pointer',
+                        justifyContent: 'center',
+                    }}
                 >
-                    <p style={{ margin: 0 }}>Conversație nouă</p>
-                    <img src={icons04} alt="icons" style={{ width: '20px', height: '20px' }} />
+                    <p style={{margin: 0}}>Conversație nouă</p>
+                    <img src={icons04} alt="icons" style={{width: '20px', height: '20px'}}/>
                 </button>
             </div>
 
@@ -171,13 +186,13 @@ useEffect(() => {
             {/* Chat History */}
             <div className="chat-history-wrapper">
                 {loading ? (
-                    <p style={{ padding: "10px" }}>Loading...</p>
+                    <p style={{padding: "10px"}}>Loading...</p>
                 ) : history.length === 0 ? (
-                    <p style={{ padding: "10px" }}>No history found.</p>
+                    <p style={{padding: "10px"}}>No history found.</p>
                 ) : (
                     Object.entries(groupedHistory).map(([group, profiles]) => (
                         <div key={group} className="chat-group">
-                            <h6 style={{ padding: "8px 10px", fontWeight: "bold", color: "#888" }}>{group}</h6>
+                            <h6 style={{padding: "8px 10px", fontWeight: "bold", color: "#888"}}>{group}</h6>
                             {profiles.map((profile) => (
                                 <div
                                     key={profile._id}
@@ -204,7 +219,7 @@ useEffect(() => {
 
             {/* Toggle Sidebar */}
             <div onClick={toggleRightSidebar} className="right-side-open-clouse" id="collups-right">
-                <img src={icons01} alt="icons" />
+                <img src={icons01} alt="icons"/>
             </div>
 
             {/* Delete Confirmation Modal */}

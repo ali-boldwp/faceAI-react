@@ -368,3 +368,51 @@
   font-weight: 500;
   margin-bottom: 4px;
 }
+
+
+.newChatPopup {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba( 0, 0, 0, 0.5 );
+    z-index: 999;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+}
+
+.newChatPopup .popupBody {
+    background: aliceblue;
+    padding: 20px;
+    border-radius: 2px;
+}
+
+.newChatPopup .popupBody .drop-zone-inner {
+    border: 1px dashed rgba( 0, 0, 0, 0.75 );
+    padding: 20px;
+    border-radius: 2px;
+    width: 500px;
+    height: 400px;
+}
+
+.newChatPopup .popupBody .drop-zone-inner .browse-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.newChatPopup .popupBody .drop-zone-inner .browse-link .upload-icon {
+    stroke: #083A5E;
+}
+
+.newChatPopup .popupBody .drop-zone-inner .browse-link h4 {
+    font-size: 16px;
+    color: #083A5E;
+}
+
+.newChatPopup .popupBody .drop-zone-inner .browse-link p {
+    font-size: 12px;
+}

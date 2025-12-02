@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
 import Select from "react-select";
 import InfoiWindow from "./InfoiWindow";
+import NewChat from "./New";
 
 
 interface HomeProps {
@@ -50,7 +51,17 @@ export interface InforDataType {
     traits: Trait[];
 }
 
+export interface NewChatDataType {
+    frontImage: any;
+    SideImage: any;
+    name: string;
+}
+
 const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
+
+    const [ popup, setPopup ] = useState<boolean>( false );
+    const [ loadingAI, setLoadingAI ] = useState<boolean>( true );
+
     const themeSidebarToggle = useSidebarToggle();
     const [files, setFiles] = useState<File[]>([]);
     const [isDragging, setIsDragging] = useState(false);
@@ -103,7 +114,8 @@ const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
                 "status": "computed"
             }
         ]
-    })
+    });
+    const [ newChat, setNewChat ] = useState<NewChatDataType>();
 
     const {id} = useParams<{ id: string }>();
 
@@ -297,6 +309,9 @@ const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
         navigate(`/`);
     };
     useEffect(() => {
+
+        console.log( imagePreviews )
+
         if (imagePreviews.length > 0) {
             setIsNoData(false);
         } else {
@@ -336,24 +351,17 @@ const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
                                                  style={{height: "350px", width: "auto"}}/>
                                         </div>
                                     ))}
+                                    <div>
+                                        {
+                                            loadingAI ? "Analyzing with AI..." : ""
+                                        }
+                                    </div>
                                 </div>
                             ) : (
-                                <div className="drop-zone-inner">
-                                    <label htmlFor="fileInput" className="browse-link">
-                                        <FiUploadCloud className="upload-icon"/>
-                                        <h4>{uploading ? "Se încarcă..." : "Trage și plasează sau selectează fișierul"}</h4>
-                                        <p>Trage fișierele aici sau fă clic pentru a răsfoi</p>
-                                    </label>
+                                <div>
+                                    .....
                                 </div>
                             )}
-                            <input
-                                id="fileInput"
-                                type="file"
-                                accept="image/*"
-                                multiple
-                                onChange={handleFileSelect}
-                                className="file-input"
-                            />
                         </div>
                     </> : <>
                         <div className="uploaded-image-container multiple" style={{paddingBottom: "20px"}}>
@@ -385,6 +393,7 @@ const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
             <RightSidebar
                 startNewChat={resetHomeScreen}
                 refreshTrigger={refreshTrigger}
+                openPopup={ setPopup }
             />
 
             {imagePreviews.length > 0 && (
@@ -399,6 +408,9 @@ const Home: React.FC<HomeProps> = ({sidebarItems, answers, setAnswers}) => {
             )}
 
             {infoWindow ? <InfoiWindow data={ infoData } togglePopup={ setInfoWindow }/> : <></>}
+
+            { popup ? <NewChat setData={ setNewChat } setPopup={setPopup} setImagePreviews={setImagePreviews} /> :<></> }
+
         </>
     );
 };
